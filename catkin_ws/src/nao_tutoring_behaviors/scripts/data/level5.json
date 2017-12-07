@@ -1,0 +1,67 @@
+[
+ {
+	"QuestionID" : 500,
+	"Denominator" : "11",
+	"Numerator" : "245", 
+	"Spoken Question" : "What is 245 divided by 11?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is twenty two remainder three.",
+	"Difficulty Level" : 5,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 501,
+	"Denominator" : "19",
+	"Numerator" : "114", 
+	"Spoken Question" : "What is 114 divided by 19?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is six.",
+	"Difficulty Level" : 5,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 502,
+	"Denominator" : "15",
+	"Numerator" : "352", 
+	"Spoken Question" : "What is 352 divided by 15?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is twenty three remainder seven.",
+	"Difficulty Level" : 5,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 503,
+	"Denominator" : "21",
+	"Numerator" : "300", 
+	"Spoken Question" : "What is 300 divided by 21?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is fourteen remainder 6.",
+	"Difficulty Level" : 5,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 504,
+	"Denominator" : "14",
+	"Numerator" : "476", 
+	"Spoken Question" : "What is 476 divided by 14", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is thirty four.",
+	"Difficulty Level" : 5,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 505,
+	"Denominator" : "51",
+	"Numerator" : "820", 
+	"Spoken Question" : "What is 820 divided by 51?", 
+	"Answer" : 16,
+	"Spoken Answer" : "The correct answer is sixteen remainder four.",
+	"Difficulty Level" : 5,
+	"Max Time" : 60
+ }
+]

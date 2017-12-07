@@ -1,0 +1,472 @@
+#!/usr/bin/env python
+
+import rospy
+import rospkg
+import os
+import os.path
+import sys
+import random
+import time
+import datetime
+import collections
+import socket
+import pdb
+import json
+import example_generation
+from std_msgs.msg import String
+from std_msgs.msg import Int32
+from nao_tutoring_behaviors.msg import TabletMsg
+from nao_tutoring_behaviors.msg import ControlMsg
+
+hint = "Think about how many times the denominator goes into the first digit of the numerator."
+
+doing_question_state = 1
+break_state = 2
+lesson_state = 3
+after_action_state = 4
+
+class TabletSession:
+  def __init__(self, host, port):
+    self.host = host
+    self.port = port
+
+    self.pid = -1
+    self.sessionNum = -1
+    self.expGroup = -1
+    self.logFile = None
+    self.state = 0
+    self.conn = None
+
+    # holds session data for 'this' user
+    self.current_question = 1
+    self.current_level = 1
+    self.current_session = None  # will be initialized when START message parsed
+    self.example_step = 0
+    self.tutorial_step_attempts = 0
+    self.example_number = 0
+    self.tutorial_number = 0
+
+    self.lessons = []
+
+    # open files with tutorials and questions. 
+    self.level_one_questions = {}
+    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level1examples.json', 'r') as example_file1:
+      self.lessons.append(json.load(example_file1))
+    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level2examples.json', 'r') as example_file2:
+      self.lessons.append(json.load(example_file2))
+    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level3examples.json', 'r') as example_file3:
+      self.lessons.append(json.load(example_file3))
+    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level4examples.json', 'r') as example_file4:
+      self.lessons.append(json.load(example_file4))
+    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level5examples.json', 'r') as example_file5:
+      self.lessons.append(json.load(example_file5))
+
+    # we cycle through the available examples and tutorials in each level
+    self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
+    self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
+
+    rospy.init_node('tablet_node', anonymous=True)
+    #self.tablet_pub = rospy.Publisher('tablet_msg', TabletMsg, queue_size=10)
+    self.tablet_pub = rospy.Publisher('tablet_msg', TabletMsg, queue_size=10)
+    self.tablet_lesson_pub = rospy.Publisher('tablet_lesson_msg', TabletMsg, queue_size=10)
+    self.tablet_inactivity_pub = rospy.Publisher('tablet_inactivity_msg', TabletMsg, queue_size=10)
+
+    self.rate = rospy.Rate(10) # 10hz
+
+    # subscribe to messages
+    rospy.Subscriber("model_decision_msg", ControlMsg, self.model_msg_callback) # this receives messages from the model
+    rospy.Subscriber("robot_speech_msg", String, self.robot_msg_callback)       # this receives messages from the robot indicating speech
+    rospy.Subscriber("robot_lesson_msg", String, self.robot_lesson_callback)    # this message is received from the robot DURING worked examples showing progressive 
+                                                                                # steps of box tutorial. It triggers the next step of the example to be shown.
+    rospy.Subscriber("robot_inactivity_msg", String, self.robot_msg_callback)
+
+
+  # for normal messages indicating robot speech, send a message to the tablet indicating when the robot starts and stops speaking. Buttons on the tablet 
+  # will be disabled during this time
+  def robot_msg_callback(self, data):
+      rospy.loginfo(rospy.get_caller_id() + ':I heard %s', data)
+      if (data.data == "DONE"):
+        returnMessage = "SPEAKING-END"
+        print "robot was done"
+      else:
+        returnMessage = "SPEAKING-START"
+      self.conn.send(returnMessage+"\n") #send robot message back to tablet
+
+  # handle messages from the model and send the appropriate messages to the tablet and robot to complete the indicated tutoring behavior
+  def model_msg_callback(self, data):
+      rospy.loginfo(rospy.get_caller_id() + 'From Model:I heard %s', data)
+
+      if (self.state == lesson_state or self.state == break_state):         # this shouldn't happen, but if the model tells us to do something while we are already 
+        print "ignoring message because we are doing something else now"    # doing another activity, ignore the message
+      else:
+        if (data.nextStep == "SHOWEXAMPLE"):                                # show an example based on the level of the question
+          if (self.current_level == 1):                                     # if in level one, show an easy example showing multiplication and division facts 
+            self.run_easy_example()
+          else:
+            self.example_step = 0                                           # in other levels, show an example of filling in the box structure
+            self.run_example()
+
+        elif ("QUESTION" in data.nextStep):                                 # send the next question number to the tablet -- it also has access to the JSON
+          if (self.current_level != data.questionLevel):                    # so only the level and question number need to be sent
+            self.tutorial_number = 0
+            self.example_number = 0
+          self.current_question = data.questionNum
+          self.current_level = data.questionLevel
+          messageToTablet = "QUESTION;" + str(self.current_level) + ";" + str(self.current_question)
+          self.conn.send(messageToTablet+"\n") #send model message back to tablet
+          print "Sent message to tablet: " + messageToTablet
+
+        elif ("SHOWSTRUCTURE" in data.nextStep):                            # sending SHOWSTRUCTURE to the tablet will cause it to show the 
+          messageToTablet = "SHOWSTRUCTURE;"                                # boxes corresponding to the current question
+          self.conn.send(messageToTablet+"\n") 
+          print "Sent message to tablet: " + messageToTablet
+
+        elif ("THINKALOUD" in data.nextStep):                               # the tablet does nothing during thinkaloud so do not send message to tablet
+          return 
+
+        # elif ("SHOWHINT" in data.nextStep):                               # this behavior doesn't exist anymore, but would display a text hint  
+        #   messageToTablet = "SHOWHINT;" + hint + ";"                      # to do this, this node should send "SHOWHINT;[insert_text_hint]" to the tablet
+        #   self.conn.send(messageToTablet+"\n") 
+        #   print "Sent message to tablet: " + messageToTablet
+
+        elif ("SHOWTUTORIAL" in data.nextStep):                             # show an interactive tutorial depending on the level
+          self.example_step = 0
+          if (self.current_level == 1):                                     # in level one, show balls in boxes to represent the division fact
+            self.run_easy_tutorial()
+          else:                                                             # in other levels, show a box structure and provide feedback
+            self.run_boxes_tutorial("")
+
+        else:
+          messageToTablet = data.nextStep 
+          self.conn.send(messageToTablet+"\n") #send model message back to tablet
+          print "Sent message to tablet: " + messageToTablet
+
+  def run_easy_example(self):                                                               # in an easy example, display the multiplication 
+      numerator = self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]           # and division facts that represent the problem
+      denominator =  self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"]      # this just shows up as text, and the robot 
+      quotient = numerator / denominator                                                    # says it
+
+      text = str(denominator) + " x " + str(quotient) + " = " + str(numerator)
+      msg_to_tablet = "SHOWHINT;" + text + ";"
+      self.conn.send(msg_to_tablet + "\n")
+      print "sent: ", msg_to_tablet
+
+      text = str(numerator) + " / "  + str(denominator) + " = " + str(quotient)
+      msg_to_tablet = "SHOWHINT;" + text + ";"
+      self.conn.send(msg_to_tablet + "\n")
+      print "sent: ", msg_to_tablet
+
+
+      text = "Try the same thing with this problem."
+      msg_to_tablet = "SHOWHINT;" + text + ";"
+      self.conn.send(msg_to_tablet + "\n")
+      print "sent: ", msg_to_tablet
+
+
+      robotSpeech = "Let's look at this similar problem together. " + str(denominator) + " times " + str(quotient) + " equals " + str(numerator) + " so " + str(numerator) + " divided by "  + str(denominator) + " equals " + str(quotient) + ". Now try the question you were working on before."
+
+      tablet_msg = TabletMsg()
+      tablet_msg.msgType = 'SHOWEXAMPLE'
+      tablet_msg.questionNumOrPart = self.example_step
+      tablet_msg.questionType = "questionType"
+      tablet_msg.otherInfo = "otherInfo"
+      tablet_msg.msgType = 'TUTORIAL-DONE'
+      tablet_msg.robotSpeech = robotSpeech
+      self.tablet_pub.publish(tablet_msg)
+
+      self.example_step = -1
+      self.tutorial_number = (self.tutorial_number + 1) % len(self.lessons[self.current_level - 1]["Tutorials"])
+
+
+  def robot_lesson_callback(self, data):
+    print "with " + str(self.example_step) + "in robot lesson callback, heard: "            # this handles messages within worked examples
+    print data                                                                              # when the robot stops talking, this indicates that we
+                                                                                            # can move on to the next step of the example
+    if (data.data == 'DONE'):
+      # send next part of example -- do not enable buttons on tablet
+      self.run_example()
+    
+    else:
+      returnMessage = "SPEAKING-START" 
+      self.conn.send(returnMessage+"\n") #send robot message back to tablet
+
+  def robot_inactivity_callback (self, data):
+    print "robot says " + data.data
+    if (data.data == 'DONE'):
+      # enable board buttons by sending message
+      self.conn.send("SPEAKING-END\n") #send robot message back to tablet
+    
+    else:
+      self.conn.send("SPEAKING-START\n") #send robot message back to tablet
+
+  def run_easy_tutorial(self, status = ""):                           # to run an easy tutorial, we how balls in boxes and confirm if the
+    msg_type = "SHOWTUTORIAL;"                                        # answers to the middle steps are correct. This function is called at
+    tablet_msg = TabletMsg()
+    tablet_msg.msgType = msg_type                                     # the beginning due to a model message but also in intermediate steps on 
+    tablet_msg.questionNumOrPart = self.example_step                  # receipt of messages with answer attempts from the tablet
+    tablet_msg.questionType = ""
+    tablet_msg.otherInfo = "otherInfo"
+
+    if (self.example_step == -1):
+      return
+
+    if (self.example_step == 0):                                       # display the images in the first step
+      self.example_step = 1
+      messageToTablet = "SHOWEASYTUTORIAL;" + str(self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]) + '-' + str(self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"])
+      self.conn.send(messageToTablet+"\n") #send model message back to tablet
+      print "Sent message to tablet: " + messageToTablet
+      tablet_msg.robotSpeech = "Look at this example. There are " + str(self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]) + " balls in " + str(self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"]) + " boxes. How many are in each box? Fill in the steps."
+
+    if (status.startswith("INCOMPLETE") or status.startswith("INCORRECT")):     # if the student has gotten the answer wrong enough times,  
+      if (self.tutorial_step_attempts > 2):                                     # we send them the answer to a step
+        # @TODO fill in next step
+        # move on to next step
+        self.tutorial_step_attempts = 0
+        #tablet_msg.robotSpeech = "Here is the answer to this step"
+
+      else:                                                                     # otherwise tell them to try again
+        tablet_msg.robotSpeech = "Not quite. Try filling in the boxes again. How many balls are there in each box?"
+
+
+
+    if (status.startswith("CORRECT")):                                          # if the student has gotten the answer correct, move on to the next step
+        # move on to next step
+        self.example_step += 1
+        self.tutorial_step_attempts = 0
+        tablet_msg.robotSpeech = "Very good."
+    elif (status.startswith("DONE")):                                           # at the end of the tutorial tell them to go back to the original problem
+      self.example_step = -1
+      self.tutorial_number = (self.tutorial_number + 1) % len(self.lessons[self.current_level - 1]["Tutorials"])
+      tablet_msg.robotSpeech = "Great! You finished this problem. Now go back to the one you were working on."
+    
+    self.tablet_inactivity_pub.publish(tablet_msg)
+
+
+  
+  def run_boxes_tutorial(self, status):                                         # a box tutorial shows the box structure for a problem and asks the 
+      msg_type = "SHOWTUTORIAL;"                                                # student to fill in intermediate steps
+      tablet_msg = TabletMsg()                                                  # this function is called at the begining due to the model message
+      tablet_msg.msgType = msg_type                                             # and on receipt of answer attempts from the tablet
+      tablet_msg.questionNumOrPart = self.example_step
+      tablet_msg.questionType = "questionType"
+      tablet_msg.otherInfo = "otherInfo"
+
+      if (self.example_step == -1):
+        return
+
+      self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
+
+      print "running boxes tutorial", self.example_step
+
+      if (self.example_step == 0):
+          self.example_step += 1
+
+          # get the steps for this example from the example_generation code
+          (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
+          self.current_tutorial["SpokenText"] = robot_speech
+          self.current_tutorial["TabletSteps"] = tablet_steps
+          self.current_tutorial["Answers"] = all_answers
+
+          # send a message to the tablet to show the structure (for a tutorial) with the numerator and denominator and all the answers it should expect
+          # this is how it will verify the student's work
+          msg_to_tablet = "SHOWSTRUCTURE-TUTORIAL;" + str(self.current_tutorial["numerator"]) + "-" + str(self.current_tutorial["denominator"]) + ";" + self.current_tutorial["Answers"]
+          tablet_msg.robotSpeech = "Let's look at this example with the box structure. What is " + str(self.current_tutorial["numerator"]) + " divided by " + str(self.current_tutorial["denominator"]) + " Try to fill in the first step of boxes."
+          self.conn.send(msg_to_tablet + "\n")
+          print "sent" + msg_to_tablet
+          self.tablet_inactivity_pub.publish(tablet_msg)
+
+      elif (self.example_step < len(self.current_tutorial)):                                          # after the first step respond to student attempts
+        if (status.startswith("INCOMPLETE") or status.startswith("INCORRECT")):
+          if (self.tutorial_step_attempts > 2):                                                         # if the student has been wrong enough times, send the
+            msg_to_tablet = "FILLSTRUCTURE;" + self.current_tutorial["TabletSteps"][self.example_step]  # tablet a message to fill in the boxes for them
+            self.conn.send(msg_to_tablet + "\n")                                                        # Note: the message FILLSTRUCTURE:boxes-to-fill-with-answers
+            print "sent" + msg_to_tablet                                                                # could also be used for a hint if wanted
+            tablet_msg.robotSpeech = "Here is the answer to this step."
+            self.example_step+=1
+            
+            self.tutorial_step_attempts = 0
+            self.tablet_inactivity_pub.publish(tablet_msg)
+          else:
+            if (status.startswith("INCOMPLETE")) :                                                      # otherwise, encourage them to try again
+              tablet_msg.robotSpeech = "Fill in all the boxes for this step."
+            else :
+              tablet_msg.robotSpeech = "Not quite. Try filling in the boxes again."
+            self.tutorial_step_attempts += 1
+            self.tablet_inactivity_pub.publish(tablet_msg)
+
+        if (status.startswith("CORRECT")):                                                              # or move on to the next step if correct
+          self.tutorial_step_attempts = 0
+          self.example_step += 1
+          print self.example_step
+          tablet_msg.robotSpeech = "Very good."
+          self.tablet_inactivity_pub.publish(tablet_msg)
+
+      else:
+          print "done with tutorial"                              # at the end of the tutorial, tell them to go back to the original problem
+          self.example_step = -1                                  # and reset the steps / increase the current tutorial
+          tablet_msg.robotSpeech = "Great! You finished this problem. Now go back to the one you were working on."
+          self.tutorial_number = (self.tutorial_number + 1) % len(self.lessons[self.current_level - 1]["Tutorials"])
+          tablet_msg.msgType = 'TUTORIAL-DONE'
+          self.tablet_pub.publish(tablet_msg)
+
+
+
+  def run_example(self):                                          # an example shows the box structure for a problem and then fills in
+                                                                  # the steps in succession. This function is called from the model message
+        msg_type = "SHOWEXAMPLE;"                                 # and then from robot_lesson_callback() (aka when the robot has finished 
+                                                                  # saying the previous step)
+        tablet_msg = TabletMsg()
+        tablet_msg.msgType = 'SHOWEXAMPLE'
+        tablet_msg.questionNumOrPart = self.example_step
+        tablet_msg.questionType = "questionType"
+        tablet_msg.otherInfo = "otherInfo"
+
+        print "running example", self.example_step
+        self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
+
+        
+        if (self.example_step < 0):
+          return
+
+        if (self.example_step < len (self.current_example["SpokenText"])):
+          tablet_msg.robotSpeech = self.current_example["SpokenText"][self.example_step]
+  
+        if (self.example_step == 0):                               # in the first step, get the steps for this example from the generation code 
+          (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_example["numerator"], self.current_example["denominator"])
+          self.current_example["SpokenText"] = robot_speech
+          self.current_example["TabletSteps"] = tablet_steps
+          self.current_example["Answers"] = all_answers
+
+          self.example_step += 1                                   # and then tell the tablet to display the structure for this problem
+          msg_to_tablet = "SHOWSTRUCTURE;" + str(self.current_example["numerator"]) + "-" + str(self.current_example["denominator"]) 
+          self.conn.send(msg_to_tablet + '\n')
+          print "sent" + msg_to_tablet
+          self.tablet_lesson_pub.publish(tablet_msg)
+
+        elif (self.example_step < len(self.current_example["TabletSteps"])):                          # in future steps, send the next step of the problem
+          msg_to_tablet = "FILLSTRUCTURE;" + self.current_example["TabletSteps"][self.example_step]   # to the tablet and to the robot
+          self.conn.send(msg_to_tablet + "\n")                                                        # to fill in the boxes and have the robot speak
+          print "sent" + msg_to_tablet                                                                # through the steps
+          self.example_step += 1
+          self.tablet_lesson_pub.publish(tablet_msg)
+
+        else:
+          self.example_step = -1                                   # send a message to robot and model when the example is done
+          tablet_msg.msgType = 'EXAMPLE-DONE'
+          self.tablet_pub.publish(tablet_msg)
+          self.example_number = (self.example_number + 1) % len(self.lessons[self.current_level - 1]["Examples"])
+
+
+        
+  def run(self):
+    # connect to tablet
+
+    BUFFER_SIZE = 1024  
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind((self.host, self.port))
+    print s.getsockname()
+    s.listen(1)
+    print 'Waiting for client connection...'
+
+    try:
+        self.conn, addr = s.accept()
+        self.conn.settimeout(None)
+        print 'Connection address:', addr
+        msg = self.conn.recv(BUFFER_SIZE)
+        print msg
+    except KeyboardInterrupt:
+        sys.exit()
+
+    sessionEnded = False
+        
+    while not rospy.is_shutdown():                  # this code handles messages from the tablet
+      try:
+        # get message from tablet and parse
+        try:
+                msg = self.conn.recv(BUFFER_SIZE)
+                if not msg: break
+                print "received msg:", msg
+
+                msgType = msg.split(";")[0]
+                print msgType
+
+                tablet_msg = TabletMsg()
+                tablet_msg.msgType = msgType
+                tablet_msg.questionNumOrPart= self.current_question
+                tablet_msg.robotSpeech = ""
+                tablet_msg.otherInfo = ""
+
+                if msgType == 'START':                  # this message is received at the beginning. It could contain some more user parameters, 
+                  self.state = doing_question_state     # (e.g. session number) but does not now
+                  self.tablet_pub.publish(tablet_msg)
+
+                elif ('SHOWING-QUESTION' in msgType ):  # when the next question is shown, the tablet sends this message - this helps the robot 
+                  self.tablet_pub.publish(tablet_msg)   # know when to speak, and tells the model in case the model wants to time the answer
+
+                elif msgType == 'CA' or msgType == 'IA' and self.state != lesson_state and self.state != break_state:
+                  # the tablet is reporting an answer
+                  # pass this information on by publishing a message -- the model will not give a tutoring behavior if it does not have this 
+                  tablet_msg.robotSpeech = ""
+                  self.state = after_action_state
+                  self.tablet_pub.publish(tablet_msg)
+
+                elif msgType.startswith('TICTACTOE'):     # begin a tictactoe game 
+                    tablet_msg.robotSpeech = msg.split(";")[3]
+                    if (msgType == "TICTACTOE-WIN" or msgType == "TICTACTOE-LOSS"):
+                        self.tablet_pub.publish(tablet_msg)
+                        self.state = after_action_state
+                        continue
+ 
+                    else:
+                      self.state = break_state
+                      tablet_msg.robotSpeech = msg.split(";",4)[3]
+                      self.tablet_inactivity_pub.publish(tablet_msg)
+                      
+                      returnMessage = msgType 
+                    
+                    self.conn.send(returnMessage + "\n")
+                    print "sent: " + returnMessage
+                elif msgType.startswith('TUTORIAL-STEP'):         # this message is received when the student has made an attempt in a tutorial
+                  if 'EASY' in msgType:                           # pass the message on to the appropriate tutorial function to either move on
+                    self.run_easy_tutorial(msg.split(";")[1])     # to the next step or fill in some answers
+                  else:
+                    print "tutorial : " + msg.split(";")[1]
+                    self.run_boxes_tutorial(msg.split(";")[1])
+
+        except KeyboardInterrupt:
+                self.logFile.flush()
+                self.logFile.close()
+                self.conn.close()
+                self.store_session(self.current_session)
+                sys.exit(0)
+
+      except KeyboardInterrupt:
+                #self.logFile.flush()
+                #self.logFile.close()
+                self.conn.close()
+                #self.store_session(self.current_session)
+                sys.exit(0)
+
+
+
+def tablet_message_connection():
+    #if len(sys.argv) >=3:
+        #TCP_IP = sys.argv[1]
+        #TCP_PORT = int(sys.argv[2]) 
+    # TCP_IP = rospy.get_param("host")
+    # TCP_PORT = rospy.get_param("port")
+
+    TCP_IP = socket.gethostname()
+    TCP_PORT = 9090
+
+    session = TabletSession(TCP_IP, TCP_PORT)
+    session.run()    
+
+
+if __name__ == '__main__':
+    try:
+        tablet_message_connection()
+    except rospy.ROSInterruptException:
+        pass
