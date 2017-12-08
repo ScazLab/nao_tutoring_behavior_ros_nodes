@@ -38,7 +38,9 @@ rosrun nao_tutoring_behaviors node_robot_controller.py [--robot]            (the
 
 The ROS nodes are now running. In the terminal running node_tablet.py, you should see that it is waiting for the tablet to connect.
 
-# ROS Messages
+# Messages
+
+## ROS message types
 The nodes communicate via the following message streams:
 
 robot_speech_msg : the robot publishes here to indicate when it begins and finishes speaking. This allows the tablet to disable buttons during this time.
@@ -58,7 +60,66 @@ tablet_inactivity_msg: the tablet node publishes here during other activities, l
 
 model_decision_msg : the model publishes the next action that should be taken. This is in the form of a ControlMsg, which contains a nextStep (string), questionNum, questionLevel, a string of robotSpeech and string of otherInfo.
 
-Currently the "otherInfo" in both TabletMsgs and ControlMsgs is unused so I will probably remove it in a next commit. 
+Currently the "otherInfo" in both TabletMsgs and ControlMsgs is unused so I will probably remove it in a next commit.
+
+## Model to node_tablet messages:
+
+The model sends messages via model_decision_msg. These come in the form of ControlMsgs, which have a string nextStep field.
+
+The following nextStep strings are supported to trigger tutoring behaviors:
+
+`QUESTION` This triggers the tablet to move on to the next question. The question number and level are specified via the questionNum and questionLevel fields in ControlMsg, both of which are integers. 
+
+`SHOWSTRUCTURE` This triggers the tablet to show the box structure of the current question. This level of specificity in hint type may not be entirely desirable in the model, but is available if needed. For more general hint giving, see the `SHOWHINT` instruction.
+
+`THINKALOUD` This triggers the robot to ask the student to think about the first step of the problem out loud. The tablet does nothing at this time.
+
+`SHOWHINT` This is a more general hint behavoir. In level one, where box structures are not so helpful, a general text hint is displayed (though this could be substituted by showing the easy tutorial display or printing the associated multiplication fact). In other levels, the box structure is shown, unless it has already been displayed by a previous hint. In that case, some of the boxes are filled in as a hint.
+
+`SHOWEXAMPLE` This prompts a worked example for a different question of a similar level. In level one, the robot states the multiplication fact leading to the division fact. In other levels, it displays the box structure and gradually fills it in while talking through it. A bank of example questions is used for each level, but because the box structure and intermediate steps are generated automatically ( in `example_generation.py`), all that must be specified there is a numerator and denominator. These examples are non interactive, so the robot does the entire problem for the student before telling it to return to the question on which they were working.
+
+`SHOWTUTORIAL` This starts an interactive tutorial to be displayed. In level one, this shows a set of boxes filled with balls which illustrates the division problem. The facts denominator x quotient = numerator and numerator / denominator = quotient are display with the quotient missing for the student to fill in. In other levels, the box structure is displayed with only some boxes enabled. The student is told to fill in the enabled boxes and is allowed to proceed if all the boxes in the current step are correct. This enables later boxes. In both types of tutorial, the answer is filled in for the student if they get a step wrong 3 times.
+
+`TICTACTOE` This triggers a tic tac toe break. 
+
+## node_tablet to tablet app messages
+
+node_tablet sends messages to the app via TCP messages, which just have the form of a string. Different parts of each instruction are always separated by a semicolon. The following types and formats of instructions are supported.
+
+`"QUESTION;(level);(number)` This message triggers the tablet to display the next question, specified by the given level and question number. The tablet has access to the json containing questions, so this is all of the information that is required to show the question.
+
+`SHOWSTRUCTURE` messages cause the tablet to display the box structure for a problem, but come in different flavors based on the other parts of the instruction
+    `SHOWSTRUCTURE;` Given no other information, the tablet will display the structure of the current question
+    `SHOWSTRUCTURE;numerator-denominator` will show the box structure for the problem of numerator/denominator. 
+    `SHOWSTRUCTURE-TUTORIAL;numerator-denominator;[All-Answers]` will show the box structure for the problem of numerator/denominator. It will only enable the first step of boxes to be filled in because they are being used in a tutorial. 
+    The All-Answers string contains information about the correct input to each box so that student iput can be verified, and is formatted as follows. Each box is specified by "line_number-box_numer-answer" and these parts are separated by colons. Thus, to specify that box(1,1) = 1, box (1,2) = 2 and box(2,1) = 3, this string would be "1-1-1-:1-2-2:2-1-3". These strings are generated in `example_generation.py`.
+    
+`FILLSTRUCTURE` this instruction fills in boxes in the box structure but also comes in different variantions 
+    `FILLSTRUCTURE;` with no other information provided, this will fill in the answers to all of the boxes that are enabled. This is used to fill in the next step in a tutorial if a student has gotten the answer incorrect enough times.
+    `FILLSTRUCTURE;Steps to fill in;` will fill in the indicated boxes with the provided answer. This string is formatted the same was as All-Answers above, except that it only specifies the boxes that are relevant to the current step. This message is used in worked examples.
+    `FILLSTRUCTURE;EASY;part-answer;` will fill in the box of the easy tutorial corresponding to the given part number.
+
+`SHOWTEXTHINT;(insert text here);` This will cause the tablet to display the string after the semi colon as plain text in the hint pane. It is used to display some of the steps of easy examples, which do not have any other visuals to accompany them, and can be used in level one hints, which are more simple.
+
+`SHOWEASYTUTORIAL;numerator-denominator` will cause the tablet to display the easy tutorial visuals, which include denominator many boxes with numerator many balls split between them. 
+
+## tablet app to node_tablet messages
+
+The tablet sends messages to the node_tablet server as TCP string messages. 
+The following types of messages are handled:
+
+`START` This indicates that the session has started. This message can later also contain data about the session that is provided on the start screen, after the semi colons, depending on what information needs to be recorded at the start of a session. node_tablet will also pass this information on to the model and robot, causing the Nao to introduce himself.
+
+`SHOWING-QUESTION` is sent when a question is shown (either because the session was just started or because the student hit the "Next Question" button. This allows the robot to wait to read the question until it is on the screen.
+
+`CA` indicates the student entered a correct answer
+
+`IA` indicates the student entered an incorrect answer
+
+`TICTACTOE` these messages control the tictactoe game. This message flow is the same as in previous versions of the app. All of the computation is handled by the tablet and the server only passes this message along to the robot so it can speak.
+  `TICTACTOE-WIN` and `TICTACTOE-LOSS` indicate the end of a game.
+  
+`TUTORIAL-STEP;result` messages indicate progress on an interactive tutorial. `result` can be the string "CORRECT", "INCORRECT" or "INCOMPLETE". If the first part of the message is actually "TUTORIAL-STEP-EASY" it refers to an easy (level 1) tutorial.
 
 # Most important files and locations:
 There are a lot of directories generated by ROS, so here are the paths of the most relevant and important things:
