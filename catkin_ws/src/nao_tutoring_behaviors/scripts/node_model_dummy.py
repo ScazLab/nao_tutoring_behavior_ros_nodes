@@ -23,7 +23,7 @@ from nao_tutoring_behaviors.msg import ControlMsg
 class TutoringModel:
 	def __init__(self):
 		self.current_question = 1
-		self.level = 1
+		self.level = 2
 
 		self.pid = -1
 		self.sessionNum = -1
@@ -72,7 +72,7 @@ class TutoringModel:
 		self.current_question += 1 								# whether after a correct response or after enough incorrect attempts
 																# without a message, the tablet will not display a new question
 		if (self.current_question >= len(self.questions[self.level])):		
-			self.question_next_level()
+			return self.question_next_level()
 
 		control_message = ControlMsg()
 		control_message.nextStep = "QUESTION-NEXT"
@@ -100,6 +100,12 @@ class TutoringModel:
 		self.decisons_pub.publish(control_message)
 		print "sent:" , control_message
 
+	def send_next_question(self):
+		control_message = ControlMsg()
+		control_message.nextStep = "QUESTION-NEXT"
+		control_message.questionNum = self.current_question
+		control_message.questionLevel = self.level
+		control_message.robotSpeech = self.questions[self.level][self.current_question]['Spoken Question']
 
 	def tic_tac_toe_break(self): 								# trigger a game of tic tac toe for a break
 		control_message = ControlMsg() 							# the robot message here is the speech for the beginning of the game
@@ -110,15 +116,15 @@ class TutoringModel:
 		print "sent:" , control_message
 
 
-	# def give_hint(self):										# this behavior does not exist anymore, but if desired, would give a text hint
-	# 	control_message = ControlMsg()							# related to the problem (e.g. "how many times does the denominator go into 
-	# 	control_message.nextStep = "SHOWHINT"	 				# the first digit of the numerator?"). The hint would be read in from some
-	# 	control_message.questionNum = self.current_question		# list in node_tablet.py code 
-	# 	control_message.questionLevel = self.level
-	# 	control_message.robotSpeech = "Let me give you a hint"
+	def give_hint(self):										
+		control_message = ControlMsg()							
+		control_message.nextStep = "SHOWHINT"	 				
+		control_message.questionNum = self.current_question		
+		control_message.questionLevel = self.level
+		control_message.robotSpeech = ""
 		
-	# 	self.decisons_pub.publish(control_message)
-	# 	print "sent:" , control_message
+		self.decisons_pub.publish(control_message)
+		print "sent:" , control_message
 
 	def give_structure_hint(self): 								# give a hint in the form of the structure of the problem
 		control_message = ControlMsg()
@@ -165,26 +171,26 @@ class TutoringModel:
 		if (data.msgType == 'CA'): # respond to correct answer					# answer was correct and call one of these functions to produce
 			self.next_question()												# a behavior
 		elif (data.msgType == 'IA'): # respond to incorrect answer
-			if (self.tries < 1):
-				self.repeat_question()
-				self.tries +=1
-				print self.tries
+			self.tries +=1
+			if(self.tries >= 3):
+				self.next_question()
 			elif (data.questionNumOrPart % 4 == 0):
-				#self.tic_tac_toe_break()
-				#self.give_think_aloud()
-				self.give_tutorial()
-
+				self.tic_tac_toe_break()
 			elif (data.questionNumOrPart % 4 == 1):
-				self.give_example()
+				self.give_tutorial()
 			elif (data.questionNumOrPart % 4 == 2):
-				self.give_structure_hint()
-				#self.give_tutorial()
+				self.give_hint()
+			elif (data.questionNumOrPart % 4 == 3):
+				self.give_example()
 			else:
-				self.give_structure_hint()
-		elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):	 # here I respond to the end of a game by going to the next
-			self.next_question()													 # question, but you could return to the same one
+				self.give_think_aloud()
+
+		elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):	 # here I respond to the end of a game by going to the same
+			self.repeat_question()													 # question, but you could return to the next one
 		elif("SHOWEXAMPLE" in data.msgType):										 
 			pass
+		elif(data.msgType == 'START'):
+			self.send_first_question()
 
 	def robot_msg_callback(self, data):
 		rospy.loginfo(rospy.get_caller_id() + "From Robot, I heard %s", data)		 # this model does nothing with robot messages, but it could

@@ -34,6 +34,8 @@ class Gesture:
         self.question_intro_generic = anim.question_intro_generic
         self.connectNao()
 
+        "Robot".__init__(self, "Robot")
+
     def connectNao(self):
         # FRAME MANAGER FOR CALLING BEHAVIORS
         try:
@@ -72,8 +74,50 @@ class Gesture:
         except Exception, e:
             print "Error when creating speech device proxy:" + str(e)
             exit(1)
+        
+        try:   
+            self.animatedSpeech = ALProxy("ALAnimatedSpeech", self.host, self.port)
+            self.memory = ALProxy("ALMemory", self.host, self.port)
+            # self.speakMove = ALProxy("ALSpeakingMovement", self.host, self.port)
+            self.configuration = {"bodyLanguageMode":"contextual"}
+        except Exception, e:
+            print "Error when creating animated Speech proxy"
+            exit(1)
+
         # bring to sitting position
         self.posture.goToPosture("Sit", 0.15)
+        self.motion.setBreathEnabled("Body",False)
+
+
+    def animated_speech_if_non_empty(self, speech):
+        self.motion.setBreathEnabled("Body",False)
+        self.motion.stiffnessInterpolation("Body",self.stiffness,1.0)
+        if (speech != ""):
+            self.animatedSpeech.say(speech, self.configuration)
+
+    def animated_speech_return_to_neutral(self, speech):
+        self.motion.setBreathEnabled("Body",False)
+        self.motion.stiffnessInterpolation("Body",self.stiffness,1.0)
+        if (speech != ""):
+            self.animatedSpeech.say(speech, self.configuration)
+        self.bring_to_sit()
+
+    def move_on_to_next_speech(self):
+        phrases = ["Try the next one!", "Let's go on to the next question!", "Let's move on!"]
+        speech  = random.choice(phrases)
+        self.animated_speech_return_to_neutral(speech)
+
+    def correct_answer_speech(self):           
+        phrases = ["Good job!", "Well done!", "Very good!", "Good answer!", "That's correct!"]
+        speech  = random.choice(phrases)
+        self.animated_speech_return_to_neutral(speech)
+
+
+    def incorrect_answer_speech(self):            
+        phrases = ["That's not quite right.", "Oh no. That's not right"]
+        speech  = random.choice(phrases)
+        self.animated_speech_return_to_neutral(speech)
+
     def genSpeech(self, sentence):
         try:
             # self.look()
@@ -105,33 +149,26 @@ class Gesture:
         elif sessionNum == 4:
             welcomePhrase = "Hello again! Today is our last session."
 
-        self.genSpeech(welcomePhrase)
+        id = self.genSpeech(welcomePhrase)
         self.look()
         self.wave()
         self.look()
+        self.speechDevice.wait(id, 0)
 
         if sessionNum == 1:
-            self.genSpeech("We will do some math problems together today.")
-            self.genSpeech("I will put the math problems on the tablet in front of you.")
-            id = self.genSpeech("Great! Let's get started!")
+            self.animatedSpeech.say("We will do some math problems together today.", self.configuration)
+            self.animatedSpeech.say("I will put the math problems on the tablet in front of you.", self.configuration)
+            id = self.animatedSpeech.say("Great! Let's get started!", self.configuration)
+            self.bring_to_sit()
         elif sessionNum == 2:
-            id = self.genSpeech("Let's get started!")
+            id = self.animatedSpeech.say("Let's get started on some more problems", self.configuration)
+            self.bring_to_sit()
         elif sessionNum == 3:
-            id = self.genSpeech("Let's try doing some more problems!")
+            id = self.animatedSpeech.say("Let's try doing some more problems!", self.configuration)
+            self.bring_to_sit()
         else:
             print "invalid sessionNum: no intro"
         # time.sleep(2)
-        return id
-
-    def intro(self):
-        self.bring_to_sit(1.0)
-        self.genSpeech("Hello! My name is Nao!")
-        self.genSpeech("I'm excited to meet you and work on some math problems together today!")
-        self.wave()
-        self.genSpeech("First, I'm going to teach you about some math concepts called order of operations.")
-        self.genSpeech("Then, we are going to practice what we learn by doing some problems!")
-        self.genSpeech("I will put the problems on the tablet for you.")
-        id = self.genSpeech("Lets work through these problems together and have some fun along the way too!")
         return id
 
     def move_head(self):
@@ -891,7 +928,7 @@ class Gesture:
 
     def releaseNao(self):
         try:
-            self.posture.goToPosture("SitRelax", 1.0)
+            self.posture.goToPosture("Sit", 1.0)
             self.motion.stiffnessInterpolation("Body",0.0,self.stiffness)
         except Exception, e:
             print "Error when sitting down nao and making nao unstiff: "+str(e)

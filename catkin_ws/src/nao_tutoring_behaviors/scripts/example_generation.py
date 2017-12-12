@@ -11,6 +11,13 @@ def get_box_steps(numerator, denominator):
 	while (numerator > math.pow(10, places)):
 		places += 1
 
+	first_numerator = numerator
+	for i in range (places-1):
+		first_numerator = first_numerator / 10
+
+	if (first_numerator < denominator):
+		places -= 1
+
 	spoken_text = ["Let's try to do this similar type of problem together! What is " + str(numerator) + " divided by " +str(denominator) + "?"]
 	answer = "The answer is " + str(numerator/denominator)
 	if (numerator % denominator !=0):
@@ -29,13 +36,17 @@ def get_box_steps(numerator, denominator):
 # the recursive function to build up the steps
 def rec_get_boxes(line, box, numerator, denominator, digits_left):
 
+	print "in rec boxes line: " + str(line) + " box " + str(box) + " numerator: " + str(numerator) + " denominator " + str(denominator) + "digits: " + str(digits_left)
+
 	spoken_text = []
 	tablet_steps = []
 
-	if (numerator == 0):
+	if (digits_left == 0): 	
+		print "done"			
 		return (spoken_text, tablet_steps)
 
 	step_numerator = numerator
+	print "step numerator: " + str(step_numerator)
 
 	for i in range (digits_left-1):
 		step_numerator = step_numerator / 10
@@ -72,11 +83,11 @@ def rec_get_boxes(line, box, numerator, denominator, digits_left):
 		step_boxes += step_boxes_part
 		step_boxes_part = ":" + str(line+1) + "-" + str(box+1) + "-" + str(step_remainder%10) 
 		step_boxes += step_boxes_part
-		next_box = 2
+		next_box = box + 1
 	else: 
 		step_boxes_part = ":" + str(line+1) + "-" + str(box) + "-" + str(step_remainder) 
 		step_boxes += step_boxes_part
-		next_box = 1
+		next_box = box 
 
 	# put answer in boxes
 	step_boxes_part = ":0-" + str(ans_box) + "-" + str(step_quotient)
@@ -105,11 +116,19 @@ def rec_get_boxes(line, box, numerator, denominator, digits_left):
 				pull_down_place += 1
 				pull_down = pull_down / 10
 
+		print "pull_down_place " + str(pull_down_place) + " pull_down: " + str(pull_down)
+
 		# remainder and rest is next numerator
-		next_numerator = int(math.pow(10, pull_down_place) * rest + math.pow(10, digits_left-1) * step_remainder)
-		print next_numerator, " is next_numerator"
+		next_numerator = int(math.pow(1, pull_down_place) * rest + math.pow(10, digits_left-1) * step_remainder)
+
+		next_step_numerator = next_numerator
+		for i in range (digits_left-2):
+			next_step_numerator = next_step_numerator / 10
+		print next_step_numerator, " is next_step_numerator"
+		if (next_step_numerator < 10):
+			next_box = box + 1
 		
-		step_text = "Now we can pull down " + str(pull_down) + " from the numerator. For the next step we have " + str(next_numerator)
+		step_text = "Now we can pull down " + str(pull_down) + " from the numerator. For the next step we have " + str(next_step_numerator)
 		if (step_numerator > 10):
 			step_boxes =  str(line+1) + "-" + str(box+2) + "-" + str(pull_down) 
 		else:
@@ -128,11 +147,13 @@ def rec_get_boxes(line, box, numerator, denominator, digits_left):
 		## END of Numerator
 		if (step_remainder != 0):
 			step_text = "The remainder is " + str(step_remainder)
-			step_boxes = "0-4-" + str(step_remainder) 
+			step_boxes = "0-" + str(ans_box +1) + "-R:0-" + str(ans_box+2) + "-" + str(step_remainder) 
 			tablet_steps.append(step_boxes)
 
 		else:
-			step_text = "We are left with zero."
+			step_text = "This is the end of the numerator."
+
+		print "digits left " + str(digits_left) + " this is the end"
 
 		spoken_text.append(step_text)
 
