@@ -3,6 +3,8 @@
 This repository contains code for the ROS nodes controlling the tutoring behavior study. 
 It is set up to run in Docker so that it may be run on any operating system, though the ROS code could be pulled out of the Docker container if being run on a Linux machiene.
 
+To see the final report and other deliverables associated with this senior project code, see [here](http://zoo.cs.yale.edu/classes/cs490/17-18a/zakrzewska.aleksandrakonstancja.akz4/) (Yale Only).
+
 # Running in Docker
 
 To run the docker container, run the command:
