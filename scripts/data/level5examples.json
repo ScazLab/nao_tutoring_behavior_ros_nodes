@@ -1,0 +1,55 @@
+ {
+	"Examples" : 
+	 [ {
+		"TabletSteps" : 
+		  ["", "1-1-4:2-1-3:0-1-1",
+		    "2-2-0",
+		    "3-1-2:3-2-8:0-2-7",
+		    "4-2-2",
+		    "4-3-8",
+		    "5-2-2:5-3-8:0-3-7",
+		    "6-3-0"],
+		"SpokenText" : ["Let's try to do this similar type of problem together! What is 708 divided by 4?", "4 goes into 7 once, so we subtract 4 from 7 and put 1 over 7 in the answer", "The result is 3. Then we pull down the 0 from the numerator", 
+		  "4 goes into 30 seven times, so now we subtract 28 from 30.", "The result is 2 and we pull down the 8 from the numerator", "Now, 4 times 7 is 28, so we can subtract 28", 
+		  "This gives us zero, and there are no more digits in the numerator, so we are done! The answer is one hundred seventy seven. Now try the problem you were working on before"],
+		"numerator" : 708,
+		"denominator" : 4,
+		"Answers" : "1-1-4:2-1-3:0-1-1:2-2-0:3-1-2:3-2-8:0-2-7:4-2-2:4-3-8:5-2-2:5-3-8:0-3-7:6-3-0"
+	 },
+
+	 {
+		"TabletSteps" : 
+		  ["", "1-1-4:2-1-3:0-1-1",
+		    "2-2-0",
+		    "3-1-2:3-2-8:0-2-7",
+		    "4-2-2",
+		    "4-3-8",
+		    "5-2-2:5-3-8:0-3-7",
+		    "6-3-0"],
+		"SpokenText" : ["Let's try to do this similar type of problem together! What is 708 divided by 4?", "4 goes into 7 once, so we subtract 4 from 7 and put 1 over 7 in the answer", "The result is 3. Then we pull down the 0 from the numerator", 
+		  "4 goes into 30 seven times, so now we subtract 28 from 30.", "The result is 2 and we pull down the 8 from the numerator", "Now, 4 times 7 is 28, so we can subtract 28", 
+		  "This gives us zero, and there are no more digits in the numerator, so we are done! The answer is one hundred seventy seven. Now try the problem you were working on before"],
+		"numerator" : 708,
+		"denominator" : 4,
+		"Answers" : "1-1-4:2-1-3:0-1-1:2-2-0:3-1-2:3-2-8:0-2-7:4-2-2:4-3-8:5-2-2:5-3-8:0-3-7:6-3-0"
+	 }
+	],
+
+	"Tutorials" : [
+		{
+		  "numerator" : 209,
+		  "denominator" : 17,
+		  "TabletSteps" : ["", "1-1-1:1-2-7:2-1-0:0-1-1:2-2-3:2-3-9",
+		    "3-1-0:3-2-3:3-3-4:0-2-2:4-2-0:4-3-5:0-3-5"],
+		  "Answers" : "1-1-1:1-2-7:2-1-0:0-1-1:2-2-3:2-3-9:3-1-0:3-2-3:3-3-4:0-2-2:4-2-0:4-3-5:0-3-5"
+		},
+		{
+		  "numerator" : 708,
+		  "denominator" : 4,
+		  "TabletSteps" : ["", "1-1-4:2-1-3:0-1-1:2-2-0",
+		    "3-1-2:3-2-8:0-2-7:4-2-2:4-3-8",
+		    "5-2-2:5-3-8:0-3-7:6-3-0"],
+		  "Answers" : "1-1-4:2-1-3:0-1-1:2-2-0:3-1-2:3-2-8:0-2-7:4-2-2:4-3-8:5-2-2:5-3-8:0-3-7:6-3-0"
+		}
+	]
+}

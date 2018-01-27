@@ -1,0 +1,67 @@
+[
+ {
+	"QuestionID" : 400,
+	"Denominator" : "6",
+	"Numerator" : "135", 
+	"Spoken Question" : "What is 135 divided by 6?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is twenty two remainder three.",
+	"Difficulty Level" : 4,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 401,
+	"Denominator" : "6",
+	"Numerator" : "114", 
+	"Spoken Question" : "What is 114 divided by 6?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is nineteen.",
+	"Difficulty Level" : 4,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 402,
+	"Denominator" : "8",
+	"Numerator" : "191", 
+	"Spoken Question" : "What is 191 divided by 8?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is twenty three remainder seven.",
+	"Difficulty Level" : 4,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 403,
+	"Denominator" : "9",
+	"Numerator" : "132", 
+	"Spoken Question" : "What is 132 divided by 9?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is fourteen remainder 6.",
+	"Difficulty Level" : 4,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 404,
+	"Denominator" : "14",
+	"Numerator" : "238", 
+	"Spoken Question" : "What is 238 divided by 14", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is thirty four.",
+	"Difficulty Level" : 4,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 405,
+	"Denominator" : "7",
+	"Numerator" : "116", 
+	"Spoken Question" : "What is 116 divided by 7?", 
+	"Answer" : 16,
+	"Spoken Answer" : "The correct answer is sixteen remainder four.",
+	"Difficulty Level" : 4,
+	"Max Time" : 60
+ }
+]

@@ -1,0 +1,67 @@
+[
+ {
+	"QuestionID" : 300,
+	"Denominator" : "7",
+	"Numerator" : "105", 
+	"Spoken Question" : "What is 105 divided by 7?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is fifteen.",
+	"Difficulty Level" : 3,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 301,
+	"Denominator" : "4",
+	"Numerator" : "52", 
+	"Spoken Question" : "What is 52 divided by 4?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is thirteen.",
+	"Difficulty Level" : 3,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 302,
+	"Denominator" : "6",
+	"Numerator" : "96", 
+	"Spoken Question" : "What is 96 divided by 6?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is sixteen.",
+	"Difficulty Level" : 3,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 303,
+	"Denominator" : "2",
+	"Numerator" : "72", 
+	"Spoken Question" : "What is 72 divided by 2?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is thirty six.",
+	"Difficulty Level" : 3,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 304,
+	"Denominator" : "5",
+	"Numerator" : "65", 
+	"Spoken Question" : "What is 65 divided by 5", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is thirteen.",
+	"Difficulty Level" : 3,
+	"Max Time" : 60
+ },
+
+ {
+	"QuestionID" : 305,
+	"Denominator" : "3",
+	"Numerator" : "78", 
+	"Spoken Question" : "What is 78 divided by 3?", 
+	"WordProblem" : "",
+	"Spoken Answer" : "The correct answer is twenty six.",
+	"Difficulty Level" : 3,
+	"Max Time" : 60
+ }
+]
