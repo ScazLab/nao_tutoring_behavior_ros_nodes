@@ -101,17 +101,21 @@ class TabletSession:
   # for normal messages indicating robot speech, send a message to the tablet indicating when the robot starts and stops speaking. Buttons on the tablet 
   # will be disabled during this time
   def robot_msg_callback(self, data):
-      rospy.loginfo(rospy.get_caller_id() + ':I heard %s', data)
+      rospy.loginfo("FROM ROBOT_MSG_CALLBACK IN NODE_TABLET: I heard %s ", data.data)
       if (data.data == "DONE"):
+        print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-END TO TABLET\n"
         returnMessage = "SPEAKING-END"
-        print "robot was done"
+        #print "robot was done"
       else:
+        print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-START TO TABLET\n"
         returnMessage = "SPEAKING-START"
+
+      time.sleep(3) #wait a bit before sending message
       self.conn.send(returnMessage+"\n") #send robot message back to tablet
 
   # handle messages from the model and send the appropriate messages to the tablet and robot to complete the indicated tutoring behavior
   def model_msg_callback(self, data):
-      rospy.loginfo(rospy.get_caller_id() + 'From Model:I heard %s', data)
+      rospy.loginfo(rospy.get_caller_id() + ' From Model: I heard %s ', data)
 
       if (self.state == lesson_state or self.state == break_state):         # this shouldn't happen, but if the model tells us to do something while we are already 
         print "ignoring message because we are doing something else now"    # doing another activity, ignore the message
@@ -247,27 +251,32 @@ class TabletSession:
 
 
   def robot_lesson_callback(self, data):
-    print "with " + str(self.example_step) + "in robot lesson callback, heard: "            # this handles messages within worked examples
-    print data                                                                              # when the robot stops talking, this indicates that we
+    print "with " + str(self.example_step) + " in robot lesson callback, heard: " + data.data           # this handles messages within worked examples
+    #print data                                                                              # when the robot stops talking, this indicates that we
                                                                                             # can move on to the next step of the example
     if (data.data == 'DONE'):
       # send next part of example -- do not enable buttons on tablet
       self.run_example()
     
-    else:
+    elif self.example_step==1: #aditi - changed from else to elif
+      print "FROM ROBOT_LESSON_CALLBACK IN NODE_TABLET, SENDING SPEAKING-START TO TABLET\n"
       returnMessage = "SPEAKING-START" 
       self.conn.send(returnMessage+"\n") #send robot message back to tablet
+    else:
+      print "FROM ROBOT_LESSON_CALLBACK IN NODE_TABLET: SHOULD BE IN THE MIDDLE OF THE WORKED EXAMPLE, NOT SENDING STPEAKING-START\n"
 
   def robot_inactivity_callback (self, data):
     print "robot says " + data.data
     if (data.data == 'DONE'):
       # enable board buttons by sending message
+      print "FROM ROBOT_INACTIVITY_CALLBACK IN NODE_TABLET, SENDING SPEAKING-END TO TABLET\n"
       self.conn.send("SPEAKING-END\n") #send robot message back to tablet
     
     else:
+      print "FROM ROBOT_INACTIVITY_CALLBACK IN NODE_TABLET, SENDING SPEAKING-START TO TABLET\n"
       self.conn.send("SPEAKING-START\n") #send robot message back to tablet
 
-  def run_easy_tutorial(self, status = ""):                           # to run an easy tutorial, we how balls in boxes and confirm if the
+  def run_easy_tutorial(self, status = ""):                           # to run an easy tutorial, we show balls in boxes and confirm if the
     msg_type = "SHOWTUTORIAL;"                                        # answers to the middle steps are correct. This function is called at
     tablet_msg = TabletMsg()
     tablet_msg.msgType = msg_type                                     # the beginning due to a model message but also in intermediate steps on 
@@ -290,6 +299,7 @@ class TabletSession:
         self.tutorial_step_attempts = 0
         tablet_msg.robotSpeech = "Here is the answer to this step"
         messageToTablet = "FILLSTRUCTURE;EASY;" + str(self.example_step) + "-" + str(self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]/self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"])
+        print "Sent message to tablet: " + messageToTablet
         self.conn.send(messageToTablet+"\n") #send model message back to tablet
         self.example_step += 1
 
@@ -399,23 +409,24 @@ class TabletSession:
           (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_example["numerator"], self.current_example["denominator"])
           self.current_example["SpokenText"] = robot_speech
           self.current_example["TabletSteps"] = tablet_steps
+          print "IN WORKED EXAMPLE, TABLET STEPS ARE: " + str(self.current_example["TabletSteps"])
           self.current_example["Answers"] = all_answers
 
           self.example_step += 1                                   # and then tell the tablet to display the structure for this problem
           msg_to_tablet = "SHOWSTRUCTURE;" + str(self.current_example["numerator"]) + "-" + str(self.current_example["denominator"]) 
           self.conn.send(msg_to_tablet + '\n')
-          print "sent" + msg_to_tablet
+          print "sent: " + msg_to_tablet
           self.tablet_lesson_pub.publish(tablet_msg)
 
         elif (self.example_step < len(self.current_example["TabletSteps"])):                          # in future steps, send the next step of the problem
           msg_to_tablet = "FILLSTRUCTURE;" + self.current_example["TabletSteps"][self.example_step]   # to the tablet and to the robot
           self.conn.send(msg_to_tablet + "\n")                                                        # to fill in the boxes and have the robot speak
-          print "sent" + msg_to_tablet                                                                # through the steps
+          print "sent: " + msg_to_tablet                                                                # through the steps
           self.example_step += 1
           self.tablet_lesson_pub.publish(tablet_msg)
 
         elif (self.example_step < len(self.current_example["SpokenText"])):
-          print "sending message only to robot " + tablet_msg.robotSpeech
+          print "sending message only to robot: " + tablet_msg.robotSpeech
           self.example_step += 1
           self.tablet_lesson_pub.publish(tablet_msg)
         else:
@@ -455,7 +466,8 @@ class TabletSession:
         try:
                 msg = self.conn.recv(BUFFER_SIZE)
                 if not msg: break
-                print "received msg:", msg
+                print "======================================================================="
+                print "received msg: ", msg
 
                 msgType = msg.split(";")[0]
                 print msgType
@@ -475,6 +487,8 @@ class TabletSession:
                   self.tablet_pub.publish(tablet_msg)
 
                 elif ('SHOWING-QUESTION' in msgType ):  # when the next question is shown, the tablet sends this message - this helps the robot 
+                  if len(msg.split(";")) > 1:
+                    tablet_msg.robotSpeech = msg.split(";")[1]
                   self.tablet_pub.publish(tablet_msg)   # know when to speak, and tells the model in case the model wants to time the answer
 
                 elif msgType == 'CA' or msgType == 'IA' and self.state != lesson_state and self.state != break_state:

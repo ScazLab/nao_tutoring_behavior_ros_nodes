@@ -4,7 +4,7 @@
 #
 # Usage: 
 #   docker build -t nao_tutoring_behavior .
-#   docker run -it -p 9090:9090 -v /~path_to_code_~/nao_tutoring_behavior/catkin_ws:/root/catkin_ws nao_tutoring_behavior 
+#   docker run -it -p 9090:9090 -v /Users/aditi/Documents/phd_research/comp-tutoring-project/ros_nodes/nao_tutoring_behavior_ros_nodes/catkin_ws:/root/catkin_ws nao_tutoring_behavior 
 #
 # To open another terminal from the same container:
 #   docker ps

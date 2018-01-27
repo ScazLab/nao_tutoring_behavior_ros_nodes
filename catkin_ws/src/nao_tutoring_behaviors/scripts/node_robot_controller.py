@@ -55,7 +55,7 @@ class RobotTutor:
 
 
     def tablet_lesson_msg_callback(self, data):                                    # this is what the robot says during an example
-        rospy.loginfo(rospy.get_caller_id() + "I heard in lesson%s", data.robotSpeech)      # I still have to make sure all the motions are
+        rospy.loginfo(rospy.get_caller_id() + "I heard in lesson %s ", data.robotSpeech)      # I still have to make sure all the motions are
                                                                                    # good @TODO so do not focus too much on what is happening here
         self.robot_lesson_pub.publish(data.robotSpeech)
 
@@ -80,7 +80,7 @@ class RobotTutor:
         self.robot_lesson_pub.publish("DONE")               # respond in lesson_pub rather than robot_speech_pub because the next step needs
 
     def tablet_inactivity_msg_callback(self, data):         # during an activity, the tablet tells the robot what to say through the inactivity message
-        rospy.loginfo(rospy.get_caller_id() + "Tablet in activity: %s", data.robotSpeech)    # to not clog up the model with irrelevant messages
+        rospy.loginfo(rospy.get_caller_id() + "Tablet in activity: %s ", data.robotSpeech)    # to not clog up the model with irrelevant messages
         self.robot_inactivity_pub.publish(data.robotSpeech) 
 
         if ('TUTORIAL' in data.msgType or 'TICTACTOE' in data.msgType or 'EXAMPLE' in data.msgType) :
@@ -103,12 +103,13 @@ class RobotTutor:
         self.robot_inactivity_pub.publish("DONE")
 
     def tablet_msg_callback(self, data):
-        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.robotSpeech)
+        rospy.loginfo(rospy.get_caller_id() + " I heard %s ", data.robotSpeech)
 
         if ('TUTORIAL' in data.msgType or 'TICTACTOE' in data.msgType or 'EXAMPLE' in data.msgType) :
             if ('DONE' in data.msgType):
                 self.in_activity = False
                 print "done with activity"
+                self.robot_speech_pub.publish("DONE") #aditi
 
             else:
                 print "setting true 3"
@@ -118,8 +119,9 @@ class RobotTutor:
             print "start wait"
             time.sleep(2)
 
-        self.robot_speech_pub.publish(data.robotSpeech) 
-        print "Nao says in tablet callback: " + data.robotSpeech
+        if data.robotSpeech!="": #aditi
+            self.robot_speech_pub.publish(data.robotSpeech) 
+            print "Nao says in tablet callback: " + data.robotSpeech
 
         if ("SHOWING-QUESTION" in data.msgType):       # as the robot receives the text for the question before the tablet displays it
             self.read_question()                       # it waits until it receives a message indicating that the message was shown before reading
@@ -130,47 +132,63 @@ class RobotTutor:
                 sessionNumber = data.otherInfo
                 self.goNao.session_intro(int(sessionNumber))            # at the start, give an intro speech
                 id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
+                if data.robotSpeech!="":
+                    self.robot_speech_pub.publish("DONE")
+                    print "Sent done"
 
             if (data.msgType == "IA"):   # respond to an incorrect answer
                 self.goNao.incorrect_answer_speech()
+                self.robot_speech_pub.publish("DONE")
+                print "Sent done"
             elif (data.msgType == "CA"):                # respond to a correct answer
                 nods = [self.goNao.juddNelson, self.goNao.juddNelson_left, self.goNao.nod, self.goNao.lookNod, self.goNao.nodSlow, self.goNao.smallFastNod,  ]
                 action  = random.choice(nods)
                 action()
                 self.in_activity = False
                 self.goNao.correct_answer_speech()
+                self.robot_speech_pub.publish("DONE")
+                print "Sent done"
             else:
                 id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
+                if data.robotSpeech!="":
+                    self.robot_speech_pub.publish("DONE")
+                    print "Sent done"
  
-
-        self.robot_speech_pub.publish("DONE")
-        print "Sent done"
+        else:
+            if data.robotSpeech!="":
+                self.robot_speech_pub.publish("DONE")
+                print "Sent done"
 
     def model_msg_callback(self, data):                             # respond to messages from the model
-        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data)
+        rospy.loginfo(rospy.get_caller_id() + " I heard %s ", data)
 
         if ("QUESTION" in data.nextStep and data.nextStep != "QUESTION-REPEAT"):
             self.current_question_text = data.robotSpeech;          # if we are going on to the next question, save the text of the question
             print "Setting question text"                           # to read only when it is shown
-            if (not self.in_activity):
-                self.goNao.move_on_to_next_speech()
+            if (self.goNao!= None):
+                if (not self.in_activity):
+                    self.goNao.move_on_to_next_speech()
 
         else:                                                       # otherwise, just say what the model told us to say
-            self.robot_speech_pub.publish(data.robotSpeech) 
+            if data.robotSpeech!="":
+                self.robot_speech_pub.publish(data.robotSpeech) 
             if (self.goNao!= None):
                 if (not self.in_activity):
                     id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 #self.goNao.speechDevice.wait(id, 0)
             print "Nao says: " + data.robotSpeech
-            self.robot_speech_pub.publish("DONE")
+            if data.robotSpeech!="":
+                self.robot_speech_pub.publish("DONE")
 
 
     def read_question(self):                                        # read the current question -- called when the tablet sends a message indicating
-        self.robot_speech_pub.publish(self.current_question_text)   # that is has been shown
+        if self.current_question_text!="":                          # that is has been shown
+            self.robot_speech_pub.publish(self.current_question_text)   
         if (self.goNao != None):
             id = self.goNao.animated_speech_return_to_neutral(self.current_question_text)
-        print "Nao says: " + self.current_question_text
-        self.robot_speech_pub.publish("DONE")
+        if self.current_question_text!="":
+            print "Nao says: " + self.current_question_text
+            self.robot_speech_pub.publish("DONE")
         self.in_activity = False
 
     def run(self):

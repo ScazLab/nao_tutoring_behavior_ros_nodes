@@ -23,7 +23,7 @@ from nao_tutoring_behaviors.msg import ControlMsg
 class TutoringModel:
 	def __init__(self):
 		self.current_question = 1
-		self.level = 2
+		self.level = 4
 
 		self.pid = -1
 		self.sessionNum = -1
@@ -166,7 +166,7 @@ class TutoringModel:
 		print "sent:" , control_message		
 
 	def tablet_msg_callback(self, data):										# respond to tablet messages by triggering the next behavior
-		rospy.loginfo(rospy.get_caller_id() + "From Tablet, I heard %s", data)	# the code here is just based off the question number, but
+		rospy.loginfo(rospy.get_caller_id() + " From Tablet, I heard %s ", data)	# the code here is just based off the question number, but
 																				# the real model can similarly respond to whether or not the 
 		if (data.msgType == 'CA'): # respond to correct answer					# answer was correct and call one of these functions to produce
 			self.next_question()												# a behavior
@@ -175,7 +175,8 @@ class TutoringModel:
 			if(self.tries >= 3):
 				self.next_question()
 			elif (data.questionNumOrPart % 4 == 0):
-				self.tic_tac_toe_break()
+				self.give_example()
+				#self.tic_tac_toe_break() #ADITI: commenting out for now
 			elif (data.questionNumOrPart % 4 == 1):
 				self.give_tutorial()
 			elif (data.questionNumOrPart % 4 == 2):
@@ -190,10 +191,12 @@ class TutoringModel:
 		elif("SHOWEXAMPLE" in data.msgType):										 
 			pass
 		elif(data.msgType == 'START'):
-			self.send_first_question()
+			print "MODEL RECEIVED START MESSAGE FROM TABLET_MSG --------------> doing nothing"
+			#self.send_first_question()
+			#self.next_question() #aditi - trying this instead since send_first_question does not exist
 
 	def robot_msg_callback(self, data):
-		rospy.loginfo(rospy.get_caller_id() + "From Robot, I heard %s", data)		 # this model does nothing with robot messages, but it could
+		rospy.loginfo(rospy.get_caller_id() + " From Robot, I heard %s ", data)		 # this model does nothing with robot messages, but it could
 																					 # do so in this function
 
 	def run(self):
