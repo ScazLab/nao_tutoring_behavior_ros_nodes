@@ -13,6 +13,7 @@ import socket
 import pdb
 import json
 import example_generation
+rospack = rospkg.RosPack()
 from std_msgs.msg import String
 from std_msgs.msg import Int32
 from nao_tutoring_behaviors.msg import TabletMsg
@@ -50,29 +51,29 @@ class TabletSession:
     self.lessons = []
 
     # open files with tutorials and questions. 
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level1examples.json', 'r') as example_file1:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level1examples.json", 'r') as example_file1:
       self.lessons.append(json.load(example_file1))
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level2examples.json', 'r') as example_file2:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level2examples.json", 'r') as example_file2:
       self.lessons.append(json.load(example_file2))
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level3examples.json', 'r') as example_file3:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level3examples.json", 'r') as example_file3:
       self.lessons.append(json.load(example_file3))
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level4examples.json', 'r') as example_file4:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level4examples.json", 'r') as example_file4:
       self.lessons.append(json.load(example_file4))
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level5examples.json', 'r') as example_file5:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5examples.json", 'r') as example_file5:
       self.lessons.append(json.load(example_file5))
 
     level_one_questions = []
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level1.json', 'r') as question_file_1:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level1.json", 'r') as question_file_1:
       level_one_questions = json.load(question_file_1)
     level_two_questions = []
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level2.json', 'r') as question_file_2:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level2.json", 'r') as question_file_2:
       level_two_questions = json.load(question_file_2)
     level_three_questions = []
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level3.json', 'r') as question_file_3:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level3.json", 'r') as question_file_3:
       level_three_questions = json.load(question_file_3)
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level4.json', 'r') as question_file_4:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level4.json", 'r') as question_file_4:
       level_four_questions = json.load(question_file_4)
-    with open('/root/catkin_ws/src/nao_tutoring_behaviors/scripts/data/level5.json', 'r') as question_file_5:
+    with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5.json", 'r') as question_file_5:
       level_five_questions = json.load(question_file_5)
     
     self.questions = [[], level_one_questions, level_two_questions, level_three_questions, level_four_questions, level_five_questions]
@@ -547,7 +548,8 @@ def tablet_message_connection():
     # TCP_IP = rospy.get_param("host")
     # TCP_PORT = rospy.get_param("port")
 
-    TCP_IP = socket.gethostname()
+    name = socket.gethostname()
+    TCP_IP = socket.gethostbyname(str(name)+".local")
     TCP_PORT = 9090
 
     session = TabletSession(TCP_IP, TCP_PORT)
