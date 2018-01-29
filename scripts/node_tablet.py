@@ -34,12 +34,13 @@ class TabletSession:
     self.pid = -1
     self.sessionNum = -1
     self.expGroup = -1
+    self.difficultyGroup = -1 #0 or 1 for easier or harder
     self.logFile = None
     self.state = 0
     self.conn = None
 
     # holds session data for 'this' user
-    self.current_question = 1
+    self.current_question = 0
     self.current_level = 1
     self.current_session = None  # will be initialized when START message parsed
     self.example_step = 0
@@ -76,7 +77,8 @@ class TabletSession:
     with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5.json", 'r') as question_file_5:
       level_five_questions = json.load(question_file_5)
     
-    self.questions = [[], level_one_questions, level_two_questions, level_three_questions, level_four_questions, level_five_questions]
+    self.questions = [[], level_one_questions, level_two_questions, level_three_questions]
+    self.harder_questions = [[], [], [], level_three_questions, level_four_questions, level_five_questions]
 
     # we cycle through the available examples and tutorials in each level
     self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
@@ -482,7 +484,13 @@ class TabletSession:
                 if msgType == 'START':                  # this message is received at the beginning. 
                   participantId = msg.split(";")[1]
                   sessionNumber = msg.split(";")[2]
-                  print "starting partipant: " + participantId + " on session number: " + sessionNumber
+                  expGroup = msg.split(";")[3]
+                  difficultyGroup = msg.split(";")[4]
+                  print "starting partipant: " + participantId + " on session number: " + sessionNumber + " with difficulty group: " + difficultyGroup
+                  tablet_msg.questionNumOrPart = int(difficultyGroup) #use this to figure out which questions to start with (based on diff. group)
+                  if int(difficultyGroup) == 1:
+                    self.questions = self.harder_questions
+                    self.current_level = 3
                   tablet_msg.otherInfo = sessionNumber
                   self.state = doing_question_state     
                   self.tablet_pub.publish(tablet_msg)
@@ -494,7 +502,9 @@ class TabletSession:
 
                 elif msgType == 'CA' or msgType == 'IA' and self.state != lesson_state and self.state != break_state:
                   # the tablet is reporting an answer
-                  # pass this information on by publishing a message -- the model will not give a tutoring behavior if it does not have this 
+                  # pass this information on by publishing a message -- the model will not give a tutoring behavior if it does not have this
+                  print "ATTEMPT IS: " + msg.split(";")[1]
+                  print "TIMING FOR ATTEMPT IS: " + msg.split(";")[2] 
                   tablet_msg.robotSpeech = ""
                   self.state = after_action_state
                   self.tablet_pub.publish(tablet_msg)

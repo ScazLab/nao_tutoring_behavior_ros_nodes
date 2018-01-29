@@ -23,12 +23,14 @@ from nao_tutoring_behaviors.msg import ControlMsg
 
 class TutoringModel:
 	def __init__(self):
-		self.current_question = 1
+		self.total_num_questions = 0
+		self.current_question = 0
 		self.level = 1
 
 		self.pid = -1
 		self.sessionNum = -1
 		self.expGroup = -1
+		self.difficultyGroup = -1
 		self.logFile = None
 
 		self.tries = 0
@@ -55,7 +57,8 @@ class TutoringModel:
 		with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5.json", 'r') as question_file_5:
 			level_five_questions = json.load(question_file_5)
 		
-		self.questions = [[], level_one_questions, level_two_questions, level_three_questions, level_four_questions, level_five_questions]
+		self.questions = [[], level_one_questions, level_two_questions, level_three_questions]
+		self.harder_questions = [[], [], [], level_three_questions, level_four_questions, level_five_questions]
 
 	def repeat_question(self):									# send this message to have the student try the same question again
 		control_message = ControlMsg()							# with no tutoring behavior
@@ -69,11 +72,22 @@ class TutoringModel:
 		
 
 	def next_question(self):									# indicates that the student should move on to the next question
+		self.total_num_questions += 1							# keeps track of the total number of questions student has seen 
 		self.tries = 0	 										# reset the number of attempts on the question										
-		self.current_question += 1 								# whether after a correct response or after enough incorrect attempts
+		self.level = self.total_num_questions % 3
+		if self.difficultyGroup==0:
+			self.level += 1
+		else:
+			self.level += 3
+		#self.current_question += 1 								# whether after a correct response or after enough incorrect attempts
 																# without a message, the tablet will not display a new question
-		if (self.current_question >= len(self.questions[self.level])):		
-			return self.question_next_level()
+		if self.total_num_questions % 3==0:
+			self.current_question += 1
+
+
+		if (self.current_question >= len(self.questions[self.level])):
+			print "this should only happen if student has really finished all questions"		
+			#return self.question_next_level()
 
 		control_message = ControlMsg()
 		control_message.nextStep = "QUESTION-NEXT"
@@ -101,7 +115,7 @@ class TutoringModel:
 		self.decisons_pub.publish(control_message)
 		print "sent:" , control_message
 
-	def send_next_question(self):
+	def send_next_question(self): # THIS IS NOT USED
 		control_message = ControlMsg()
 		control_message.nextStep = "QUESTION-NEXT"
 		control_message.questionNum = self.current_question
@@ -193,8 +207,17 @@ class TutoringModel:
 			pass
 		elif(data.msgType == 'START'):
 			print "MODEL RECEIVED START MESSAGE FROM TABLET_MSG --------------> doing nothing"
+			self.difficultyGroup = data.questionNumOrPart
+			if self.difficultyGroup == 1:
+				print "harder difficulty group"
+				self.questions = self.harder_questions
+				self.current_level = 3
+			else:
+				print "easier difficulty group"
 			#self.send_first_question()
 			#self.next_question() #aditi - trying this instead since send_first_question does not exist
+		elif(data.msgType == 'END'):
+			print "End of session - should try to save whatever info is needed to restart for next session"
 
 	def robot_msg_callback(self, data):
 		rospy.loginfo(rospy.get_caller_id() + " From Robot, I heard %s ", data)		 # this model does nothing with robot messages, but it could
