@@ -24,7 +24,7 @@ from nao_tutoring_behaviors.msg import ControlMsg
 class TutoringModel:
 	def __init__(self):
 		self.current_question = 1
-		self.level = 4
+		self.level = 1
 
 		self.pid = -1
 		self.sessionNum = -1
@@ -69,7 +69,7 @@ class TutoringModel:
 		
 
 	def next_question(self):									# indicates that the student should move on to the next question
-		self.tries = 0	 	# reset the number of attempts on the question										
+		self.tries = 0	 										# reset the number of attempts on the question										
 		self.current_question += 1 								# whether after a correct response or after enough incorrect attempts
 																# without a message, the tablet will not display a new question
 		if (self.current_question >= len(self.questions[self.level])):		

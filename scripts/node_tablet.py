@@ -549,7 +549,11 @@ def tablet_message_connection():
     # TCP_PORT = rospy.get_param("port")
 
     name = socket.gethostname()
-    TCP_IP = socket.gethostbyname(str(name)+".local")
+    TCP_IP = socket.gethostbyname(str(name))
+    print str(TCP_IP)
+    if str(TCP_IP).startswith('127'):
+      #need this for getting IP on linux machine
+      TCP_IP = socket.gethostbyname(str(name)+".local")
     TCP_PORT = 9090
 
     session = TabletSession(TCP_IP, TCP_PORT)
