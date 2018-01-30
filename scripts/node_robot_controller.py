@@ -119,22 +119,25 @@ class RobotTutor:
             print "start wait"
             time.sleep(2)
 
-        if data.robotSpeech!="": #aditi
-            self.robot_speech_pub.publish(data.robotSpeech) 
-            print "Nao says in tablet callback: " + data.robotSpeech
+        else:
+            if data.robotSpeech!="": #aditi
+                self.robot_speech_pub.publish(data.robotSpeech) 
+                print "Nao says in tablet callback: " + data.robotSpeech
 
+        
         if ("SHOWING-QUESTION" in data.msgType):       # as the robot receives the text for the question before the tablet displays it
             self.read_question()                       # it waits until it receives a message indicating that the message was shown before reading
 
         if (self.goNao!= None): 
             if (data.msgType == "START"):
-                # check other info for the session number
-                sessionNumber = data.otherInfo
-                self.goNao.session_intro(int(sessionNumber))            # at the start, give an intro speech
-                id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
-                if data.robotSpeech!="":
-                    self.robot_speech_pub.publish("DONE")
-                    print "Sent done"
+                # check questionType for the session number
+                sessionNumber = data.questionType
+                id = self.goNao.session_intro(int(sessionNumber))            # at the start, give an intro speech
+                #id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
+                #if data.robotSpeech!="":
+                self.goNao.speechDevice.wait(id, 0)
+                self.robot_speech_pub.publish("DONE")
+                print "Sent done after INTRO"
 
             if (data.msgType == "IA"):   # respond to an incorrect answer
                 self.goNao.incorrect_answer_speech()
@@ -143,11 +146,13 @@ class RobotTutor:
             elif (data.msgType == "CA"):                # respond to a correct answer
                 nods = [self.goNao.juddNelson, self.goNao.juddNelson_left, self.goNao.nod, self.goNao.lookNod, self.goNao.nodSlow, self.goNao.smallFastNod,  ]
                 action  = random.choice(nods)
-                action()
+                action() #aditi - what is this?
                 self.in_activity = False
                 self.goNao.correct_answer_speech()
                 self.robot_speech_pub.publish("DONE")
                 print "Sent done"
+            elif (data.msgType == "END"):
+                print "robot should say bye at the end of each session" #TODO: finish this block with appropriate nao behavior and speech
             else:
                 id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 if data.robotSpeech!="":
@@ -167,7 +172,8 @@ class RobotTutor:
             print "Setting question text"                           # to read only when it is shown
             if (self.goNao!= None):
                 if (not self.in_activity):
-                    self.goNao.move_on_to_next_speech()
+                    print "enabling next question button, but do not need to say anything"
+                    #self.goNao.move_on_to_next_speech()
 
         else:                                                       # otherwise, just say what the model told us to say
             if data.robotSpeech!="":
@@ -200,10 +206,7 @@ class RobotTutor:
                     if (self.goNao != None):
                         print "releaseNao"
                         self.goNao.releaseNao()
-                    self.logFile.flush()
-                    self.logFile.close()
-                    self.conn.close()
-                    self.store_session(self.current_session)
+                    
                     sys.exit(0)
             print "Shutting Down"
             if (self.goNao != None):

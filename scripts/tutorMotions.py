@@ -147,6 +147,8 @@ class Gesture:
         elif sessionNum == 3:
             welcomePhrase = "Nice to see you again!"
         elif sessionNum == 4:
+            welcomePhrase = "Hello! It is great to see you again!"
+        elif sessionNum == 5:
             welcomePhrase = "Hello again! Today is our last session."
 
         id = self.genSpeech(welcomePhrase)
