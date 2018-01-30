@@ -1,74 +1,74 @@
 [
- {
-	"QuestionID" : 0,
-	"Denominator" : "2",
-	"Numerator" : "24", 
-	"Spoken Question" : "What is 24 divided by 2?", 
-	"Answer" : 12,
-	"WordProblem" : "",
-	"Spoken Answer" : "The correct answer is twelve.",
-	"Difficulty Level" : 1,
-	"Max Time" : 60
- },
+    {
+        "QuestionID" : 0,
+        "Denominator" : "2",
+        "Numerator" : "24",
+        "Spoken Question" : "What is 24 divided by 2?",
+        "Answer" : "12",
+        "WordProblem" : false,
+        "Spoken Answer" : "The correct answer is twelve.",
+        "Difficulty Level" : 1,
+        "Max Time" : 60
+    },
 
- {
-	"QuestionID" : 1,
-	"Denominator" : "6",
-	"Numerator" : "54", 
-	"Spoken Question" : "What is 54 divided by 6?", 
-	"Answer" : 9,
-	"WordProblem" : "",
-	"Spoken Answer" : "The correct answer is nine.",
-	"Difficulty Level" : 1,
-	"Max Time" : 60
- },
+    {
+        "QuestionID" : 1,
+        "Denominator" : "6",
+        "Numerator" : "54",
+        "Spoken Question" : "What is 54 divided by 6?",
+        "Answer" : "9",
+        "WordProblem" : false,
+        "Spoken Answer" : "The correct answer is nine.",
+        "Difficulty Level" : 1,
+        "Max Time" : 60
+    },
 
- {
-	"QuestionID" : 2,
-	"Denominator" : "4",
-	"Numerator" : "20", 
-	"Spoken Question" : "Sally has 20 pieces of candy to give to 4 friends. How many pieces of candy can she give each of her friends?", 
-	"Answer" : 5,
-	"WordProblem" : "Sally has 20 pieces of candy to give to 4 friends. How many pieces of candy can she give each of her friends?",
-	"Spoken Answer" : "The correct answer is five.",
-	"Difficulty Level" : 1,
-	"Max Time" : 60
- },
+    {
+        "QuestionID" : 2,
+        "Denominator" : "4",
+        "Numerator" : "20",
+        "Spoken Question" : "Sally has 20 pieces of candy to give to 4 friends. How many pieces of candy can she give each of her friends?",
+        "Answer" : "5",
+        "WordProblem" : true,
+        "Spoken Answer" : "The correct answer is five.",
+        "Difficulty Level" : 1,
+        "Max Time" : 60
+    },
 
- {
-	"QuestionID" : 3,
-	"Denominator" : "7",
-	"Numerator" : "21", 
-	"Spoken Question" : "What is 21 divided by 7?", 
-	"Answer" : 3,
-	"WordProblem" : "",
-	"Spoken Answer" : "The correct answer is three.",
-	"Difficulty Level" : 1,
-	"Max Time" : 60
- },
+    {
+        "QuestionID" : 3,
+        "Denominator" : "7",
+        "Numerator" : "21",
+        "Spoken Question" : "What is 21 divided by 7?",
+        "Answer" : "3",
+        "WordProblem" : false,
+        "Spoken Answer" : "The correct answer is three.",
+        "Difficulty Level" : 1,
+        "Max Time" : 60
+    },
 
- {
-	"QuestionID" : 4,
-	"Denominator" : "4",
-	"Numerator" : "28", 
-	"Spoken Question" : "What is 28 divided by 4", 
-	"Answer" : 7,
-	"WordProblem" : "",
-	"Spoken Answer" : "The correct answer is seven.",
-	"Difficulty Level" : 1,
-	"Max Time" : 60
- },
+    {
+        "QuestionID" : 4,
+        "Denominator" : "4",
+        "Numerator" : "28",
+        "Spoken Question" : "What is 28 divided by 4",
+        "Answer" : "7",
+        "WordProblem" : false,
+        "Spoken Answer" : "The correct answer is seven.",
+        "Difficulty Level" : 1,
+        "Max Time" : 60
+    },
 
- {
-	"QuestionID" : 5,
-	"Denominator" : "8",
-	"Numerator" : "64", 
-	"Spoken Question" : "Mark wants to make 64 cookies. Each pan can fit 8 cookies. How many pans will he fill?", 
-	"Answer" : 8,
-	"WordProblem" : "Mark wants to make 64 cookies. Each pan can fit 8 cookies. How many pans will he fill?",
-	"Spoken Answer" : "The correct answer is eight.",
-	"Difficulty Level" : 1,
-	"Max Time" : 60
- }
+    {
+        "QuestionID" : 5,
+        "Denominator" : "8",
+        "Numerator" : "64",
+        "Spoken Question" : "Mark wants to make 64 cookies. Each pan can fit 8 cookies. How many pans will he fill?",
+        "Answer" : "8",
+        "WordProblem" : false,
+        "Spoken Answer" : "The correct answer is eight.",
+        "Difficulty Level" : 1,
+        "Max Time" : 60
+    }
 
 ]
