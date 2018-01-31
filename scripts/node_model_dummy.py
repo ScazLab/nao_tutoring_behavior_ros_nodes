@@ -265,6 +265,7 @@ class TutoringModel:
 
                     self.difficultyGroup = params["difficultyGroup"]
                     num_problems = params["numProblemsCompleted"]
+                    self.total_num_questions = num_problems #this tracks total number of q's over all sessions
                     #self.current_question = params["currentQuestionIndex"]
                     if self.difficultyGroup == 1:
                         self.questions = self.harder_questions
