@@ -10,7 +10,6 @@ import datetime
 import collections
 import socket
 import pdb
-import random
 from std_msgs.msg import String
 from nao_tutoring_behaviors.msg import TabletMsg
 from nao_tutoring_behaviors.msg import ControlMsg
