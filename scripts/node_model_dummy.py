@@ -12,6 +12,8 @@ import collections
 import socket
 import pdb
 import json
+import bisect
+import numpy as np
 rospack = rospkg.RosPack()
 from std_msgs.msg import String
 from std_msgs.msg import Int32
@@ -29,7 +31,7 @@ class TutoringModel:
 
         self.pid = -1
         self.sessionNum = -1
-        self.expGroup = -1
+        self.expGroup = -1  #0 is control (fixed policy), 1 is our experimental condition (pomdp policy)
         self.difficultyGroup = -1
         self.logFile = None
 
@@ -38,6 +40,8 @@ class TutoringModel:
         self.attempt_times = []
 
         self.inSession = False
+
+        #placeholder to hold pomdp model variables: current action, belief runner, etc --> initialize during START msg
 
         rospy.init_node('dummy_model', anonymous = True)
         self.decisons_pub = rospy.Publisher('model_decision_msg', ControlMsg, queue_size=10)
@@ -74,20 +78,34 @@ class TutoringModel:
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
         
+    def first_question(self):
+        self.total_num_questions += 1
+        self.tries = 0
+        control_message = ControlMsg()
+        control_message.nextStep = "QUESTION-FIRST"
+        control_message.questionNum = self.current_question
+        control_message.questionLevel = self.level
+        control_message.robotSpeech = self.questions[self.level][self.current_question]['Spoken Question']
 
+        print self.level, self.current_question, self.questions[self.level][self.current_question]
+        
+        self.decisons_pub.publish(control_message)
+        print "sent:" , control_message
+
+    
     def next_question(self):                                    # indicates that the student should move on to the next question
-        self.total_num_questions += 1                           # keeps track of the total number of questions student has seen 
+        #self.total_num_questions += 1                           # keeps track of the total number of questions student has seen 
         self.tries = 0                                          # reset the number of attempts on the question                                      
         self.level = self.total_num_questions % 3
         if self.difficultyGroup==0:
             self.level += 1
         else:
             self.level += 3
-        #self.current_question += 1                                 # whether after a correct response or after enough incorrect attempts
-                                                                # without a message, the tablet will not display a new question
+                                                                
         if self.total_num_questions % 3==0:
             self.current_question += 1
 
+        self.total_num_questions += 1
 
         if (self.current_question >= len(self.questions[self.level])):
             print "this should only happen if student has really finished all questions"        
@@ -97,15 +115,17 @@ class TutoringModel:
         control_message.nextStep = "QUESTION-NEXT"
         control_message.questionNum = self.current_question
         control_message.questionLevel = self.level
-        control_message.robotSpeech = self.questions[self.level][self.current_question]['Spoken Question']  # we give the text for this question 
-                                                                                                            # to the robot here
-        print self.level, self.current_question, self.questions[self.level][self.current_question]
+        if (self.current_question < len(self.questions[self.level])):
+            control_message.robotSpeech = self.questions[self.level][self.current_question]['Spoken Question']  # we give the text for this question  to the robot here
+        else:
+            control_message.robotSpeech = "" #no speech in case they finish all questions
+        #print self.level, self.current_question, self.questions[self.level][self.current_question]
         
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
-    def question_next_level(self):                              # indicates that the student should move to the next level
-        self.tries = 0                                          # so we increase the level number and go to question 1
+    def question_next_level(self): #aditi - no longer using         # indicates that the student should move to the next level
+        self.tries = 0                                              # so we increase the level number and go to question 1
         self.current_question = 1
         self.level += 1
 
@@ -183,7 +203,25 @@ class TutoringModel:
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message     
 
-    def form_observation(self, msgType, speed):
+
+    def get_mean_and_std_time(self):
+        num_attempts_in_list = len(self.attempt_times)
+        if num_attempts_in_list > 10:
+            cutoff = int(.1 * num_attempts_in_list)
+            print "cutoff is: " + str(cutoff)
+        else:
+            cutoff = 1
+
+        front_index = cutoff
+        back_index = num_attempts_in_list - cutoff
+        mean = np.mean(self.attempt_times[front_index:back_index])
+        std = np.std(self.attempt_times[front_index:back_index])
+        print "mean is: " + str(mean)
+        print "std is: " + str(std)
+        return mean, std     
+
+
+    def form_observation(self, msgType, timing):
         obs = ""
         if msgType == 'CA':
             obs += "R-"
@@ -193,26 +231,82 @@ class TutoringModel:
             print "should not be here"
             return ""
 
-        speed = float(speed) / 1000.0
-        print "speed in seconds is: " + str(speed)
+        timing = float(timing) / 60.0
+        print "timing in seconds is: " + str(timing)
 
-        if speed > 60:
+        if len(self.attempt_times) < 5:
             obs += "med"
+
         else:
-            obs += "slow"
+            mean, std = self.get_mean_and_std_time()
+
+            zscore = float((timing - mean)) / float(std)
+            print "zscore is: " + str(zscore)
+
+            if zscore > 2.0:
+                obs += "slow"
+            elif zscore < -1.0:
+                obs += "fast"
+            else:
+                obs += "med"
 
         return obs
 
+    def add_attempt_time(self, timing):
+        print "use this method to add timing to list of times"
+        timing = float(timing) / 60.0 #convert time in milliseconds to seconds
+        if len(self.attempt_times) < 5:
+            self.attempt_times.append(timing)
+            self.attempt_times = sorted(self.attempt_times)
+        else:
+            bisect.insort(self.attempt_times, timing)
+        print self.attempt_times    
 
-    def tablet_msg_callback(self, data):                                        # respond to tablet messages by triggering the next behavior
+    def log_transaction(self,msgType,questionID,otherInfo):
+        transaction = str(self.pid) + "," + str(self.expGroup) + "," + str(self.sessionNum) + ","
+        #transaction += str(datetime.datetime.now()) + ","
+        transaction += str(int(round(time.time() * 1000))) + ","
+        transaction += str(questionID) + ","
+        transaction += msgType + ","
+        transaction += str(otherInfo)  # put the level here for msgType==QUESTION
+        self.logFile.write(transaction+"\n")
+        self.logFile.flush()
+    
+    def tablet_msg_callback(self, data):                                            # respond to tablet messages by triggering the next behavior
         rospy.loginfo(rospy.get_caller_id() + " From Tablet, I heard %s ", data)    # the code here is just based off the question number, but
-                                                                                # the real model can similarly respond to whether or not the 
-        if (data.msgType == 'CA'): # respond to correct answer                  # answer was correct and call one of these functions to produce a behavior
+                                                                                    # the real model can similarly respond to whether or not the 
+                                                                                    # answer was correct and call one of these functions to produce a behavior
+        
+
+        #first check if it was a correct or incorrect answer --> do the same thing for both
+        #with any attempt, we need to get the obs then update the model. then we check msgType
+        #again and go to next question if correct and provide help-action from model if incorrect
+        if (data.msgType == 'CA' or data.msgType == 'IA'):
+            question_id = self.questions[self.level][self.current_question]['QuestionID']
+            attempt = data.otherInfo.split("-")[0]
+            timing = int(data.otherInfo.split("-")[1])
+            observation = self.form_observation(data.msgType, timing)
+            print "observation is: " + str(observation)
+            #placeholder to update belief using action that was just given and this observation
+            self.add_attempt_time(timing)
+
+
+        if (data.msgType == 'CA'): # respond to correct answer                  
+            self.log_transaction("CORRECT", question_id, attempt)
             self.next_question()                                                
+        
         elif (data.msgType == 'IA'): # respond to incorrect answer
+            self.log_transaction("INCORRECT", question_id, attempt)
             self.tries +=1
+
+            #placeholder to get action from model then execute that action
+            #check what the action is. then check condition.
+            #for control, log the model's action and execute action from fixed policy
+            #for experimental, log the model's action, then do it.
+            
             if(self.tries >= 3):
                 self.next_question()
+            
             elif (data.questionNumOrPart % 4 == 0):
                 self.give_example()
                 #self.tic_tac_toe_break() #ADITI: commenting out for now
@@ -228,9 +322,14 @@ class TutoringModel:
         elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):  # here I respond to the end of a game by going to the same
             self.repeat_question()                                                   # question, but you could return to the next one
         
-        elif("SHOWEXAMPLE" in data.msgType):                                         
+        elif ("SHOWEXAMPLE" in data.msgType):                                         
             pass
         
+        elif ('SHOWING-QUESTION' in data.msgType):
+            question_id = self.questions[self.level][self.current_question]['QuestionID']
+            self.log_transaction("QUESTION", question_id, self.level)
+            #placeholder to get current action on first attempt (should be no-action)
+
         elif(data.msgType == 'START'):
             print "MODEL RECEIVED START MESSAGE FROM TABLET_MSG --------------> setting up session"
             self.inSession = True
@@ -250,14 +349,16 @@ class TutoringModel:
 
             if self.sessionNum == 1: 
                 self.attempt_times = []
+                self.total_num_questions = 0
                 if self.difficultyGroup == 1:
                     print "harder difficulty group"
                     self.questions = self.harder_questions
-                    self.current_level = 3
+                    self.level = 3
                 else:
                     print "easier difficulty group"
+                    self.level = 1
             else:
-                self.attempt_times = [] #TODO: change this to initialize it from the param save file
+                self.attempt_times = []
                 saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
                 if os.path.exists(saveFileString):
                     with open(saveFileString) as param_file:
@@ -266,29 +367,38 @@ class TutoringModel:
                     self.difficultyGroup = params["difficultyGroup"]
                     num_problems = params["numProblemsCompleted"]
                     self.total_num_questions = num_problems #this tracks total number of q's over all sessions
+                    self.attempt_times = params["attemptTimes"]
                     #self.current_question = params["currentQuestionIndex"]
                     if self.difficultyGroup == 1:
                         self.questions = self.harder_questions
-                        self.current_level = (num_problems % 3) + 3
+                        self.level = (num_problems % 3) + 3
                     else:
-                        self.current_level = (num_problems % 3) + 1
+                        self.level = (num_problems % 3) + 1
                     self.current_question = num_problems / 3
                 else:
                     print "error: tried to open param save file when it didnt exist"
             #self.send_first_question()
+            time.sleep(3) #wait a bit before sending first question - do we need this?
+            self.first_question()
             #self.next_question() #aditi - trying this instead since send_first_question does not exist
+        
         elif(data.msgType == 'END'):
             self.inSession = False
             print "End of session - should try to save whatever info is needed to restart for next session"
             self.save_params()
+            self.log_transaction("END", -1, "")
+            self.logFile.flush()
+            self.logFile.close()
             
 
 
     def save_params(self):
         saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
         self.save_file = open(saveFileString, "w+")
+        num_problems_completed = self.total_num_questions - 1
         save_params = {"difficultyGroup": self.difficultyGroup,
-                       "numProblemsCompleted": self.total_num_questions}
+                       "numProblemsCompleted": num_problems_completed,
+                       "attemptTimes": self.attempt_times}
         param_string = json.dumps(save_params, indent=4)
         self.save_file.write(param_string)
         self.save_file.flush()
@@ -314,6 +424,12 @@ class TutoringModel:
                 #self.conn.close()
                 #self.store_session(self.current_session)
                 sys.exit(0)
+
+        if self.inSession:
+            print "saving params because app is done"
+            self.save_params()
+            self.logFile.flush()
+            self.logFile.close()
 
 
 

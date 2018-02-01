@@ -77,8 +77,8 @@ class TabletSession:
         with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5.json", 'r') as question_file_5:
             level_five_questions = json.load(question_file_5)
 
-        self.questions = [[], level_one_questions, level_two_questions, level_three_questions]
-        self.harder_questions = [[], [], [], level_three_questions, level_four_questions, level_five_questions]
+        self.questions = [[], level_one_questions, level_two_questions, level_three_questions, level_four_questions, level_five_questions]
+        #self.harder_questions = [[], [], [], level_three_questions, level_four_questions, level_five_questions]
 
         # we cycle through the available examples and tutorials in each level
         self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
@@ -118,65 +118,68 @@ class TabletSession:
 
     # handle messages from the model and send the appropriate messages to the tablet and robot to complete the indicated tutoring behavior
     def model_msg_callback(self, data):
-          rospy.loginfo(rospy.get_caller_id() + ' From Model: I heard %s ', data)
+        rospy.loginfo(rospy.get_caller_id() + ' From Model: I heard %s ', data)
 
-          if (self.state == lesson_state or self.state == break_state):         # this shouldn't happen, but if the model tells us to do something while we are already 
+        if (self.state == lesson_state or self.state == break_state):         # this shouldn't happen, but if the model tells us to do something while we are already 
             print "ignoring message because we are doing something else now"    # doing another activity, ignore the message
-          else:
+        else:
             self.current_question = data.questionNum #aditi - we need to get this info from the model
             self.current_level = data.questionLevel #aditi - we need to get this info from the model
 
             if (data.nextStep == "SHOWEXAMPLE"):                                # show an example based on the level of the question
-              if (self.current_level == 1):                                     # if in level one, show an easy example showing multiplication and division facts 
-                self.run_easy_example()
-              else:
-                self.example_step = 0                                           # in other levels, show an example of filling in the box structure
-                self.run_example()
+                if (self.current_level == 1):                                     # if in level one, show an easy example showing multiplication and division facts 
+                    self.run_easy_example()
+                else:
+                    self.example_step = 0                                           # in other levels, show an example of filling in the box structure
+                    self.run_example()
 
             elif ("QUESTION" in data.nextStep):                                 # send the next question number to the tablet -- it also has access to the JSON
-              if (self.current_level != data.questionLevel):                    # so only the level and question number need to be sent
-                self.tutorial_number = 0
-                self.example_number = 0
-              self.showing_hint = False
-              self.current_question = data.questionNum
-              self.current_level = data.questionLevel
-              self.example_step = -1
-              if ("REPEAT" not in data.nextStep):
-                messageToTablet = "QUESTION;" + str(self.current_level) + ";" + str(self.current_question)
-                self.conn.send(messageToTablet+"\n") #send model message back to tablet
-                print "Sent message to tablet: " + messageToTablet
+                if (self.current_level != data.questionLevel):                    # so only the level and question number need to be sent
+                    self.tutorial_number = 0
+                    self.example_number = 0
+                self.showing_hint = False
+                self.current_question = data.questionNum
+                self.current_level = data.questionLevel
+                self.example_step = -1
+                if ("REPEAT" not in data.nextStep):
+                    if "FIRST" in data.nextStep:
+                        messageToTablet = "QUESTIONFIRST;" + str(self.current_level) + ";" + str(self.current_question)
+                    else:
+                        messageToTablet = "QUESTION;" + str(self.current_level) + ";" + str(self.current_question)
+                    self.conn.send(messageToTablet+"\n") #send model message back to tablet
+                    print "Sent message to tablet: " + messageToTablet
 
             elif ("SHOWSTRUCTURE" in data.nextStep):                            # sending SHOWSTRUCTURE to the tablet will cause it to show the 
-              messageToTablet = "SHOWSTRUCTURE;"                                # boxes corresponding to the current question
-              self.conn.send(messageToTablet+"\n") 
-              print "Sent message to tablet: " + messageToTablet
-              (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
-              self.current_question_steps = tablet_steps
-              self.showing_hint = True
+                messageToTablet = "SHOWSTRUCTURE;"                                # boxes corresponding to the current question
+                self.conn.send(messageToTablet+"\n") 
+                print "Sent message to tablet: " + messageToTablet
+                (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
+                self.current_question_steps = tablet_steps
+                self.showing_hint = True
 
             elif ("THINKALOUD" in data.nextStep):                               # the tablet does nothing during thinkaloud so do not send message to tablet
-              return 
+                return 
 
             elif ("SHOWHINT" in data.nextStep):                                
-              self.show_hint()
+                self.show_hint()
 
             elif ("SHOWTUTORIAL" in data.nextStep):                             # show an interactive tutorial depending on the level
-              self.example_step = 0
-              self.tutorial_step_attempts = 0
-              if (self.current_level == 1):                                     # in level one, show balls in boxes to represent the division fact
-                self.run_easy_tutorial()
-              else:                                                             # in other levels, show a box structure and provide feedback
-                self.run_boxes_tutorial("")
+                self.example_step = 0
+                self.tutorial_step_attempts = 0
+                if (self.current_level == 1):                                     # in level one, show balls in boxes to represent the division fact
+                    self.run_easy_tutorial()
+                else:                                                             # in other levels, show a box structure and provide feedback
+                    self.run_boxes_tutorial("")
 
             elif ("TICTACTOE" in data.nextStep):
-              messageToTablet = data.nextStep 
-              self.conn.send(messageToTablet+"\n") 
-              print "Sent message to tablet: " + messageToTablet
+                messageToTablet = data.nextStep 
+                self.conn.send(messageToTablet+"\n") 
+                print "Sent message to tablet: " + messageToTablet
 
             else:                                                               
-              messageToTablet = data.nextStep 
-              self.conn.send(messageToTablet+"\n") #send model message back to tablet
-              print "Sent message to tablet: " + messageToTablet
+                messageToTablet = data.nextStep 
+                self.conn.send(messageToTablet+"\n") #send model message back to tablet
+                print "Sent message to tablet: " + messageToTablet
 
     def show_hint(self):
           # hint for harder levels is the structure. If the structure is already showing (due to a previous hint for example), then a step 
@@ -188,6 +191,7 @@ class TabletSession:
 
           if (self.current_level > 1):
             if (self.showing_hint == False):
+              print "current level and question are: " + str(self.current_level) + ", " + str(self.current_question)
               num = int(self.questions[self.current_level][self.current_question]["Numerator"])
               den = int(self.questions[self.current_level][self.current_question]["Denominator"])
               print num, den
@@ -485,32 +489,35 @@ class TabletSession:
                 tablet_msg.otherInfo = ""
 
                 if msgType == 'START':                  # this message is received at the beginning. 
-                    participantId = msg.split(";")[1]
-                    sessionNumber = msg.split(";")[2]
-                    expGroup = msg.split(";")[3]
-                    difficultyGroup = msg.split(";")[4]
-                    print "starting partipant: " + participantId + " on session number: " + sessionNumber + " with difficulty group: " + difficultyGroup
-                    tablet_msg.questionNumOrPart = int(participantId) #use this to figure out which questions to start with (based on diff. group)
-                    tablet_msg.questionType = sessionNumber
-                    tablet_msg.robotSpeech = expGroup
-                    tablet_msg.otherInfo = difficultyGroup 
-                    if str(difficultyGroup) == '1':
-                        self.questions = self.harder_questions
-                        self.current_level = 3
+                    self.pid = int(msg.split(";")[1])
+                    self.sessionNum = int(msg.split(";")[2])
+                    self.expGroup = int(msg.split(";")[3])
+                    self.difficultyGroup = int(msg.split(";")[4])
+                    print "starting partipant: " + str(pid) + " on session number: " + str(self.sessionNum)
+                    tablet_msg.questionNumOrPart = self.pid 
+                    tablet_msg.questionType = self.sessionNum
+                    tablet_msg.robotSpeech = self.expGroup
+                    tablet_msg.otherInfo = self.difficultyGroup 
+                    #if str(difficultyGroup) == '1':
+                        #self.questions = self.harder_questions
+                        #self.current_level = 3
                     self.state = doing_question_state     
                     self.tablet_pub.publish(tablet_msg)
 
                 elif ('SHOWING-QUESTION' in msgType ):  # when the next question is shown, the tablet sends this message - this helps the robot 
-                    if len(msg.split(";")) > 1:
-                        tablet_msg.robotSpeech = msg.split(";")[1]
+                    #if len(msg.split(";")) > 1:
+                    #    tablet_msg.robotSpeech = msg.split(";")[1]
                     self.tablet_pub.publish(tablet_msg)   # know when to speak, and tells the model in case the model wants to time the answer
 
                 elif msgType == 'CA' or msgType == 'IA' and self.state != lesson_state and self.state != break_state:
                     # the tablet is reporting an answer
                     # pass this information on by publishing a message -- the model will not give a tutoring behavior if it does not have this
-                    print "ATTEMPT IS: " + msg.split(";")[1]
-                    print "TIMING FOR ATTEMPT IS: " + msg.split(";")[2] 
+                    attempt = msg.split(";")[1]
+                    timing = msg.split(";")[2]
+                    print "ATTEMPT IS: " + attempt
+                    print "TIMING FOR ATTEMPT IS: " + timing
                     tablet_msg.robotSpeech = ""
+                    tablet_msg.otherInfo = attempt+"-"+timing
                     self.state = after_action_state
                     self.tablet_pub.publish(tablet_msg)
 
