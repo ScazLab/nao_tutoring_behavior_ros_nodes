@@ -1,74 +1,352 @@
 [
-    {
-        "QuestionID" : 0,
-        "Denominator" : "2",
-        "Numerator" : "24",
-        "Spoken Question" : "What is 24 divided by 2?",
-        "Answer" : "12",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is twelve.",
-        "Difficulty Level" : 1,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 1,
-        "Denominator" : "6",
-        "Numerator" : "54",
-        "Spoken Question" : "What is 54 divided by 6?",
-        "Answer" : "9",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is nine.",
-        "Difficulty Level" : 1,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 2,
-        "Denominator" : "4",
-        "Numerator" : "20",
-        "Spoken Question" : "Sally has 20 pieces of candy to give to 4 friends. How many pieces of candy can she give each of her friends?",
-        "Answer" : "5",
-        "WordProblem" : true,
-        "Spoken Answer" : "The correct answer is five.",
-        "Difficulty Level" : 1,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 3,
-        "Denominator" : "7",
-        "Numerator" : "21",
-        "Spoken Question" : "What is 21 divided by 7?",
-        "Answer" : "3",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is three.",
-        "Difficulty Level" : 1,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 4,
-        "Denominator" : "4",
-        "Numerator" : "28",
-        "Spoken Question" : "What is 28 divided by 4",
-        "Answer" : "7",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is seven.",
-        "Difficulty Level" : 1,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 5,
-        "Denominator" : "8",
-        "Numerator" : "64",
-        "Spoken Question" : "Mark wants to make 64 cookies. Each pan can fit 8 cookies. How many pans will he fill?",
-        "Answer" : "8",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is eight.",
-        "Difficulty Level" : 1,
-        "Max Time" : 60
-    }
-
+  {
+    "QuestionID": 100, 
+    "Spoken Question": "What is 12 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "3", 
+    "Denominator": "4", 
+    "Numerator": "12", 
+    "Spoken Answer": "The correct answer is 3."
+  }, 
+  {
+    "QuestionID": 101, 
+    "Spoken Question": "There are 55 horses on a farm. The farmers divide the horses evenly into 5 groups. How many horses are in each group?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "11", 
+    "Denominator": "5", 
+    "Numerator": "55", 
+    "Spoken Answer": "The correct answer is 11."
+  }, 
+  {
+    "QuestionID": 102, 
+    "Spoken Question": "What is 35 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "5", 
+    "Denominator": "7", 
+    "Numerator": "35", 
+    "Spoken Answer": "The correct answer is 5."
+  }, 
+  {
+    "QuestionID": 103, 
+    "Spoken Question": "What is 9 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "3", 
+    "Denominator": "3", 
+    "Numerator": "9", 
+    "Spoken Answer": "The correct answer is 3."
+  }, 
+  {
+    "QuestionID": 104, 
+    "Spoken Question": "What is 22 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "11", 
+    "Denominator": "2", 
+    "Numerator": "22", 
+    "Spoken Answer": "The correct answer is 11."
+  }, 
+  {
+    "QuestionID": 105, 
+    "Spoken Question": "What is 77 divided by 11?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "7", 
+    "Denominator": "11", 
+    "Numerator": "77", 
+    "Spoken Answer": "The correct answer is 7."
+  }, 
+  {
+    "QuestionID": 106, 
+    "Spoken Question": "Lily picked 45 flowers and divided them equally to give to her 9 friends. How many flowers did each friend get?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "5", 
+    "Denominator": "9", 
+    "Numerator": "45", 
+    "Spoken Answer": "The correct answer is 5."
+  }, 
+  {
+    "QuestionID": 107, 
+    "Spoken Question": "What is 20 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "4", 
+    "Denominator": "5", 
+    "Numerator": "20", 
+    "Spoken Answer": "The correct answer is 4."
+  }, 
+  {
+    "QuestionID": 108, 
+    "Spoken Question": "What is 70 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "10", 
+    "Denominator": "7", 
+    "Numerator": "70", 
+    "Spoken Answer": "The correct answer is 10."
+  }, 
+  {
+    "QuestionID": 109, 
+    "Spoken Question": "What is 12 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "6", 
+    "Denominator": "2", 
+    "Numerator": "12", 
+    "Spoken Answer": "The correct answer is 6."
+  }, 
+  {
+    "QuestionID": 110, 
+    "Spoken Question": "What is 44 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "11", 
+    "Denominator": "4", 
+    "Numerator": "44", 
+    "Spoken Answer": "The correct answer is 11."
+  }, 
+  {
+    "QuestionID": 111, 
+    "Spoken Question": "Lamont picked 21 carrots from his garden and divided them equally into 3 bunches to give to his neighbors. How many carrots are in each bunch?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "7", 
+    "Denominator": "3", 
+    "Numerator": "21", 
+    "Spoken Answer": "The correct answer is 7."
+  }, 
+  {
+    "QuestionID": 112, 
+    "Spoken Question": "What is 40 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "8", 
+    "Denominator": "5", 
+    "Numerator": "40", 
+    "Spoken Answer": "The correct answer is 8."
+  }, 
+  {
+    "QuestionID": 113, 
+    "Spoken Question": "What is 28 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "4", 
+    "Denominator": "7", 
+    "Numerator": "28", 
+    "Spoken Answer": "The correct answer is 4."
+  }, 
+  {
+    "QuestionID": 114, 
+    "Spoken Question": "What is 6 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "2", 
+    "Denominator": "3", 
+    "Numerator": "6", 
+    "Spoken Answer": "The correct answer is 2."
+  }, 
+  {
+    "QuestionID": 115, 
+    "Spoken Question": "What is 36 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "4", 
+    "Denominator": "9", 
+    "Numerator": "36", 
+    "Spoken Answer": "The correct answer is 4."
+  }, 
+  {
+    "QuestionID": 116, 
+    "Spoken Question": "Ying gets 27 new baseball cards. If the cards come in packs of 9, how many packs of cards did Ying get?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "3", 
+    "Denominator": "9", 
+    "Numerator": "27", 
+    "Spoken Answer": "The correct answer is 3."
+  }, 
+  {
+    "QuestionID": 117, 
+    "Spoken Question": "What is 99 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "11", 
+    "Denominator": "9", 
+    "Numerator": "99", 
+    "Spoken Answer": "The correct answer is 11."
+  }, 
+  {
+    "QuestionID": 118, 
+    "Spoken Question": "What is 18 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "3", 
+    "Denominator": "6", 
+    "Numerator": "18", 
+    "Spoken Answer": "The correct answer is 3."
+  }, 
+  {
+    "QuestionID": 119, 
+    "Spoken Question": "What is 50 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "10", 
+    "Denominator": "5", 
+    "Numerator": "50", 
+    "Spoken Answer": "The correct answer is 10."
+  }, 
+  {
+    "QuestionID": 120, 
+    "Spoken Question": "What is 10 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "5", 
+    "Denominator": "2", 
+    "Numerator": "10", 
+    "Spoken Answer": "The correct answer is 5."
+  }, 
+  {
+    "QuestionID": 121, 
+    "Spoken Question": "You are reading a book with 60 pages. If you want to read the same number of pages each night, how many would you have to read each night to finish in 10 days?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "6", 
+    "Denominator": "10", 
+    "Numerator": "60", 
+    "Spoken Answer": "The correct answer is 6."
+  }, 
+  {
+    "QuestionID": 122, 
+    "Spoken Question": "What is 63 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "7", 
+    "Denominator": "9", 
+    "Numerator": "63", 
+    "Spoken Answer": "The correct answer is 7."
+  }, 
+  {
+    "QuestionID": 123, 
+    "Spoken Question": "What is 40 divided by 10?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "4", 
+    "Denominator": "10", 
+    "Numerator": "40", 
+    "Spoken Answer": "The correct answer is 4."
+  }, 
+  {
+    "QuestionID": 124, 
+    "Spoken Question": "What is 48 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "8", 
+    "Denominator": "6", 
+    "Numerator": "48", 
+    "Spoken Answer": "The correct answer is 8."
+  }, 
+  {
+    "QuestionID": 125, 
+    "Spoken Question": "What is 54 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "6", 
+    "Denominator": "9", 
+    "Numerator": "54", 
+    "Spoken Answer": "The correct answer is 6."
+  }, 
+  {
+    "QuestionID": 126, 
+    "Spoken Question": "A cereal box holds 15 cups of cereal. Each serving is 3 cups. How many servings are in the whole box?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "5", 
+    "Denominator": "3", 
+    "Numerator": "15", 
+    "Spoken Answer": "The correct answer is 5."
+  }, 
+  {
+    "QuestionID": 127, 
+    "Spoken Question": "What is 50 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "10", 
+    "Denominator": "5", 
+    "Numerator": "50", 
+    "Spoken Answer": "The correct answer is 10."
+  }, 
+  {
+    "QuestionID": 128, 
+    "Spoken Question": "What is 25 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "5", 
+    "Denominator": "5", 
+    "Numerator": "25", 
+    "Spoken Answer": "The correct answer is 5."
+  }, 
+  {
+    "QuestionID": 129, 
+    "Spoken Question": "What is 24 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "8", 
+    "Denominator": "3", 
+    "Numerator": "24", 
+    "Spoken Answer": "The correct answer is 8."
+  }, 
+  {
+    "QuestionID": 130, 
+    "Spoken Question": "What is 18 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "2", 
+    "Denominator": "9", 
+    "Numerator": "18", 
+    "Spoken Answer": "The correct answer is 2."
+  }, 
+  {
+    "QuestionID": 131, 
+    "Spoken Question": "A box of books weighs 64 pounds. Each books weighs 8 pounds. How many books are there in the box?", 
+    "WordProblem": true, 
+    "Difficulty Level": 1, 
+    "Answer": "8", 
+    "Denominator": "8", 
+    "Numerator": "64", 
+    "Spoken Answer": "The correct answer is 8."
+  }, 
+  {
+    "QuestionID": 132, 
+    "Spoken Question": "What is 36 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "6", 
+    "Denominator": "6", 
+    "Numerator": "36", 
+    "Spoken Answer": "The correct answer is 6."
+  }, 
+  {
+    "QuestionID": 133, 
+    "Spoken Question": "What is 72 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "8", 
+    "Denominator": "9", 
+    "Numerator": "72", 
+    "Spoken Answer": "The correct answer is 8."
+  }, 
+  {
+    "QuestionID": 134, 
+    "Spoken Question": "What is 24 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 1, 
+    "Answer": "6", 
+    "Denominator": "4", 
+    "Numerator": "24", 
+    "Spoken Answer": "The correct answer is 6."
+  }
 ]

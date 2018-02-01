@@ -300,24 +300,24 @@ class TutoringModel:
             self.tries +=1
 
             #placeholder to get action from model then execute that action
-            #check what the action is. then check condition.
+            #check what the action is. then check experimental condition.
             #for control, log the model's action and execute action from fixed policy
             #for experimental, log the model's action, then do it.
             
             if(self.tries >= 3):
                 self.next_question()
             
-            elif (data.questionNumOrPart % 4 == 0):
+            else:
                 self.give_example()
                 #self.tic_tac_toe_break() #ADITI: commenting out for now
-            elif (data.questionNumOrPart % 4 == 1):
-                self.give_tutorial()
-            elif (data.questionNumOrPart % 4 == 2):
-                self.give_hint()
-            elif (data.questionNumOrPart % 4 == 3):
-                self.give_example()
-            else:
-                self.give_think_aloud()
+            #elif (data.questionNumOrPart % 4 == 1):
+            #    self.give_tutorial()
+            #elif (data.questionNumOrPart % 4 == 2):
+            #    self.give_hint()
+            #elif (data.questionNumOrPart % 4 == 3):
+            #    self.give_example()
+            #else:
+            #    self.give_think_aloud()
 
         elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):  # here I respond to the end of a game by going to the same
             self.repeat_question()                                                   # question, but you could return to the next one

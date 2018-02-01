@@ -19,7 +19,7 @@ from std_msgs.msg import Int32
 from nao_tutoring_behaviors.msg import TabletMsg
 from nao_tutoring_behaviors.msg import ControlMsg
 
-level_one_hints = ["Remember that division is the opposite of multiplication.", "What number times the denominator equals the numerator?"]
+level_one_hints = ["Remember that division is the opposite of multiplication.", "What number times the smaller number equals the bigger number?"]
 
 doing_question_state = 1
 break_state = 2
@@ -126,7 +126,7 @@ class TabletSession:
             self.current_question = data.questionNum #aditi - we need to get this info from the model
             self.current_level = data.questionLevel #aditi - we need to get this info from the model
 
-            if (data.nextStep == "SHOWEXAMPLE"):                                # show an example based on the level of the question
+            if (data.nextStep == "SHOWEXAMPLE"):                                  # show an example based on the level of the question
                 if (self.current_level == 1):                                     # if in level one, show an easy example showing multiplication and division facts 
                     self.run_easy_example()
                 else:
@@ -208,7 +208,7 @@ class TabletSession:
               msg_to_tablet = "FILLSTRUCTURE;" + self.current_question_steps[self.example_step]  # tablet a message to fill in the boxes for them
               self.example_step += 1
               tablet_msg.robotSpeech = "Let me fill in a couple boxes for you. You can continue the problem from there."
-              self.conn.send(msg_to_tablet + "\n")                                                 # be showing the easy tutorial picture by substituting run_easy_tutorial() here
+              self.conn.send(msg_to_tablet + "\n")                                                
               print "sent: ", msg_to_tablet
           else:
             if (self.showing_hint):
@@ -217,8 +217,8 @@ class TabletSession:
               hint = level_one_hints[0]
               self.showing_hint = True
             tablet_msg.robotSpeech = hint
-            msg_to_tablet = "SHOWTEXTHINT;" + hint + ";"   # hint for level one is just text right now, but could also
-            self.conn.send(msg_to_tablet + "\n")                                                 # be showing the easy tutorial picture by substituting run_easy_tutorial() here
+            msg_to_tablet = "SHOWTEXTHINT;" + hint + ";"                                        # hint for level one is just text right now, but could also
+            self.conn.send(msg_to_tablet + "\n")                                                # be showing the easy tutorial picture by substituting run_easy_tutorial() here
             print "sent: ", msg_to_tablet
           self.tablet_inactivity_pub.publish(tablet_msg)
 

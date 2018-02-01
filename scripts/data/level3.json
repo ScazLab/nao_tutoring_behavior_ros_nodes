@@ -1,73 +1,352 @@
 [
-    {
-        "QuestionID" : 300,
-        "Denominator" : "7",
-        "Numerator" : "105",
-        "Answer" : "15",
-        "Spoken Question" : "What is 105 divided by 7?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is fifteen.",
-        "Difficulty Level" : 3,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 301,
-        "Denominator" : "4",
-        "Numerator" : "52",
-        "Answer" : "13",
-        "Spoken Question" : "What is 52 divided by 4?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is thirteen.",
-        "Difficulty Level" : 3,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 302,
-        "Denominator" : "6",
-        "Numerator" : "96",
-        "Answer" : "16",
-        "Spoken Question" : "What is 96 divided by 6?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is sixteen.",
-        "Difficulty Level" : 3,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 303,
-        "Denominator" : "2",
-        "Numerator" : "72",
-        "Answer" : "36",
-        "Spoken Question" : "What is 72 divided by 2?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is thirty six.",
-        "Difficulty Level" : 3,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 304,
-        "Denominator" : "5",
-        "Numerator" : "65",
-        "Answer" : "13",
-        "Spoken Question" : "What is 65 divided by 5",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is thirteen.",
-        "Difficulty Level" : 3,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 305,
-        "Denominator" : "3",
-        "Numerator" : "78",
-        "Answer" : "26",
-        "Spoken Question" : "What is 78 divided by 3?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is twenty six.",
-        "Difficulty Level" : 3,
-        "Max Time" : 60
-    }
+  {
+    "QuestionID": 300, 
+    "Spoken Question": "What is 78 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "13", 
+    "Denominator": "6", 
+    "Numerator": "78", 
+    "Spoken Answer": "The correct answer is 13."
+  }, 
+  {
+    "QuestionID": 301, 
+    "Spoken Question": "What is 672 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "96", 
+    "Denominator": "7", 
+    "Numerator": "672", 
+    "Spoken Answer": "The correct answer is 96."
+  }, 
+  {
+    "QuestionID": 302, 
+    "Spoken Question": "What is 45 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "15", 
+    "Denominator": "3", 
+    "Numerator": "45", 
+    "Spoken Answer": "The correct answer is 15."
+  }, 
+  {
+    "QuestionID": 303, 
+    "Spoken Question": "A family needs to buy 96 rolls of paper towels. If each package has 8 rolls, how many packages should the family buy?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "12", 
+    "Denominator": "8", 
+    "Numerator": "96", 
+    "Spoken Answer": "The correct answer is 12."
+  }, 
+  {
+    "QuestionID": 304, 
+    "Spoken Question": "What is 141 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "47", 
+    "Denominator": "3", 
+    "Numerator": "141", 
+    "Spoken Answer": "The correct answer is 47."
+  }, 
+  {
+    "QuestionID": 305, 
+    "Spoken Question": "What is 692 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "173", 
+    "Denominator": "4", 
+    "Numerator": "692", 
+    "Spoken Answer": "The correct answer is 173."
+  }, 
+  {
+    "QuestionID": 306, 
+    "Spoken Question": "What is 72 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "18", 
+    "Denominator": "4", 
+    "Numerator": "72", 
+    "Spoken Answer": "The correct answer is 18."
+  }, 
+  {
+    "QuestionID": 307, 
+    "Spoken Question": "What is 600 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "75", 
+    "Denominator": "8", 
+    "Numerator": "600", 
+    "Spoken Answer": "The correct answer is 75."
+  }, 
+  {
+    "QuestionID": 308, 
+    "Spoken Question": "David, Jessica, and Nancy have 87 crayons all together. If the crayons are divided equally between the 3 friends, how many will each person get?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "29", 
+    "Denominator": "3", 
+    "Numerator": "87", 
+    "Spoken Answer": "The correct answer is 29."
+  }, 
+  {
+    "QuestionID": 309, 
+    "Spoken Question": "What is 136 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "17", 
+    "Denominator": "8", 
+    "Numerator": "136", 
+    "Spoken Answer": "The correct answer is 17."
+  }, 
+  {
+    "QuestionID": 310, 
+    "Spoken Question": "What is 56 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "14", 
+    "Denominator": "4", 
+    "Numerator": "56", 
+    "Spoken Answer": "The correct answer is 14."
+  }, 
+  {
+    "QuestionID": 311, 
+    "Spoken Question": "What is 597 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "199", 
+    "Denominator": "3", 
+    "Numerator": "597", 
+    "Spoken Answer": "The correct answer is 199."
+  }, 
+  {
+    "QuestionID": 312, 
+    "Spoken Question": "What is 51 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "17", 
+    "Denominator": "3", 
+    "Numerator": "51", 
+    "Spoken Answer": "The correct answer is 17."
+  }, 
+  {
+    "QuestionID": 313, 
+    "Spoken Question": "Dominos Pizza sold 420 pizzas in 3 days. If the same number of pizzas was sold each day, how many pizzas per day did Dominos Pizza sell?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "140", 
+    "Denominator": "3", 
+    "Numerator": "420", 
+    "Spoken Answer": "The correct answer is 140."
+  }, 
+  {
+    "QuestionID": 314, 
+    "Spoken Question": "What is 75 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "15", 
+    "Denominator": "5", 
+    "Numerator": "75", 
+    "Spoken Answer": "The correct answer is 15."
+  }, 
+  {
+    "QuestionID": 315, 
+    "Spoken Question": "What is 566 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "283", 
+    "Denominator": "2", 
+    "Numerator": "566", 
+    "Spoken Answer": "The correct answer is 283."
+  }, 
+  {
+    "QuestionID": 316, 
+    "Spoken Question": "What is 68 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "17", 
+    "Denominator": "4", 
+    "Numerator": "68", 
+    "Spoken Answer": "The correct answer is 17."
+  }, 
+  {
+    "QuestionID": 317, 
+    "Spoken Question": "What is 770 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "154", 
+    "Denominator": "5", 
+    "Numerator": "770", 
+    "Spoken Answer": "The correct answer is 154."
+  }, 
+  {
+    "QuestionID": 318, 
+    "Spoken Question": "There are 98 chairs set up in the gym for an assembly. After the assembly, all the chairs will be put away on racks that hold 7 chairs each. How many racks are needed to put away all of the chairs?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "14", 
+    "Denominator": "7", 
+    "Numerator": "98", 
+    "Spoken Answer": "The correct answer is 14."
+  }, 
+  {
+    "QuestionID": 319, 
+    "Spoken Question": "What is 596 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "149", 
+    "Denominator": "4", 
+    "Numerator": "596", 
+    "Spoken Answer": "The correct answer is 149."
+  }, 
+  {
+    "QuestionID": 320, 
+    "Spoken Question": "What is 32 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "16", 
+    "Denominator": "2", 
+    "Numerator": "32", 
+    "Spoken Answer": "The correct answer is 16."
+  }, 
+  {
+    "QuestionID": 321, 
+    "Spoken Question": "What is 156 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "26", 
+    "Denominator": "6", 
+    "Numerator": "156", 
+    "Spoken Answer": "The correct answer is 26."
+  }, 
+  {
+    "QuestionID": 322, 
+    "Spoken Question": "What is 891 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "99", 
+    "Denominator": "9", 
+    "Numerator": "891", 
+    "Spoken Answer": "The correct answer is 99."
+  }, 
+  {
+    "QuestionID": 323, 
+    "Spoken Question": "A boy at an amusement park has 70 ride tickets. Each ride on the roller coaster costs 5 tickets. How many rides on the roller coaster can the boy take?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "14", 
+    "Denominator": "5", 
+    "Numerator": "70", 
+    "Spoken Answer": "The correct answer is 14."
+  }, 
+  {
+    "QuestionID": 324, 
+    "Spoken Question": "What is 74 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "37", 
+    "Denominator": "2", 
+    "Numerator": "74", 
+    "Spoken Answer": "The correct answer is 37."
+  }, 
+  {
+    "QuestionID": 325, 
+    "Spoken Question": "What is 753 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "251", 
+    "Denominator": "3", 
+    "Numerator": "753", 
+    "Spoken Answer": "The correct answer is 251."
+  }, 
+  {
+    "QuestionID": 326, 
+    "Spoken Question": "What is 81 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "27", 
+    "Denominator": "3", 
+    "Numerator": "81", 
+    "Spoken Answer": "The correct answer is 27."
+  }, 
+  {
+    "QuestionID": 327, 
+    "Spoken Question": "What is 398 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "199", 
+    "Denominator": "2", 
+    "Numerator": "398", 
+    "Spoken Answer": "The correct answer is 199."
+  }, 
+  {
+    "QuestionID": 328, 
+    "Spoken Question": "Tom has 85 dollars in 5 dollar bills. How many 5 dollar bills does he have?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "17", 
+    "Denominator": "5", 
+    "Numerator": "85", 
+    "Spoken Answer": "The correct answer is 17."
+  }, 
+  {
+    "QuestionID": 329, 
+    "Spoken Question": "What is 870 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "174", 
+    "Denominator": "5", 
+    "Numerator": "870", 
+    "Spoken Answer": "The correct answer is 174."
+  }, 
+  {
+    "QuestionID": 330, 
+    "Spoken Question": "What is 26 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "13", 
+    "Denominator": "2", 
+    "Numerator": "26", 
+    "Spoken Answer": "The correct answer is 13."
+  }, 
+  {
+    "QuestionID": 331, 
+    "Spoken Question": "What is 318 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "53", 
+    "Denominator": "6", 
+    "Numerator": "318", 
+    "Spoken Answer": "The correct answer is 53."
+  }, 
+  {
+    "QuestionID": 332, 
+    "Spoken Question": "What is 214 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "107", 
+    "Denominator": "2", 
+    "Numerator": "214", 
+    "Spoken Answer": "The correct answer is 107."
+  }, 
+  {
+    "QuestionID": 333, 
+    "Spoken Question": "Alyssa was at the beach and found 57 seashells. She plans to give all of her seashells equally to her 3 friends. How many seashells will each friend get?", 
+    "WordProblem": true, 
+    "Difficulty Level": 3, 
+    "Answer": "19", 
+    "Denominator": "3", 
+    "Numerator": "57", 
+    "Spoken Answer": "The correct answer is 19."
+  }, 
+  {
+    "QuestionID": 334, 
+    "Spoken Question": "What is 86 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "43", 
+    "Denominator": "2", 
+    "Numerator": "86", 
+    "Spoken Answer": "The correct answer is 43."
+  }
 ]
