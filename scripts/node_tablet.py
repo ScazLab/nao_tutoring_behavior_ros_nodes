@@ -493,11 +493,11 @@ class TabletSession:
                     self.sessionNum = int(msg.split(";")[2])
                     self.expGroup = int(msg.split(";")[3])
                     self.difficultyGroup = int(msg.split(";")[4])
-                    print "starting partipant: " + str(pid) + " on session number: " + str(self.sessionNum)
+                    print "starting partipant: " + str(self.pid) + " on session number: " + str(self.sessionNum)
                     tablet_msg.questionNumOrPart = self.pid 
-                    tablet_msg.questionType = self.sessionNum
-                    tablet_msg.robotSpeech = self.expGroup
-                    tablet_msg.otherInfo = self.difficultyGroup 
+                    tablet_msg.questionType = str(self.sessionNum)
+                    tablet_msg.robotSpeech = str(self.expGroup)
+                    tablet_msg.otherInfo = str(self.difficultyGroup) 
                     #if str(difficultyGroup) == '1':
                         #self.questions = self.harder_questions
                         #self.current_level = 3

@@ -336,6 +336,7 @@ class TutoringModel:
             self.pid = int(data.questionNumOrPart)
             self.sessionNum = int(data.questionType)
             self.expGroup = int(data.robotSpeech)
+            print "EXPGROUP IS: " + str(self.expGroup)
             self.difficultyGroup = int(data.otherInfo)
             
 
@@ -364,8 +365,9 @@ class TutoringModel:
                     with open(saveFileString) as param_file:
                         params = json.load(param_file)
 
-                    self.difficultyGroup = params["difficultyGroup"]
-                    num_problems = params["numProblemsCompleted"]
+                    self.expGroup = int(params["expGroup"])
+                    self.difficultyGroup = int(params["difficultyGroup"])
+                    num_problems = int(params["numProblemsCompleted"])
                     self.total_num_questions = num_problems #this tracks total number of q's over all sessions
                     self.attempt_times = params["attemptTimes"]
                     #self.current_question = params["currentQuestionIndex"]
@@ -396,7 +398,8 @@ class TutoringModel:
         saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
         self.save_file = open(saveFileString, "w+")
         num_problems_completed = self.total_num_questions - 1
-        save_params = {"difficultyGroup": self.difficultyGroup,
+        save_params = {"expGroup": self.expGroup,
+                       "difficultyGroup": self.difficultyGroup,
                        "numProblemsCompleted": num_problems_completed,
                        "attemptTimes": self.attempt_times}
         param_string = json.dumps(save_params, indent=4)
