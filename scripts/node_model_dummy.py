@@ -308,7 +308,8 @@ class TutoringModel:
                 self.next_question()
             
             else:
-                self.give_example()
+                self.give_tutorial()
+                #self.give_hint()
                 #self.tic_tac_toe_break() #ADITI: commenting out for now
             #elif (data.questionNumOrPart % 4 == 1):
             #    self.give_tutorial()

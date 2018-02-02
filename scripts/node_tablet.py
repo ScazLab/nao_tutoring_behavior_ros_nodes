@@ -349,7 +349,7 @@ class TabletSession:
         if (self.example_step == -1):
             return
 
-        self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
+        #self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
 
         print "running boxes tutorial", self.example_step
 
