@@ -48,6 +48,10 @@ class TabletSession:
         self.example_number = 0
         self.tutorial_number = 0
         self.showing_hint = False
+        self.hint_number = 0
+        self.in_think_aloud = False
+        self.ta_prompt_number = 0
+        self.ta_prompt = ""
 
         self.lessons = []
 
@@ -138,6 +142,7 @@ class TabletSession:
                     self.tutorial_number = 0
                     self.example_number = 0
                 self.showing_hint = False
+                self.in_think_aloud = False
                 self.current_question = data.questionNum
                 self.current_level = data.questionLevel
                 self.example_step = -1
@@ -158,7 +163,7 @@ class TabletSession:
                 self.showing_hint = True
 
             elif ("THINKALOUD" in data.nextStep):                               # the tablet does nothing during thinkaloud so do not send message to tablet
-                return 
+                self.prompt_think_aloud() 
 
             elif ("SHOWHINT" in data.nextStep):                                
                 self.show_hint()
@@ -180,6 +185,31 @@ class TabletSession:
                 messageToTablet = data.nextStep 
                 self.conn.send(messageToTablet+"\n") #send model message back to tablet
                 print "Sent message to tablet: " + messageToTablet
+
+
+    def prompt_think_aloud(self):
+        tablet_msg = TabletMsg()
+        tablet_msg.msgType = 'THINKALOUD'
+        tablet_msg.questionNumOrPart = self.current_question
+        tablet_msg.otherInfo = ""
+
+        if (self.in_think_aloud==False):
+            self.in_think_aloud = True
+            self.ta_prompt_number = random.randint(0, len(self.lessons[self.current_level-1]["ThinkAloudPrompts"])-1)
+            self.ta_prompt = self.lessons[self.current_level-1]["ThinkAloudPrompts"][self.ta_prompt_number]["part1"]
+
+        else: #if already in think-aloud, make sure not to give the same prompt twice
+            self.ta_prompt = self.lessons[self.current_level-1]["ThinkAloudPrompts"][self.ta_prompt_number]["part2"]
+
+        #placeholder to check for tags in self.ta_prompt string and replace it with numbers from the problem
+
+        tablet_msg.robotSpeech = self.ta_prompt
+
+        msg_to_tablet = "SHOWTEXTHINT;" + self.ta_prompt + ";"
+        self.conn.send(msg_to_tablet + "\n")
+        print "sent: ", msg_to_tablet
+
+        self.tablet_inactivity_pub.publish(tablet_msg)
 
     def show_hint(self):
         # hint for harder levels is the structure. If the structure is already showing (due to a previous hint for example), then a step 
@@ -211,13 +241,17 @@ class TabletSession:
                 self.conn.send(msg_to_tablet + "\n")                                                
                 print "sent: ", msg_to_tablet
       
-        else: # TODO: fix level one hints so that they are not just the same phrases over and over --> move to examples file
+        else:
             if (self.showing_hint):
-                hint = level_one_hints[1]
+                hint = self.lessons[0]["Hints"][self.hint_number]["part2"]
             else:
-                hint = level_one_hints[0]
+                self.hint_number = random.randint(0, len(self.lessons[0]["Hints"])-1)
+                hint = self.lessons[0]["Hints"][self.hint_number]["part1"]
                 self.showing_hint = True
+            
+            #placeholder to check for tags in hint and replace it with numbers from the problem
             tablet_msg.robotSpeech = hint
+            
             msg_to_tablet = "SHOWTEXTHINT;" + hint + ";"                                        # hint for level one is just text right now, but could also
             self.conn.send(msg_to_tablet + "\n")                                                # be showing the easy tutorial picture by substituting run_easy_tutorial() here
             print "sent: ", msg_to_tablet
@@ -537,7 +571,8 @@ class TabletSession:
 
                 elif msgType.startswith('TICTACTOE'):     # continue playing tic tac toe game
                     tablet_msg.robotSpeech = msg.split(";")[3]
-                    if (msgType == "TICTACTOE-WIN" or msgType == "TICTACTOE-LOSS"):
+                    #if (msgType == "TICTACTOE-WIN" or msgType == "TICTACTOE-LOSS"):
+                    if (msgType == "TICTACTOE-END"):
                         self.tablet_pub.publish(tablet_msg)
                         self.state = after_action_state
                         msg_to_tablet = "TICTACTOE-END;" + str(self.current_level) + ";" + str(self.current_question)

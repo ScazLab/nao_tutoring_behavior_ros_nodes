@@ -30,5 +30,16 @@
 		  "numerator" : 36,
 		  "denominator" : 3
 		}
-	]
+	],
+
+	"ThinkAloudPrompts" : [
+        {
+            "part1" : "Try thinking out loud about the first thing you need to do in this problem.",
+            "part2" : "Talk out loud part 2 placeholder."
+        },
+        {
+            "part1" : "What is the first step to solving this problem? Try saying it out loud.",
+            "part2" : "Think aloud part 2 placeholder"
+        }
+    ]
 }

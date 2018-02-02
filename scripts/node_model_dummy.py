@@ -148,6 +148,8 @@ class TutoringModel:
     def tic_tac_toe_break(self):                                # trigger a game of tic tac toe for a break
         control_message = ControlMsg()                          # the robot message here is the speech for the beginning of the game
         control_message.nextStep = "TICTACTOE"
+        control_message.questionNum = self.current_question
+        control_message.questionLevel = self.level
         control_message.robotSpeech = "Lets play a game of tic-tac-toe. You will be exes, and I will be ohs. You can go first. Click any square on the board."
         
         self.decisons_pub.publish(control_message)
@@ -179,8 +181,8 @@ class TutoringModel:
         control_message.nextStep = "THINKALOUD"
         control_message.questionNum = self.current_question
         control_message.questionLevel = self.level
-        control_message.robotSpeech = "What is the first thing you want to do to solve this problem?"   # give the robot text here because node_tablet 
-                                                                                                        # doesn't do anything with this
+        control_message.robotSpeech = ""#"What is the first thing you want to do to solve this problem?" 
+                                                                                                        
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -308,9 +310,21 @@ class TutoringModel:
                 self.next_question()
             
             else:
-                self.give_tutorial()
+                #self.give_tutorial()
+                #self.give_think_aloud()
                 #self.give_hint()
-                #self.tic_tac_toe_break() #ADITI: commenting out for now
+                num = random.randint(0, 4)
+                time.sleep(3) # let's wait a little before starting any help activity
+                if num==0:
+                    self.tic_tac_toe_break()
+                elif num==1:
+                    self.give_tutorial()
+                elif num==2:
+                    self.give_example()
+                elif num==3:
+                    self.give_hint()
+                else:
+                    self.give_think_aloud()
             #elif (data.questionNumOrPart % 4 == 1):
             #    self.give_tutorial()
             #elif (data.questionNumOrPart % 4 == 2):
@@ -320,7 +334,8 @@ class TutoringModel:
             #else:
             #    self.give_think_aloud()
 
-        elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):  # here I respond to the end of a game by going to the same
+        elif (data.msgType == "TICTACTOE-END"):
+        #elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):  # here I respond to the end of a game by going to the same
             self.repeat_question()                                                   # question, but you could return to the next one
         
         elif ("SHOWEXAMPLE" in data.msgType):                                         

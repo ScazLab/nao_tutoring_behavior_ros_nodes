@@ -1,4 +1,15 @@
  {
+    "Hints" : [
+        {
+            "part1" : "Remember that division is the opposite of multiplication.",
+            "part2" : "What number times the smaller number equals the bigger number?"
+        },
+        {
+            "part1" : "Try to recall your multiplication facts.",
+            "part2" : "The smaller number times what other number gives you the bigger one?"
+        }
+    ],
+
     "Examples" : [
         {
             "numerator" : 708,
@@ -27,5 +38,17 @@
             "denominator" : 6
           
         }
+    ],
+
+    "ThinkAloudPrompts" : [
+        {
+            "part1" : "Try thinking out loud about the first thing you need to do in this problem.",
+            "part2" : "Talk out loud part 2 placeholder."
+        },
+        {
+            "part1" : "What is the first step to solving this problem? Try saying it out loud.",
+            "part2" : "Think aloud part 2 placeholder"
+        }
     ]
+    
 }
