@@ -469,6 +469,7 @@ class TabletSession:
             self.current_example["TabletSteps"] = tablet_steps
             #print "IN WORKED EXAMPLE, TABLET STEPS ARE: " + str(self.current_example["TabletSteps"])
             self.current_example["Answers"] = all_answers
+            tablet_msg.robotSpeech = self.current_example["SpokenText"][self.example_step]
 
             self.example_step += 1                                   # and then tell the tablet to display the structure for this problem
             msg_to_tablet = "SHOWSTRUCTURE;" + str(self.current_example["numerator"]) + "-" + str(self.current_example["denominator"]) 
