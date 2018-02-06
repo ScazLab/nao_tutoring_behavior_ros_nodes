@@ -113,6 +113,7 @@ class TabletSession:
             print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-END TO TABLET\n"
             returnMessage = "SPEAKING-END"
             #print "robot was done"
+
         else:
             print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-START TO TABLET\n"
             returnMessage = "SPEAKING-START"
@@ -406,31 +407,31 @@ class TabletSession:
             print "sent" + msg_to_tablet
             self.tablet_inactivity_pub.publish(tablet_msg)
 
-        elif (self.example_step < len(self.current_tutorial)):                                          # after the first step respond to student attempts
-            if (status.startswith("INCOMPLETE") or status.startswith("INCORRECT")):
-                if (self.tutorial_step_attempts > 2):                                                         # if the student has been wrong enough times, send the
-                    msg_to_tablet = "FILLSTRUCTURE;"                                                            # tablet a message to fill in the boxes for them
-                    self.conn.send(msg_to_tablet + "\n")                                                        # Note: "FILLSTRUCTURE;" with no specified numbers will fill in
-                    print "sent" + msg_to_tablet                                                                # all enabled boxes (i.e. the current step), but numbers can be
-                    tablet_msg.robotSpeech = "Here is the answer to this step."                                 # be specified to indicate the boxes to fill in (see Readme)
-                    
-                    self.tutorial_step_attempts = 0
-                    self.tablet_inactivity_pub.publish(tablet_msg)
+        #elif (self.example_step < len(self.current_tutorial)):                                          # after the first step respond to student attempts
+        elif (status.startswith("INCOMPLETE") or status.startswith("INCORRECT")):
+            if (self.tutorial_step_attempts > 2):                                                         # if the student has been wrong enough times, send the
+                msg_to_tablet = "FILLSTRUCTURE;"                                                            # tablet a message to fill in the boxes for them
+                self.conn.send(msg_to_tablet + "\n")                                                        # Note: "FILLSTRUCTURE;" with no specified numbers will fill in
+                print "sent" + msg_to_tablet                                                                # all enabled boxes (i.e. the current step), but numbers can be
+                tablet_msg.robotSpeech = "Here is the answer to this step."                                 # be specified to indicate the boxes to fill in (see Readme)
                 
-                else:
-                    if (status.startswith("INCOMPLETE")) :                                                      # otherwise, encourage them to try again
-                        tablet_msg.robotSpeech = "Fill in all the boxes for this step."
-                    else:
-                        tablet_msg.robotSpeech = "Not quite. Try filling in the boxes again."
-                    self.tutorial_step_attempts += 1
-                    self.tablet_inactivity_pub.publish(tablet_msg)
-
-            if (status.startswith("CORRECT")):                                                              # or move on to the next step if correct
                 self.tutorial_step_attempts = 0
-                self.example_step += 1
-                print self.example_step
-                tablet_msg.robotSpeech = "Very good."
                 self.tablet_inactivity_pub.publish(tablet_msg)
+            
+            else:
+                if (status.startswith("INCOMPLETE")) :                                                      # otherwise, encourage them to try again
+                    tablet_msg.robotSpeech = "Fill in all the boxes for this step."
+                else:
+                    tablet_msg.robotSpeech = "Not quite. Try filling in the boxes again."
+                self.tutorial_step_attempts += 1
+                self.tablet_inactivity_pub.publish(tablet_msg)
+
+        elif (status.startswith("CORRECT")):                                                              # or move on to the next step if correct
+            self.tutorial_step_attempts = 0
+            self.example_step += 1
+            print self.example_step
+            tablet_msg.robotSpeech = "Very good."
+            self.tablet_inactivity_pub.publish(tablet_msg)
 
         else:
             print "done with tutorial"                              # at the end of the tutorial, tell them to go back to the original problem
@@ -578,7 +579,7 @@ class TabletSession:
                         self.state = after_action_state
                         msg_to_tablet = "TICTACTOE-END;" + str(self.current_level) + ";" + str(self.current_question)
                         self.conn.send(msg_to_tablet+ "\n")                                                        # to fill in the boxes and have the robot speak
-                        print "sent" + msg_to_tablet 
+                        print "sent: " + msg_to_tablet 
                         continue
 
                     else:

@@ -38,6 +38,7 @@ class TutoringModel:
         self.tries = 0
 
         self.attempt_times = []
+        self.total_num_help_actions = 0
 
         self.inSession = False
 
@@ -73,7 +74,7 @@ class TutoringModel:
         control_message.nextStep = "QUESTION-REPEAT"
         control_message.questionNum = self.current_question
         control_message.questionLevel = self.level
-        control_message.robotSpeech = "Try that again."
+        control_message.robotSpeech = ""#Try that again." #we don't want to say anything here.
 
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
@@ -121,6 +122,7 @@ class TutoringModel:
             control_message.robotSpeech = "" #no speech in case they finish all questions
         #print self.level, self.current_question, self.questions[self.level][self.current_question]
         
+        time.sleep(3) #wait a little before sending next question message so robot can say correct/incorrect
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -288,9 +290,11 @@ class TutoringModel:
             attempt = data.otherInfo.split("-")[0]
             timing = int(data.otherInfo.split("-")[1])
             observation = self.form_observation(data.msgType, timing)
+            self.log_transaction("OBSERVATION", question_id, observation)
             print "observation is: " + str(observation)
             #placeholder to update belief using action that was just given and this observation
             self.add_attempt_time(timing)
+            #placeholder to potentially sleep here if we want model to wait a few seconds before giving help
 
 
         if (data.msgType == 'CA'): # respond to correct answer                  
@@ -313,18 +317,36 @@ class TutoringModel:
                 #self.give_tutorial()
                 #self.give_think_aloud()
                 #self.give_hint()
-                num = random.randint(0, 4)
-                time.sleep(3) # let's wait a little before starting any help activity
-                if num==0:
-                    self.tic_tac_toe_break()
-                elif num==1:
-                    self.give_tutorial()
-                elif num==2:
-                    self.give_example()
-                elif num==3:
-                    self.give_hint()
-                else:
-                    self.give_think_aloud()
+                if self.expGroup==0: #implement fixed policy
+                    if self.total_num_help_actions % 4 == 0:
+                        self.give_think_aloud()
+                    elif self.total_num_help_actions % 4 == 1:
+                        self.give_hint()
+                    elif self.total_num_help_actions % 4 == 2:
+                        self.give_example()
+                    elif self.total_num_help_actions % 4 == 3:
+                        self.give_tutorial()
+                    else:
+                        print "should not be happening"
+                    self.total_num_help_actions += 1
+
+
+                else: #placeholder action selection for actual model
+                    num = random.randint(0, 4)
+                    time.sleep(3) # let's wait a little before starting any help activity
+                    if num==0:
+                        self.tic_tac_toe_break()
+                    elif num==1:
+                        self.give_tutorial()
+                    elif num==2:
+                        self.give_example()
+                    elif num==3:
+                        self.give_hint()
+                    else:
+                        self.give_think_aloud()
+
+                
+                        
             #elif (data.questionNumOrPart % 4 == 1):
             #    self.give_tutorial()
             #elif (data.questionNumOrPart % 4 == 2):
