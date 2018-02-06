@@ -1,73 +1,352 @@
 [
-    {
-        "QuestionID" : 500,
-        "Denominator" : "11",
-        "Numerator" : "245",
-		"Answer" : "22 R 3",
-        "Spoken Question" : "What is 245 divided by 11?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is twenty two remainder three.",
-        "Difficulty Level" : 5,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 501,
-        "Denominator" : "19",
-        "Numerator" : "114",
-		"Answer" : "6",
-        "Spoken Question" : "What is 114 divided by 19?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is six.",
-        "Difficulty Level" : 5,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 502,
-        "Denominator" : "15",
-        "Numerator" : "352",
-		"Answer" : "23 R 7",
-        "Spoken Question" : "What is 352 divided by 15?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is twenty three remainder seven.",
-        "Difficulty Level" : 5,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 503,
-        "Denominator" : "21",
-        "Numerator" : "300",
-		"Answer" : "14 R 6",
-        "Spoken Question" : "What is 300 divided by 21?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is fourteen remainder six.",
-        "Difficulty Level" : 5,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 504,
-        "Denominator" : "14",
-        "Numerator" : "476",
-		"Answer" : "34",
-        "Spoken Question" : "What is 476 divided by 14",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is thirty four.",
-        "Difficulty Level" : 5,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 505,
-        "Denominator" : "51",
-        "Numerator" : "820",
-		"Answer" : "16 R 4",
-        "Spoken Question" : "What is 820 divided by 51?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is sixteen remainder four.",
-        "Difficulty Level" : 5,
-        "Max Time" : 60
-    }
+  {
+    "QuestionID": 500, 
+    "Spoken Question": "What is 21000 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "7000", 
+    "Denominator": "3", 
+    "Numerator": "21000", 
+    "Spoken Answer": "The correct answer is 7000."
+  }, 
+  {
+    "QuestionID": 501, 
+    "Spoken Question": "What is 2257 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "322 R 3", 
+    "Denominator": "7", 
+    "Numerator": "2257", 
+    "Spoken Answer": "The correct answer is 322 remainder 3."
+  }, 
+  {
+    "QuestionID": 502, 
+    "Spoken Question": "What is 8118 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "902", 
+    "Denominator": "9", 
+    "Numerator": "8118", 
+    "Spoken Answer": "The correct answer is 902."
+  }, 
+  {
+    "QuestionID": 503, 
+    "Spoken Question": "What is 5803 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1450 R 3", 
+    "Denominator": "4", 
+    "Numerator": "5803", 
+    "Spoken Answer": "The correct answer is 1450 remainder 3."
+  }, 
+  {
+    "QuestionID": 504, 
+    "Spoken Question": "A nearby college has 36000 dollars to give away in scholarships. If they evenly split the money into 3 scholarships, how much money will each scholarhip have?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "12000", 
+    "Denominator": "3", 
+    "Numerator": "36000", 
+    "Spoken Answer": "The correct answer is 12000."
+  }, 
+  {
+    "QuestionID": 505, 
+    "Spoken Question": "What is 5700 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1900", 
+    "Denominator": "3", 
+    "Numerator": "5700", 
+    "Spoken Answer": "The correct answer is 1900."
+  }, 
+  {
+    "QuestionID": 506, 
+    "Spoken Question": "What is 7430 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "2476 R 2", 
+    "Denominator": "3", 
+    "Numerator": "7430", 
+    "Spoken Answer": "The correct answer is 2476 remainder 2."
+  }, 
+  {
+    "QuestionID": 507, 
+    "Spoken Question": "What is 8238 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1373", 
+    "Denominator": "6", 
+    "Numerator": "8238", 
+    "Spoken Answer": "The correct answer is 1373."
+  }, 
+  {
+    "QuestionID": 508, 
+    "Spoken Question": "What is 3993 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1996 R 1", 
+    "Denominator": "2", 
+    "Numerator": "3993", 
+    "Spoken Answer": "The correct answer is 1996 remainder 1."
+  }, 
+  {
+    "QuestionID": 509, 
+    "Spoken Question": "A school had 4528 students sign up for the trivia teams. If each team has 4 students, how many trivia teams will the school have?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "1132", 
+    "Denominator": "4", 
+    "Numerator": "4528", 
+    "Spoken Answer": "The correct answer is 1132."
+  }, 
+  {
+    "QuestionID": 510, 
+    "Spoken Question": "What is 90000 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "15000", 
+    "Denominator": "6", 
+    "Numerator": "90000", 
+    "Spoken Answer": "The correct answer is 15000."
+  }, 
+  {
+    "QuestionID": 511, 
+    "Spoken Question": "What is 9927 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1985 R 2", 
+    "Denominator": "5", 
+    "Numerator": "9927", 
+    "Spoken Answer": "The correct answer is 1985 remainder 2."
+  }, 
+  {
+    "QuestionID": 512, 
+    "Spoken Question": "What is 7408 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1852", 
+    "Denominator": "4", 
+    "Numerator": "7408", 
+    "Spoken Answer": "The correct answer is 1852."
+  }, 
+  {
+    "QuestionID": 513, 
+    "Spoken Question": "What is 6262 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1043 R 4", 
+    "Denominator": "6", 
+    "Numerator": "6262", 
+    "Spoken Answer": "The correct answer is 1043 remainder 4."
+  }, 
+  {
+    "QuestionID": 514, 
+    "Spoken Question": "A florist picked 8540 flowers. She wants to put them in bouquets with 6 flowers in each bouquet. How many extra flowers will the florist have after she makes all the bouquets?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "2", 
+    "Denominator": "6", 
+    "Numerator": "8540", 
+    "Spoken Answer": "The correct answer is 2."
+  }, 
+  {
+    "QuestionID": 515, 
+    "Spoken Question": "What is 6600 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "3300", 
+    "Denominator": "2", 
+    "Numerator": "6600", 
+    "Spoken Answer": "The correct answer is 3300."
+  }, 
+  {
+    "QuestionID": 516, 
+    "Spoken Question": "What is 6790 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "848 R 6", 
+    "Denominator": "8", 
+    "Numerator": "6790", 
+    "Spoken Answer": "The correct answer is 848 remainder 6."
+  }, 
+  {
+    "QuestionID": 517, 
+    "Spoken Question": "What is 6026 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "3013", 
+    "Denominator": "2", 
+    "Numerator": "6026", 
+    "Spoken Answer": "The correct answer is 3013."
+  }, 
+  {
+    "QuestionID": 518, 
+    "Spoken Question": "What is 8265 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "918 R 3", 
+    "Denominator": "9", 
+    "Numerator": "8265", 
+    "Spoken Answer": "The correct answer is 918 remainder 3."
+  }, 
+  {
+    "QuestionID": 519, 
+    "Spoken Question": "A cafeteria was putting milk cartons onto stacks. They had 6407 cartons and were putting them into stacks with 5 cartons in each stack. How many full stacks could they make?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "1281", 
+    "Denominator": "5", 
+    "Numerator": "6407", 
+    "Spoken Answer": "The correct answer is 1281."
+  }, 
+  {
+    "QuestionID": 520, 
+    "Spoken Question": "What is 64000 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "16000", 
+    "Denominator": "4", 
+    "Numerator": "64000", 
+    "Spoken Answer": "The correct answer is 16000."
+  }, 
+  {
+    "QuestionID": 521, 
+    "Spoken Question": "What is 6982 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1745 R 2", 
+    "Denominator": "4", 
+    "Numerator": "6982", 
+    "Spoken Answer": "The correct answer is 1745 remainder 2."
+  }, 
+  {
+    "QuestionID": 522, 
+    "Spoken Question": "What is 7904 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "988", 
+    "Denominator": "8", 
+    "Numerator": "7904", 
+    "Spoken Answer": "The correct answer is 988."
+  }, 
+  {
+    "QuestionID": 523, 
+    "Spoken Question": "What is 2784 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "556 R 4", 
+    "Denominator": "5", 
+    "Numerator": "2784", 
+    "Spoken Answer": "The correct answer is 556 remainder 4."
+  }, 
+  {
+    "QuestionID": 524, 
+    "Spoken Question": "Robin had 9535 photos to put into a photo album. If each page holds 5 photos, how many pages will she need to complete the album?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "1907", 
+    "Denominator": "5", 
+    "Numerator": "9535", 
+    "Spoken Answer": "The correct answer is 1907."
+  }, 
+  {
+    "QuestionID": 525, 
+    "Spoken Question": "What is 3200 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "400", 
+    "Denominator": "8", 
+    "Numerator": "3200", 
+    "Spoken Answer": "The correct answer is 400."
+  }, 
+  {
+    "QuestionID": 526, 
+    "Spoken Question": "What is 7059 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "3529 R 1", 
+    "Denominator": "2", 
+    "Numerator": "7059", 
+    "Spoken Answer": "The correct answer is 3529 remainder 1."
+  }, 
+  {
+    "QuestionID": 527, 
+    "Spoken Question": "What is 4782 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1594", 
+    "Denominator": "3", 
+    "Numerator": "4782", 
+    "Spoken Answer": "The correct answer is 1594."
+  }, 
+  {
+    "QuestionID": 528, 
+    "Spoken Question": "What is 7752 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1107 R 3", 
+    "Denominator": "7", 
+    "Numerator": "7752", 
+    "Spoken Answer": "The correct answer is 1107 remainder 3."
+  }, 
+  {
+    "QuestionID": 529, 
+    "Spoken Question": "A restaurant needs to buy 9400 new plates. If each box has 2 plates in it, how many boxes will they need to buy?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "4700", 
+    "Denominator": "2", 
+    "Numerator": "9400", 
+    "Spoken Answer": "The correct answer is 4700."
+  }, 
+  {
+    "QuestionID": 530, 
+    "Spoken Question": "What is 54000 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "9000", 
+    "Denominator": "6", 
+    "Numerator": "54000", 
+    "Spoken Answer": "The correct answer is 9000."
+  }, 
+  {
+    "QuestionID": 531, 
+    "Spoken Question": "What is 8431 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "2810 R 1", 
+    "Denominator": "3", 
+    "Numerator": "8431", 
+    "Spoken Answer": "The correct answer is 2810 remainder 1."
+  }, 
+  {
+    "QuestionID": 532, 
+    "Spoken Question": "What is 5765 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1153", 
+    "Denominator": "5", 
+    "Numerator": "5765", 
+    "Spoken Answer": "The correct answer is 1153."
+  }, 
+  {
+    "QuestionID": 533, 
+    "Spoken Question": "What is 6762 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 5, 
+    "Answer": "1690 R 2", 
+    "Denominator": "4", 
+    "Numerator": "6762", 
+    "Spoken Answer": "The correct answer is 1690 remainder 2."
+  }, 
+  {
+    "QuestionID": 534, 
+    "Spoken Question": "Megan had 2635 songs on her phone. If she wanted to put the songs equally into 3 different playlists, how many songs would she have left over?", 
+    "WordProblem": true, 
+    "Difficulty Level": 5, 
+    "Answer": "1", 
+    "Denominator": "3", 
+    "Numerator": "2635", 
+    "Spoken Answer": "The correct answer is 1."
+  }
 ]

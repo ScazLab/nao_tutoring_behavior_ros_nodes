@@ -1,73 +1,352 @@
 [
-    {
-        "QuestionID" : 400,
-        "Denominator" : "6",
-        "Numerator" : "135",
-		"Answer" : "22 R 3",
-        "Spoken Question" : "What is 135 divided by 6?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is twenty two remainder three.",
-        "Difficulty Level" : 4,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 401,
-        "Denominator" : "6",
-        "Numerator" : "114",
-		"Answer" : "19",
-        "Spoken Question" : "What is 114 divided by 6?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is nineteen.",
-        "Difficulty Level" : 4,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 402,
-        "Denominator" : "8",
-        "Numerator" : "191",
-		"Answer" : "23 R 7",
-        "Spoken Question" : "What is 191 divided by 8?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is twenty three remainder seven.",
-        "Difficulty Level" : 4,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 403,
-        "Denominator" : "9",
-        "Numerator" : "132",
-		"Answer" : "14 R 6",
-        "Spoken Question" : "What is 132 divided by 9?",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is fourteen remainder 6.",
-        "Difficulty Level" : 4,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 404,
-        "Denominator" : "14",
-        "Numerator" : "238",
-		"Answer" : "17",
-        "Spoken Question" : "What is 238 divided by 14",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is seventeen.",
-        "Difficulty Level" : 4,
-        "Max Time" : 60
-    },
-
-    {
-        "QuestionID" : 405,
-        "Denominator" : "7",
-        "Numerator" : "116",
-        "Spoken Question" : "What is 116 divided by 7?",
-        "Answer" : "16 R 4",
-        "WordProblem" : false,
-        "Spoken Answer" : "The correct answer is sixteen remainder four.",
-        "Difficulty Level" : 4,
-        "Max Time" : 60
-    }
+  {
+    "QuestionID": 400, 
+    "Spoken Question": "What is 33 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "16 R 1", 
+    "Denominator": "2", 
+    "Numerator": "33", 
+    "Spoken Answer": "The correct answer is 16 remainder 1."
+  }, 
+  {
+    "QuestionID": 401, 
+    "Spoken Question": "5 friends order 68 slices of pizza. If the friends divide the slices of pizza evenly among the 5 friends, how many pieces of pizza will be left over? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "3", 
+    "Denominator": "5", 
+    "Numerator": "68", 
+    "Spoken Answer": "The correct answer is 3."
+  }, 
+  {
+    "QuestionID": 402, 
+    "Spoken Question": "What is 527 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "131 R 3", 
+    "Denominator": "4", 
+    "Numerator": "527", 
+    "Spoken Answer": "The correct answer is 131 remainder 3."
+  }, 
+  {
+    "QuestionID": 403, 
+    "Spoken Question": "What is 651 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "81 R 3", 
+    "Denominator": "8", 
+    "Numerator": "651", 
+    "Spoken Answer": "The correct answer is 81 remainder 3."
+  }, 
+  {
+    "QuestionID": 404, 
+    "Spoken Question": "What is 94 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "23 R 2", 
+    "Denominator": "4", 
+    "Numerator": "94", 
+    "Spoken Answer": "The correct answer is 23 remainder 2."
+  }, 
+  {
+    "QuestionID": 405, 
+    "Spoken Question": "What is 368 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "52 R 4", 
+    "Denominator": "7", 
+    "Numerator": "368", 
+    "Spoken Answer": "The correct answer is 52 remainder 4."
+  }, 
+  {
+    "QuestionID": 406, 
+    "Spoken Question": "Carlos wants to share his bag of mini Snickers with his class. There are 77 mini Snickers in Carlos' bag. If Carlos give each student in his class 3 mini Snickers, how many will be left over? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "2", 
+    "Denominator": "3", 
+    "Numerator": "77", 
+    "Spoken Answer": "The correct answer is 2."
+  }, 
+  {
+    "QuestionID": 407, 
+    "Spoken Question": "What is 220 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "73 R 1", 
+    "Denominator": "3", 
+    "Numerator": "220", 
+    "Spoken Answer": "The correct answer is 73 remainder 1."
+  }, 
+  {
+    "QuestionID": 408, 
+    "Spoken Question": "What is 64 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "21 R 1", 
+    "Denominator": "3", 
+    "Numerator": "64", 
+    "Spoken Answer": "The correct answer is 21 remainder 1."
+  }, 
+  {
+    "QuestionID": 409, 
+    "Spoken Question": "What is 358 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "89 R 2", 
+    "Denominator": "4", 
+    "Numerator": "358", 
+    "Spoken Answer": "The correct answer is 89 remainder 2."
+  }, 
+  {
+    "QuestionID": 410, 
+    "Spoken Question": "What is 76 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "15 R 1", 
+    "Denominator": "5", 
+    "Numerator": "76", 
+    "Spoken Answer": "The correct answer is 15 remainder 1."
+  }, 
+  {
+    "QuestionID": 411, 
+    "Spoken Question": "Maria sold 71 boxes of Thin Mint cookies. Each case of Thin Mint cookies has 4 boxes in it. How many boxes of Thin Mint cookies will be in the partially full case? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "3", 
+    "Denominator": "4", 
+    "Numerator": "71", 
+    "Spoken Answer": "The correct answer is 3."
+  }, 
+  {
+    "QuestionID": 412, 
+    "Spoken Question": "What is 582 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "145 R 2", 
+    "Denominator": "4", 
+    "Numerator": "582", 
+    "Spoken Answer": "The correct answer is 145 remainder 2."
+  }, 
+  {
+    "QuestionID": 413, 
+    "Spoken Question": "What is 515 divided by 9?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "57 R 2", 
+    "Denominator": "9", 
+    "Numerator": "515", 
+    "Spoken Answer": "The correct answer is 57 remainder 2."
+  }, 
+  {
+    "QuestionID": 414, 
+    "Spoken Question": "What is 47 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "23 R 1", 
+    "Denominator": "2", 
+    "Numerator": "47", 
+    "Spoken Answer": "The correct answer is 23 remainder 1."
+  }, 
+  {
+    "QuestionID": 415, 
+    "Spoken Question": "What is 443 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "147 R 2", 
+    "Denominator": "3", 
+    "Numerator": "443", 
+    "Spoken Answer": "The correct answer is 147 remainder 2."
+  }, 
+  {
+    "QuestionID": 416, 
+    "Spoken Question": "A van needs to take 95 students from the bus stop to school. The van can take 7 people on each trip. How many people will the van take on its last trip? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "4", 
+    "Denominator": "7", 
+    "Numerator": "95", 
+    "Spoken Answer": "The correct answer is 4."
+  }, 
+  {
+    "QuestionID": 417, 
+    "Spoken Question": "What is 456 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "91 R 1", 
+    "Denominator": "5", 
+    "Numerator": "456", 
+    "Spoken Answer": "The correct answer is 91 remainder 1."
+  }, 
+  {
+    "QuestionID": 418, 
+    "Spoken Question": "What is 83 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "27 R 2", 
+    "Denominator": "3", 
+    "Numerator": "83", 
+    "Spoken Answer": "The correct answer is 27 remainder 2."
+  }, 
+  {
+    "QuestionID": 419, 
+    "Spoken Question": "What is 501 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "250 R 1", 
+    "Denominator": "2", 
+    "Numerator": "501", 
+    "Spoken Answer": "The correct answer is 250 remainder 1."
+  }, 
+  {
+    "QuestionID": 420, 
+    "Spoken Question": "What is 39 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "19 R 1", 
+    "Denominator": "2", 
+    "Numerator": "39", 
+    "Spoken Answer": "The correct answer is 19 remainder 1."
+  }, 
+  {
+    "QuestionID": 421, 
+    "Spoken Question": "Antonio has 66 pine cones and many bowls. If he puts 4 pine cones into each bowl, how many pine cones will be in the partially full bowl? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "2", 
+    "Denominator": "4", 
+    "Numerator": "66", 
+    "Spoken Answer": "The correct answer is 2."
+  }, 
+  {
+    "QuestionID": 422, 
+    "Spoken Question": "What is 717 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "358 R 1", 
+    "Denominator": "2", 
+    "Numerator": "717", 
+    "Spoken Answer": "The correct answer is 358 remainder 1."
+  }, 
+  {
+    "QuestionID": 423, 
+    "Spoken Question": "What is 982 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "245 R 2", 
+    "Denominator": "4", 
+    "Numerator": "982", 
+    "Spoken Answer": "The correct answer is 245 remainder 2."
+  }, 
+  {
+    "QuestionID": 424, 
+    "Spoken Question": "What is 88 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "29 R 1", 
+    "Denominator": "3", 
+    "Numerator": "88", 
+    "Spoken Answer": "The correct answer is 29 remainder 1."
+  }, 
+  {
+    "QuestionID": 425, 
+    "Spoken Question": "What is 881 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "293 R 2", 
+    "Denominator": "3", 
+    "Numerator": "881", 
+    "Spoken Answer": "The correct answer is 293 remainder 2."
+  }, 
+  {
+    "QuestionID": 426, 
+    "Spoken Question": "On Wednesday night, a movie theater produced 80 cups of popcorn. If each bag holds 3 cups of popcorn, how many cups of popcorn was in the partially full bag? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "2", 
+    "Denominator": "3", 
+    "Numerator": "80", 
+    "Spoken Answer": "The correct answer is 2."
+  }, 
+  {
+    "QuestionID": 427, 
+    "Spoken Question": "What is 281 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "46 R 5", 
+    "Denominator": "6", 
+    "Numerator": "281", 
+    "Spoken Answer": "The correct answer is 46 remainder 5."
+  }, 
+  {
+    "QuestionID": 428, 
+    "Spoken Question": "What is 91 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "22 R 3", 
+    "Denominator": "4", 
+    "Numerator": "91", 
+    "Spoken Answer": "The correct answer is 22 remainder 3."
+  }, 
+  {
+    "QuestionID": 429, 
+    "Spoken Question": "What is 432 divided by 5?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "86 R 2", 
+    "Denominator": "5", 
+    "Numerator": "432", 
+    "Spoken Answer": "The correct answer is 86 remainder 2."
+  }, 
+  {
+    "QuestionID": 430, 
+    "Spoken Question": "What is 43 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "14 R 1", 
+    "Denominator": "3", 
+    "Numerator": "43", 
+    "Spoken Answer": "The correct answer is 14 remainder 1."
+  }, 
+  {
+    "QuestionID": 431, 
+    "Spoken Question": "Shawna is making bead necklaces. She wants to use 86 beads to make 5 necklaces. If she wants each necklace to have the same number of beads, how many beads will she have left over? Find the remainder.", 
+    "WordProblem": true, 
+    "Difficulty Level": 4, 
+    "Answer": "1", 
+    "Denominator": "5", 
+    "Numerator": "86", 
+    "Spoken Answer": "The correct answer is 1."
+  }, 
+  {
+    "QuestionID": 432, 
+    "Spoken Question": "What is 720 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "102 R 6", 
+    "Denominator": "7", 
+    "Numerator": "720", 
+    "Spoken Answer": "The correct answer is 102 remainder 6."
+  }, 
+  {
+    "QuestionID": 433, 
+    "Spoken Question": "What is 810 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "115 R 5", 
+    "Denominator": "7", 
+    "Numerator": "810", 
+    "Spoken Answer": "The correct answer is 115 remainder 5."
+  }, 
+  {
+    "QuestionID": 434, 
+    "Spoken Question": "What is 99 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "49 R 1", 
+    "Denominator": "2", 
+    "Numerator": "99", 
+    "Spoken Answer": "The correct answer is 49 remainder 1."
+  }
 ]
