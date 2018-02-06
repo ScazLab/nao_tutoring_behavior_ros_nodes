@@ -180,8 +180,9 @@ class Gesture:
         return id
 
     def session_goodbye(self, sessionNum):
-        self.congratulations()
+        
         id = self.genSpeech("Congratulations! You have completed the session.")
+        self.congratulations()
         self.speechDevice.wait(id, 0)
 
         if sessionNum == 1:
