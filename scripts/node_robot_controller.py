@@ -118,10 +118,10 @@ class RobotTutor:
             print "start wait"
             time.sleep(2)
 
-        else:
-            if data.robotSpeech!="": #aditi
-                self.robot_speech_pub.publish(data.robotSpeech) 
-                print "Nao says in tablet callback: " + data.robotSpeech
+        #else:
+        #    if data.robotSpeech!="": #aditi
+        #        self.robot_speech_pub.publish(data.robotSpeech) 
+        #        print "Nao says in tablet callback: " + data.robotSpeech
 
         
         if ("SHOWING-QUESTION" in data.msgType):       # as the robot receives the text for the question before the tablet displays it
@@ -142,16 +142,19 @@ class RobotTutor:
                 self.goNao.incorrect_answer_speech()
                 self.robot_speech_pub.publish("DONE")
                 print "Sent done"
+            
             elif (data.msgType == "CA"):                # respond to a correct answer
-                nods = [self.goNao.juddNelson, self.goNao.juddNelson_left, self.goNao.nod, self.goNao.lookNod, self.goNao.nodSlow, self.goNao.smallFastNod,  ]
-                action  = random.choice(nods)
-                action() #aditi - what is this?
+                #nods = [self.goNao.juddNelson, self.goNao.juddNelson_left, self.goNao.nod, self.goNao.lookNod, self.goNao.nodSlow, self.goNao.smallFastNod,  ]
+                #action  = random.choice(nods)
+                #action() #aditi - what is this?
                 self.in_activity = False
                 self.goNao.correct_answer_speech()
                 self.robot_speech_pub.publish("DONE")
                 print "Sent done"
+            
             elif (data.msgType == "END"):
                 print "robot should say bye at the end of each session" #TODO: finish this block with appropriate nao behavior and speech
+            
             else:
                 id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 if data.robotSpeech!="":
@@ -160,6 +163,8 @@ class RobotTutor:
  
         else:
             if data.robotSpeech!="":
+                self.robot_speech_pub.publish(data.robotSpeech) 
+                print "Nao says in tablet callback: " + data.robotSpeech
                 self.robot_speech_pub.publish("DONE")
                 print "Sent done"
 
@@ -172,7 +177,7 @@ class RobotTutor:
             if (self.goNao!= None):
                 if (not self.in_activity):
                     print "enabling next question button, but do not need to say anything"
-                    #self.goNao.move_on_to_next_speech()
+                    self.goNao.move_on_to_next_speech()
 
         else:                                                       # otherwise, just say what the model told us to say
             if data.robotSpeech!="":

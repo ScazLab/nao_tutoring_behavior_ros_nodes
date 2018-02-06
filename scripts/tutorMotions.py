@@ -103,7 +103,7 @@ class Gesture:
         self.bring_to_sit()
 
     def move_on_to_next_speech(self):
-        phrases = ["Try the next one!", "Let's go on to the next question!", "Let's move on!"]
+        phrases = ["Try the next one! Press the button on the screen!", "Use the button on the screen and lets go on to the next question!", "Press the next question button on the screen and let's move on!"]
         speech  = random.choice(phrases)
         self.animated_speech_return_to_neutral(speech)
 
