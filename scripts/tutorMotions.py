@@ -51,9 +51,34 @@ class Gesture:
             print "Error creating posture proxy" + str(e)
             exit(1)
 
+        # DISABLE DIAGNOSIS BEEPING
+        try:
+            self.diagnosis = ALProxy("ALDiagnosis", self.host, self.port)
+            self.diagnosis.setEnableNotification(False)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
+        # DISABLE BATTERY NOTIFICATIONS
+        try:
+            self.battery = ALProxy("ALBattery", self.host, self.port)
+            self.battery.enablePowerMonitoring(False)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
+        # DISABLE TEMPERATURE NOTIFICATIONS
+        try:
+            self.bodyTemperature = ALProxy("ALBodyTemperature", self.host, self.port)
+            self.bodyTemperature.setEnableNotifications(False)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
         # MOTION DEVICE FOR MOVEMENTS
         try:
             self.motion = ALProxy("ALMotion", self.host, self.port)
+            self.motion.setEnableNotifications(False)
         except Exception, e:
             print "Error when creating motion device proxy:" + str(e)
             exit(1)
