@@ -108,7 +108,7 @@ class RobotTutor:
             if ('DONE' in data.msgType):
                 self.in_activity = False
                 print "done with activity"
-                self.robot_speech_pub.publish("DONE") #aditi
+                #self.robot_speech_pub.publish("DONE") #aditi
 
             else:
                 print "setting true 3"
@@ -134,7 +134,7 @@ class RobotTutor:
                 id = self.goNao.session_intro(int(sessionNumber))            # at the start, give an intro speech
                 #id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 #if data.robotSpeech!="":
-                self.goNao.speechDevice.wait(id, 0)
+                #self.goNao.speechDevice.wait(id, 0)
                 self.robot_speech_pub.publish("DONE")
                 print "Sent done after INTRO"
 
@@ -171,7 +171,7 @@ class RobotTutor:
     def model_msg_callback(self, data):                             # respond to messages from the model
         rospy.loginfo(rospy.get_caller_id() + " I heard %s ", data)
 
-        if ("QUESTION" in data.nextStep and data.nextStep != "QUESTION-REPEAT"):
+        if ("QUESTION" in data.nextStep and data.nextStep != "QUESTION-REPEAT" and data.nextStep!="QUESTION-FIRST"):
             self.current_question_text = data.robotSpeech;          # if we are going on to the next question, save the text of the question
             print "Setting question text"                           # to read only when it is shown
             if (self.goNao!= None):

@@ -90,6 +90,7 @@ class TutoringModel:
 
         print self.level, self.current_question, self.questions[self.level][self.current_question]
         
+        time.sleep(3) #wait a little before sending first question message so robot can finish intro
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -298,11 +299,11 @@ class TutoringModel:
 
 
         if (data.msgType == 'CA'): # respond to correct answer                  
-            self.log_transaction("CORRECT", question_id, attempt)
+            self.log_transaction("CORRECT", question_id, data.otherInfo)
             self.next_question()                                                
         
         elif (data.msgType == 'IA'): # respond to incorrect answer
-            self.log_transaction("INCORRECT", question_id, attempt)
+            self.log_transaction("INCORRECT", question_id, data.otherInfo)
             self.tries +=1
 
             #placeholder to get action from model then execute that action

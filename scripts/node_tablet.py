@@ -578,7 +578,8 @@ class TabletSession:
                         self.tablet_pub.publish(tablet_msg)
                         self.state = after_action_state
                         msg_to_tablet = "TICTACTOE-END;" + str(self.current_level) + ";" + str(self.current_question)
-                        self.conn.send(msg_to_tablet+ "\n")                                                        # to fill in the boxes and have the robot speak
+                        time.sleep(3) #wait before sending tic-tac-toe end message
+                        self.conn.send(msg_to_tablet+ "\n")                                                        
                         print "sent: " + msg_to_tablet 
                         continue
 
