@@ -163,15 +163,44 @@ class Gesture:
             id = self.animatedSpeech.say("Great! Let's get started!", self.configuration)
             self.bring_to_sit()
         elif sessionNum == 2:
-            id = self.animatedSpeech.say("Let's get started on some more problems", self.configuration)
+            id = self.animatedSpeech.say("Lets get started on some more problems!", self.configuration)
             self.bring_to_sit()
         elif sessionNum == 3:
-            id = self.animatedSpeech.say("Let's try doing some more problems!", self.configuration)
+            id = self.animatedSpeech.say("Lets try doing some more problems today!", self.configuration)
+            self.bring_to_sit()
+        elif sessionNum == 4:
+            id = self.animatedSpeech.say("Lets practice some more problems today!", self.configuration)
+            self.bring_to_sit()
+        elif sessionNum == 5:
+            id = self.animatedSpeech.say("Lets jump into our last set of practice problems!", self.configuration)
             self.bring_to_sit()
         else:
             print "invalid sessionNum: no intro"
         # time.sleep(2)
         return id
+
+    def session_goodbye(self, sessionNum):
+        self.congratulations()
+        id = self.genSpeech("Congratulations! You have completed the session.")
+        self.speechDevice.wait(id, 0)
+
+        if sessionNum == 1:
+            id = self.animatedSpeech.say("I had a great time doing math with you! See you next time!")
+        elif sessionNum == 2:
+            id = self.animatedSpeech.say("It was fun working on math problems together today! See you soon!")
+        elif sessionNum == 3:
+            id = self.animatedSpeech.say("I had an awesome time doing math problems with you! See you next time!")
+        elif sessionNum == 4:
+            id = self.animatedSpeech.say("That was fun! See you again soon for our next session!")
+        elif sessionNum == 5:
+            id = self.animatedSpeech.say("It was great doing math with you! I hope you had fun too! Have a great day! Bye!")
+        else:
+            print "invalid sessionNum: no goodbye"
+
+        self.bring_to_sit()
+        return id
+
+
 
     def move_head(self):
         self.bring_to_sit(1.0)

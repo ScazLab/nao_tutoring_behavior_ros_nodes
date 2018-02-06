@@ -33,6 +33,7 @@ class RobotTutor:
         self.goNao = goNao
         self.noRobot = noRobot
         self.current_question_text = ""
+        self.sessionNum = 1
 
         self.current_session = None
         self.current_question = None 
@@ -130,8 +131,8 @@ class RobotTutor:
         if (self.goNao!= None): 
             if (data.msgType == "START"):
                 # check questionType for the session number
-                sessionNumber = data.questionType
-                id = self.goNao.session_intro(int(sessionNumber))            # at the start, give an intro speech
+                self.sessionNum = data.questionType
+                id = self.goNao.session_intro(int(self.sessionNum))            # at the start, give an intro speech
                 #id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 #if data.robotSpeech!="":
                 #self.goNao.speechDevice.wait(id, 0)
@@ -154,6 +155,7 @@ class RobotTutor:
             
             elif (data.msgType == "END"):
                 print "robot should say bye at the end of each session" #TODO: finish this block with appropriate nao behavior and speech
+                self.goNao.session_goodbye(int(self.sessionNum))
             
             elif (data.msgType == "TICTACTOE-END"):
                 time.sleep(3) #wait a bit here so robot can first say win/loss/tie message

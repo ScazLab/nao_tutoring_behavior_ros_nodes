@@ -155,6 +155,8 @@ class TutoringModel:
         control_message.questionLevel = self.level
         control_message.robotSpeech = "Lets play a game of tic-tac-toe. You will be exes, and I will be ohs. You can go first. Click any square on the board."
         
+        question_id = self.questions[self.level][self.current_question]['QuestionID']
+        self.log_transaction("TICTACTOE-START", question_id, self.level)
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -166,6 +168,8 @@ class TutoringModel:
         control_message.questionLevel = self.level
         control_message.robotSpeech = ""
         
+        question_id = self.questions[self.level][self.current_question]['QuestionID']
+        self.log_transaction("HINT", question_id, self.level)
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -186,6 +190,8 @@ class TutoringModel:
         control_message.questionLevel = self.level
         control_message.robotSpeech = ""#"What is the first thing you want to do to solve this problem?" 
                                                                                                         
+        question_id = self.questions[self.level][self.current_question]['QuestionID']
+        self.log_transaction("THINKALOUD", question_id, self.level)
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -196,6 +202,9 @@ class TutoringModel:
         control_message.questionNum = self.current_question
         control_message.questionLevel = self.level
         control_message.robotSpeech = ""
+        
+        question_id = self.questions[self.level][self.current_question]['QuestionID']
+        self.log_transaction("WORKED-EXAMPLE", question_id, self.level)
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -205,6 +214,9 @@ class TutoringModel:
         control_message.questionNum = self.current_question
         control_message.questionLevel = self.level
         control_message.robotSpeech = ""
+        
+        question_id = self.questions[self.level][self.current_question]['QuestionID']
+        self.log_transaction("INTERACTIVE-TUTORIAL", question_id, self.level)
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message     
 
@@ -357,9 +369,10 @@ class TutoringModel:
             #else:
             #    self.give_think_aloud()
 
-        elif (data.msgType == "TICTACTOE-END"):
-        #elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):  # here I respond to the end of a game by going to the same
-            self.repeat_question()                                                   # question, but you could return to the next one
+        elif (data.msgType == "TICTACTOE-END"): # here I respond to the end of a game by going to the same question
+        #elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):
+            self.log_transaction("TICTACTOE-END", -1, "") 
+            self.repeat_question()                                                
         
         elif ("SHOWEXAMPLE" in data.msgType):                                         
             pass
