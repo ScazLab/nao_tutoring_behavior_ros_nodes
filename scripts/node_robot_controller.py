@@ -138,7 +138,7 @@ class RobotTutor:
                 self.robot_speech_pub.publish("INTRO-DONE")
                 print "Sent done after INTRO"
 
-            if (data.msgType == "IA"):   # respond to an incorrect answer
+            elif (data.msgType == "IA"):   # respond to an incorrect answer
                 self.goNao.incorrect_answer_speech()
                 self.robot_speech_pub.publish("DONE")
                 print "Sent done"
