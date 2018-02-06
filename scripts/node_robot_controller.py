@@ -135,7 +135,7 @@ class RobotTutor:
                 #id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 #if data.robotSpeech!="":
                 #self.goNao.speechDevice.wait(id, 0)
-                self.robot_speech_pub.publish("DONE")
+                self.robot_speech_pub.publish("INTRO-DONE")
                 print "Sent done after INTRO"
 
             if (data.msgType == "IA"):   # respond to an incorrect answer
@@ -155,6 +155,14 @@ class RobotTutor:
             elif (data.msgType == "END"):
                 print "robot should say bye at the end of each session" #TODO: finish this block with appropriate nao behavior and speech
             
+            elif (data.msgType == "TICTACTOE-END"):
+                time.sleep(3) #wait a bit here so robot can first say win/loss/tie message
+                self.goNao.look()
+                id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
+                if data.robotSpeech!="":
+                    self.robot_speech_pub.publish("DONE")
+                    print "Sent done"
+
             else:
                 id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
                 if data.robotSpeech!="":

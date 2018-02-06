@@ -419,8 +419,8 @@ class TutoringModel:
                 else:
                     print "error: tried to open param save file when it didnt exist"
             #self.send_first_question()
-            time.sleep(3) #wait a bit before sending first question - do we need this?
-            self.first_question()
+            #time.sleep(3) #wait a bit before sending first question - do we need this?
+            #self.first_question()
             #self.next_question() #aditi - trying this instead since send_first_question does not exist
         
         elif(data.msgType == 'END'):
@@ -451,6 +451,8 @@ class TutoringModel:
     def robot_msg_callback(self, data):
         rospy.loginfo(rospy.get_caller_id() + " From Robot, I heard %s ", data)      # this model does nothing with robot messages, but it could
                                                                                      # do so in this function
+        if (data.data == "INTRO-DONE"):
+            self.first_question()
 
     def run(self):
 
