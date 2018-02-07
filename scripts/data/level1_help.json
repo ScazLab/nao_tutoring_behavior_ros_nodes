@@ -123,7 +123,7 @@
     ],
     "ThinkAloudPrompts" : [
         {
-            "part1" : "How you think you can solve this problem?",
+            "part1" : "How do you think you can solve this problem?",
             "part2" : "Division is the opposite of multiplication, how do you think that works for this problem?"
         },
         {
@@ -139,7 +139,7 @@
             "part2" : "How many times does <denom> go into <num>? How does this help us solve this problem?"
         },
         {
-            "part1" : "Why do you think that didn't work?",
+            "part1" : "Why do you think that did not work?",
             "part2" : "Can you explain how we can think of this problem like a multiplication problem?"
         },
         {

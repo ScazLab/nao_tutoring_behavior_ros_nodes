@@ -203,6 +203,11 @@ class TabletSession:
             self.ta_prompt = self.lessons[self.current_level-1]["ThinkAloudPrompts"][self.ta_prompt_number]["part2"]
 
         #placeholder to check for tags in self.ta_prompt string and replace it with numbers from the problem
+        num = self.questions[self.current_level][self.current_question]["Numerator"]
+        denom = self.questions[self.current_level][self.current_question]["Denominator"]
+
+        self.ta_prompt = self.ta_prompt.replace("<num>", num)
+        self.ta_prompt = self.ta_prompt.replace("<demon", denom)
 
         tablet_msg.robotSpeech = self.ta_prompt
 
@@ -251,6 +256,10 @@ class TabletSession:
                 self.showing_hint = True
             
             #placeholder to check for tags in hint and replace it with numbers from the problem
+            num = self.questions[self.current_level][self.current_question]["Numerator"]
+            denom = self.questions[self.current_level][self.current_question]["Denominator"]
+            hint = hint.replace("<num>", num)
+            hint = hint.replace("<denom", denom)
             tablet_msg.robotSpeech = hint
             
             msg_to_tablet = "SHOWTEXTHINT;" + hint + ";"                                        # hint for level one is just text right now, but could also
@@ -264,9 +273,9 @@ class TabletSession:
     # in an easy example, display the multiplication and division facts that represent the problem
     # it just shows up as text, and the robot says it
     def run_easy_example(self): 
-        self.tutorial_number = random.randint(0, len(self.lessons[0]["Tutorials"])-1)                                                               
-        numerator = self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]
-        denominator =  self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"]      
+        self.example_number = random.randint(0, len(self.lessons[0]["Examples"])-1)                                                               
+        numerator = self.lessons[0]["Examples"][self.example_number]["numerator"]
+        denominator =  self.lessons[0]["Examples"][self.example_number]["denominator"]      
         quotient = numerator / denominator                                                    
 
         text = str(denominator) + " x " + str(quotient) + " = " + str(numerator)
@@ -286,7 +295,7 @@ class TabletSession:
         print "sent: ", msg_to_tablet
 
 
-        robotSpeech = "Let's look at this similar problem together. " + str(denominator) + " times " + str(quotient) + " equals " + str(numerator) + " so " + str(numerator) + " divided by "  + str(denominator) + " equals " + str(quotient) + ". Now try the question you were working on before."
+        robotSpeech = "Let's look at this similar problem together. " + str(denominator) + " times " + str(quotient) + " equals " + str(numerator) + ". So " + str(numerator) + " divided by "  + str(denominator) + " equals " + str(quotient) + ". Now try the question you were working on before."
 
         tablet_msg = TabletMsg()
         tablet_msg.msgType = 'SHOWEXAMPLE'
@@ -350,7 +359,9 @@ class TabletSession:
             if (self.tutorial_step_attempts > 2):                                     # we send them the answer to a step
                 # move on to next step
                 self.tutorial_step_attempts = 0
-                tablet_msg.robotSpeech = "Here is the answer to this step"
+                phrases = ["Here is the answer to this step.", "Let me fill in the answers to this step for you.", "Let me help you with this step by filling it in for you."]                              # be specified to indicate the boxes to fill in (see Readme)
+                speech  = random.choice(phrases)
+                tablet_msg.robotSpeech = speech
                 messageToTablet = "FILLSTRUCTURE;EASY;" + str(self.example_step) + "-" + str(self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]/self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"])
                 print "Sent message to tablet: " + messageToTablet
                 self.conn.send(messageToTablet+"\n") #send model message back to tablet
@@ -358,9 +369,13 @@ class TabletSession:
 
             else: 
                 if ("INCOMPLETE" in status):
-                    tablet_msg.robotSpeech = "Fill in all the boxes."
+                    phrases = ["Make sure to fill in all the boxes.", "Dont forget to fill in all the blue boxes!", "Fill in all the boxes and then check your answers again."]
+                    speech  = random.choice(phrases)
+                    tablet_msg.robotSpeech = speech
                 else :
-                    tablet_msg.robotSpeech = "Not quite. Try filling in the boxes again. How many balls are there in each box?"
+                    phrases = ["Not quite. Try filling in the boxes in red again. Count the balls in each box.", "Thats not quite right. Look at the boxes marked in red and try again.", "Try again by fixing the boxes marked in red. How many balls are in each box?", "The boxes marked in red are incorrect. Give it another try."]
+                    speech  = random.choice(phrases)
+                    tablet_msg.robotSpeech = speech
                 self.tutorial_step_attempts += 1                                        # otherwise tell them to try again
         
         elif (status.startswith("DONE") or status.startswith("CORRECT")):            # at the end of the tutorial tell them to go back to the original problem
