@@ -212,7 +212,7 @@ class TabletSession:
         denom = self.questions[self.current_level][self.current_question]["Denominator"]
 
         self.ta_prompt = self.ta_prompt.replace("<num>", num)
-        self.ta_prompt = self.ta_prompt.replace("<demon", denom)
+        self.ta_prompt = self.ta_prompt.replace("<denom>", denom)
 
         tablet_msg.robotSpeech = self.ta_prompt
 
@@ -264,7 +264,7 @@ class TabletSession:
             num = self.questions[self.current_level][self.current_question]["Numerator"]
             denom = self.questions[self.current_level][self.current_question]["Denominator"]
             hint = hint.replace("<num>", num)
-            hint = hint.replace("<denom", denom)
+            hint = hint.replace("<denom>", denom)
             tablet_msg.robotSpeech = hint
             
             msg_to_tablet = "SHOWTEXTHINT;" + hint + ";"                                        # hint for level one is just text right now, but could also

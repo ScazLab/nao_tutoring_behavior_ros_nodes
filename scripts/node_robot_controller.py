@@ -245,7 +245,7 @@ def robot_controller():                 # start up Nao, connect and return a ref
         if sys.argv[1]=='-robot':
             useRobot = True
 
-    #robot_flag = rospy.get_param('~robot')
+    #robot_flag = rospy.get_param("~robot")
     #print robot_flag
     #if robot_flag == 'robot':
     #    useRobot = True
