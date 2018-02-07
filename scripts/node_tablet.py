@@ -196,7 +196,12 @@ class TabletSession:
 
         if (self.in_think_aloud==False):
             self.in_think_aloud = True
+            isWordProblem = bool(self.questions[self.current_level][self.current_question]["WordProblem"])
             self.ta_prompt_number = random.randint(0, len(self.lessons[self.current_level-1]["ThinkAloudPrompts"])-1)
+            while bool(self.lessons[self.current_level - 1]["ThinkAloudPrompts"][self.ta_prompt_number]["wp"]) != isWordProblem:
+                self.ta_prompt_number = random.randint(0, len(self.lessons[self.current_level-1]["ThinkAloudPrompts"])-1)
+
+            #self.ta_prompt_number = random.randint(0, len(self.lessons[self.current_level-1]["ThinkAloudPrompts"])-1)
             self.ta_prompt = self.lessons[self.current_level-1]["ThinkAloudPrompts"][self.ta_prompt_number]["part1"]
 
         else: #if already in think-aloud, make sure not to give the same prompt twice
