@@ -101,12 +101,12 @@
     ],
     "ThinkAloudPrompts" : [
         {
-            "part1" : "In this problem, can you tell me how you will you bring it on down and bring it on back?",
-            "part2" : "First we divide, multiply, and subtract. Then we bring it on down and bring it on back. How does that work for this problem?",
+            "part1" : "In this problem, can you tell me how you will bring it on down, and bring it on back?",
+            "part2" : "First we divide, multiply, and subtract. Then we bring it on down, and bring it on back. How does that work for this problem?",
             "wp" : false
         },
         {
-            "part1" : "What do you think you should do first when solving this division problem?",
+            "part1" : "What do you think you should do first when solving this division problem? Think about it out loud.",
             "part2" : "We take <denom> and then see how many times it goes into which number? Can you explain what we do next?",
             "wp" : false
         },
@@ -126,7 +126,7 @@
             "wp" : false
         },
         {
-            "part1" : "Do you remember the song: divide, multiply, and subtract, bring it on down and bring it on back? Can you tell me how that works?",
+            "part1" : "Do you remember the song: divide, multiply, and subtract, bring it on down, and bring it on back? Can you tell me how that works?",
             "part2" : "We first divide <denom> by the first digit in <num>, then what do we do?",
             "wp" : false
         },
@@ -142,7 +142,7 @@
         },
         {
             "part1" : "How are you using division and the numbers <denom> and <num> to solve this problem? Please tell me out loud.",
-            "part2" : "Can you explain out loud how you divide, multiply, and subtract, bring it on down and bring it on back?",
+            "part2" : "Can you explain out loud how you divide, multiply, and subtract, bring it on down, and bring it on back?",
             "wp" : true
         }
     ]
