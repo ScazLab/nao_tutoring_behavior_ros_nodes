@@ -101,7 +101,7 @@
   }, 
   {
     "QuestionID": 210, 
-    "Spoken Question": "Brian has 84 cookies and wants to give each of his 4 friends the same number of cookies. How many cookes will each of Brian's friends get?", 
+    "Spoken Question": "Brian has 84 cookies and wants to give each of his 4 friends the same number of cookies. How many cookies will each of Brian's friends get?", 
     "WordProblem": true, 
     "Difficulty Level": 2, 
     "Answer": "21", 

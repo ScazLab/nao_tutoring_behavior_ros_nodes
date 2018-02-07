@@ -1,0 +1,128 @@
+{
+    "Examples" : [
+        {
+            "numerator" : 34,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 56,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 72,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 98,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 348,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 584,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 48,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 75,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 84,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 534,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 76,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 60,
+            "denominator" : 4
+        }
+    ],
+    "Tutorials" : [
+        {
+            "numerator" : 38,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 52,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 76,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 92,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 376,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 324,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 54,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 78,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 42,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 495,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 52,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 64,
+            "denominator" : 4
+        }
+    ],
+    "ThinkAloudPrompts" : [
+        {
+            "part1" : "In this problem, can you tell me how you will you bring it on down and bring it on back?",
+            "part2" : "First we divide, multiply, and subtract. Then we bring it on down and bring it on back. How does that work for this problem?"
+        },
+        {
+            "part1" : "What do you think you should do first when solving this division problem?",
+            "part2" : "We take <denom> and then see how many times it goes into which number? Can you explain what we do next?"
+        },
+        {
+            "part1" : "How do you think <denom> goes into <num>?",
+            "part2" : "What do we do first when dividing <num> by <denom>?"
+        },
+        {
+            "part1" : "What were you thinking with that last try? Why didn't it work?",
+            "part2" : "Can you explain the process of long division? What steps are involved?"
+        },
+        {
+            "part1" : "Can you tell me what steps you need to do to divide <num> by <denom>?",
+            "part2" : "Which part do you think you didn't get right the first time? Can you explain how you think you can fix it?"
+        },
+        {
+            "part1" : "Do you remember the song: divide, multiply, and subtract, bring it on down and bring it on back? Can you tell me how that works?",
+            "part2" : "We first divide <denom> by the first digit in <num>, then what do we do?"
+        }
+    ]
+}

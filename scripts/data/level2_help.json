@@ -1,0 +1,96 @@
+{
+    "Examples" : [
+        {
+            "numerator" : 42,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 62,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 84,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 264,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 862,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 63,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 33,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 888,
+            "denominator" : 4
+        }
+    ],
+    "Tutorials" : [
+        {
+            "numerator" : 46,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 68,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 86,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 88,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 462,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 93,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 636,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 44,
+            "denominator" : 4
+        }
+    ],
+    "ThinkAloudPrompts" : [
+        {
+            "part1" : "What do you think is the first step in solving this problem?",
+            "part2" : "How many times does <denom> go into the first digit of <num>? What do you do after that?"
+        },
+        {
+            "part1" : "Can you explain how it works to divide, multiply, and subtract?",
+            "part2" : "How do we divide, multiply, and subtract with <num> divided by <denom>? Do we need to do this many times?"
+        },
+        {
+            "part1" : "Can you explain your last answer? Do you know why it was incorrect?",
+            "part2" : "We begin by seeing how many times <denom> goes into the first digit of <num>, then what do we do after that?"
+        },
+        {
+            "part1" : "Where do you think you went wrong last time?",
+            "part2" : "How do you think <denom> goes into <num>? Can you explain the steps?"
+        },
+        {
+            "part1" : "What steps do you need to do in order to solve this division problem? Can you explain them to me?",
+            "part2" : "Can you tell me what it means to divide, multiply, and subtract?"
+        },
+        {
+            "part1" : "Can you tell me how <denom> goes into <num>?",
+            "part2" : "After we see how many times <denom> goes into the first digit of <num>, then what do we do? Please explain."
+        }
+    ]
+}

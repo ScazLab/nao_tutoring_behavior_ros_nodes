@@ -1,0 +1,128 @@
+{
+    "Examples" : [
+        {
+            "numerator" : 57,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 73,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 35,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 46,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 61,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 86,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 62,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 95,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 63,
+            "denominator" : 5
+        },
+        {
+            "numerator" : 89,
+            "denominator" : 5
+        },
+        {
+            "numerator" : 93,
+            "denominator" : 6
+        },
+        {
+            "numerator" : 76,
+            "denominator" : 6
+        }
+    ],
+    "Tutorials" : [
+        {
+            "numerator" : 65,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 81,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 49,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 56,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 73,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 95,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 62,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 87,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 77,
+            "denominator" : 5
+        },
+        {
+            "numerator" : 92,
+            "denominator" : 5
+        },
+        {
+            "numerator" : 97,
+            "denominator" : 6
+        },
+        {
+            "numerator" : 85,
+            "denominator" : 6
+        }
+    ],
+    "ThinkAloudPrompts" : [
+        {
+            "part1" : "How you think you can solve this problem?",
+            "part2" : "How do we divide <num> by <denom> when there is a remainder? Can you tell me?"
+        },
+        {
+            "part1" : "Can you tell me how you're thinking about solving this problem?",
+            "part2" : "How many times does <denom> go into <num>?"
+        },
+        {
+            "part1" : "How do you divide <num> by <denom>?",
+            "part2" : "We have to try and see if <denom> goes into each digit of <num>. How do we do that?"
+        },
+        {
+            "part1" : "Why do you think your last attempt was incorrect? Can you explain why you think so?",
+            "part2" : "Did you follow: divide, multiply, and subtract, bring it on down and bring it on back? Can you tell me how that works?"
+        },
+        {
+            "part1" : "Why do you think that didn't work?",
+            "part2" : "Can you explain how we solve division problems with remainders?"
+        },
+        {
+            "part1" : "Can you explain the steps of how to solve this problem?",
+            "part2" : "We want to see how many times <denom> goes into each digit of <num>, can you tell me how that works?"
+        }
+    ]
+}

@@ -1,6 +1,7 @@
 [
   {
     "QuestionID": 500, 
+    "Zeros": true, 
     "Spoken Question": "What is 21000 divided by 3?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -11,6 +12,7 @@
   }, 
   {
     "QuestionID": 501, 
+    "Zeros": false, 
     "Spoken Question": "What is 2257 divided by 7?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -21,6 +23,7 @@
   }, 
   {
     "QuestionID": 502, 
+    "Zeros": false, 
     "Spoken Question": "What is 8118 divided by 9?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -31,6 +34,7 @@
   }, 
   {
     "QuestionID": 503, 
+    "Zeros": false, 
     "Spoken Question": "What is 5803 divided by 4?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -41,7 +45,8 @@
   }, 
   {
     "QuestionID": 504, 
-    "Spoken Question": "A nearby college has 36000 dollars to give away in scholarships. If they evenly split the money into 3 scholarships, how much money will each scholarhip have?", 
+    "Zeros": true, 
+    "Spoken Question": "A nearby college has 36000 dollars to give away in scholarships. If they evenly split the money into 3 scholarships, how much money will each scholarship have?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 
     "Answer": "12000", 
@@ -51,6 +56,7 @@
   }, 
   {
     "QuestionID": 505, 
+    "Zeros": true, 
     "Spoken Question": "What is 5700 divided by 3?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -61,6 +67,7 @@
   }, 
   {
     "QuestionID": 506, 
+    "Zeros": false, 
     "Spoken Question": "What is 7430 divided by 3?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -71,6 +78,7 @@
   }, 
   {
     "QuestionID": 507, 
+    "Zeros": false, 
     "Spoken Question": "What is 8238 divided by 6?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -81,6 +89,7 @@
   }, 
   {
     "QuestionID": 508, 
+    "Zeros": false, 
     "Spoken Question": "What is 3993 divided by 2?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -91,6 +100,7 @@
   }, 
   {
     "QuestionID": 509, 
+    "Zeros": false, 
     "Spoken Question": "A school had 4528 students sign up for the trivia teams. If each team has 4 students, how many trivia teams will the school have?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 
@@ -101,6 +111,7 @@
   }, 
   {
     "QuestionID": 510, 
+    "Zeros": true, 
     "Spoken Question": "What is 90000 divided by 6?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -111,6 +122,7 @@
   }, 
   {
     "QuestionID": 511, 
+    "Zeros": false, 
     "Spoken Question": "What is 9927 divided by 5?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -121,6 +133,7 @@
   }, 
   {
     "QuestionID": 512, 
+    "Zeros": false, 
     "Spoken Question": "What is 7408 divided by 4?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -131,6 +144,7 @@
   }, 
   {
     "QuestionID": 513, 
+    "Zeros": false, 
     "Spoken Question": "What is 6262 divided by 6?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -141,6 +155,7 @@
   }, 
   {
     "QuestionID": 514, 
+    "Zeros": false, 
     "Spoken Question": "A florist picked 8540 flowers. She wants to put them in bouquets with 6 flowers in each bouquet. How many extra flowers will the florist have after she makes all the bouquets?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 
@@ -151,6 +166,7 @@
   }, 
   {
     "QuestionID": 515, 
+    "Zeros": true, 
     "Spoken Question": "What is 6600 divided by 2?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -161,6 +177,7 @@
   }, 
   {
     "QuestionID": 516, 
+    "Zeros": false, 
     "Spoken Question": "What is 6790 divided by 8?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -171,6 +188,7 @@
   }, 
   {
     "QuestionID": 517, 
+    "Zeros": false, 
     "Spoken Question": "What is 6026 divided by 2?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -181,6 +199,7 @@
   }, 
   {
     "QuestionID": 518, 
+    "Zeros": false, 
     "Spoken Question": "What is 8265 divided by 9?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -191,6 +210,7 @@
   }, 
   {
     "QuestionID": 519, 
+    "Zeros": false, 
     "Spoken Question": "A cafeteria was putting milk cartons onto stacks. They had 6407 cartons and were putting them into stacks with 5 cartons in each stack. How many full stacks could they make?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 
@@ -201,6 +221,7 @@
   }, 
   {
     "QuestionID": 520, 
+    "Zeros": true, 
     "Spoken Question": "What is 64000 divided by 4?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -211,6 +232,7 @@
   }, 
   {
     "QuestionID": 521, 
+    "Zeros": false, 
     "Spoken Question": "What is 6982 divided by 4?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -221,6 +243,7 @@
   }, 
   {
     "QuestionID": 522, 
+    "Zeros": false, 
     "Spoken Question": "What is 7904 divided by 8?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -231,6 +254,7 @@
   }, 
   {
     "QuestionID": 523, 
+    "Zeros": false, 
     "Spoken Question": "What is 2784 divided by 5?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -241,6 +265,7 @@
   }, 
   {
     "QuestionID": 524, 
+    "Zeros": false, 
     "Spoken Question": "Robin had 9535 photos to put into a photo album. If each page holds 5 photos, how many pages will she need to complete the album?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 
@@ -251,6 +276,7 @@
   }, 
   {
     "QuestionID": 525, 
+    "Zeros": true, 
     "Spoken Question": "What is 3200 divided by 8?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -261,6 +287,7 @@
   }, 
   {
     "QuestionID": 526, 
+    "Zeros": false, 
     "Spoken Question": "What is 7059 divided by 2?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -271,6 +298,7 @@
   }, 
   {
     "QuestionID": 527, 
+    "Zeros": false, 
     "Spoken Question": "What is 4782 divided by 3?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -281,6 +309,7 @@
   }, 
   {
     "QuestionID": 528, 
+    "Zeros": false, 
     "Spoken Question": "What is 7752 divided by 7?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -291,6 +320,7 @@
   }, 
   {
     "QuestionID": 529, 
+    "Zeros": true, 
     "Spoken Question": "A restaurant needs to buy 9400 new plates. If each box has 2 plates in it, how many boxes will they need to buy?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 
@@ -301,6 +331,7 @@
   }, 
   {
     "QuestionID": 530, 
+    "Zeros": true, 
     "Spoken Question": "What is 54000 divided by 6?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -311,6 +342,7 @@
   }, 
   {
     "QuestionID": 531, 
+    "Zeros": false, 
     "Spoken Question": "What is 8431 divided by 3?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -321,6 +353,7 @@
   }, 
   {
     "QuestionID": 532, 
+    "Zeros": false, 
     "Spoken Question": "What is 5765 divided by 5?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -331,6 +364,7 @@
   }, 
   {
     "QuestionID": 533, 
+    "Zeros": false, 
     "Spoken Question": "What is 6762 divided by 4?", 
     "WordProblem": false, 
     "Difficulty Level": 5, 
@@ -341,6 +375,7 @@
   }, 
   {
     "QuestionID": 534, 
+    "Zeros": false, 
     "Spoken Question": "Megan had 2635 songs on her phone. If she wanted to put the songs equally into 3 different playlists, how many songs would she have left over?", 
     "WordProblem": true, 
     "Difficulty Level": 5, 

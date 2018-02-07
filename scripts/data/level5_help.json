@@ -1,0 +1,242 @@
+{
+    "Examples" : [
+        {
+            "numerator" : 235,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 737,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 969,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 462,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 637,
+            "denominator" : 6,
+            "zeros": false
+        },
+        {
+            "numerator" : 147,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 530,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 879,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 569,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 785,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 127,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 7657,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 7690,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 6741,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 9049,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 3500,
+            "denominator" : 5,
+            "zeros": true
+        },
+        {
+            "numerator" : 62000,
+            "denominator" : 2,
+            "zeros": true
+        },
+        {
+            "numerator" : 6300,
+            "denominator" : 3,
+            "zeros": true
+        },
+        {
+            "numerator" : 94000,
+            "denominator" : 2,
+            "zeros": true
+        },
+        {
+            "numerator" : 9600,
+            "denominator" : 4,
+            "zeros": true
+        },
+        {
+            "numerator" : 45000,
+            "denominator" : 3,
+            "zeros": true
+        }
+    ],
+    "Tutorials" : [
+        {
+            "numerator" : 873,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 581,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 417,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 612,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 351,
+            "denominator" : 6,
+            "zeros": false
+        },
+        {
+            "numerator" : 465,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 428,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 766,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 393,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 257,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 995,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 6719,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 8938,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 5261,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 7311,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 9300,
+            "denominator" : 3,
+            "zeros": true
+        },
+        {
+            "numerator" : 24000,
+            "denominator" : 8,
+            "zeros": true
+        },
+        {
+            "numerator" : 5100,
+            "denominator" : 3,
+            "zeros": true
+        },
+        {
+            "numerator" : 75000,
+            "denominator" : 5,
+            "zeros": true
+        },
+        {
+            "numerator" : 6000,
+            "denominator" : 4,
+            "zeros": true
+        },
+        {
+            "numerator" : 38000,
+            "denominator" : 2,
+            "zeros": true
+        }
+    ],
+    "ThinkAloudPrompts" : [
+        {
+            "part1" : "What do you think is the first step in solving this problem?",
+            "part2" : "How many times does <denom> go into the first digit of <num>? What do you do after that?"
+        },
+        {
+            "part1" : "Can you explain how it works to divide, multiply, and subtract?",
+            "part2" : "How do you bring it on down and bring it on back? Can you tell me?"
+        },
+        {
+            "part1" : "Can you explain your last answer? Do you know why it was incorrect?",
+            "part2" : "We begin by seeing how many times <denom> goes into the first digit of <num>, then what do we do after that?"
+        },
+        {
+            "part1" : "Where do you think you went wrong last time?",
+            "part2" : "How do you think <denom> goes into <num>? Can you explain the steps?"
+        },
+        {
+            "part1" : "What steps do you need to do in order to solve this division problem? Can you explain them to me?",
+            "part2" : "Can you tell me what it means to divide, multiply, and subtract, bring it on down and bring it on back?"
+        },
+        {
+            "part1" : "Can you tell me how <denom> goes into <num>?",
+            "part2" : "After we see how many times <denom> goes into the first digit of <num>, then what do we do? Please explain."
+        }
+    ]
+}
