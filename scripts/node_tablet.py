@@ -56,15 +56,15 @@ class TabletSession:
         self.lessons = []
 
         # open files with tutorials and questions. 
-        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level1examples.json", 'r') as example_file1:
+        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level1_help.json", 'r') as example_file1:
             self.lessons.append(json.load(example_file1))
-        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level2examples.json", 'r') as example_file2:
+        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level2_help.json", 'r') as example_file2:
             self.lessons.append(json.load(example_file2))
-        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level3examples.json", 'r') as example_file3:
+        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level3_help.json", 'r') as example_file3:
             self.lessons.append(json.load(example_file3))
-        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level4examples.json", 'r') as example_file4:
+        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level4_help.json", 'r') as example_file4:
             self.lessons.append(json.load(example_file4))
-        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5examples.json", 'r') as example_file5:
+        with open(rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/level5_help.json", 'r') as example_file5:
             self.lessons.append(json.load(example_file5))
 
         level_one_questions = []
