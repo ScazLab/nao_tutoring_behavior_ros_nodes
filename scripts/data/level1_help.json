@@ -123,28 +123,49 @@
     ],
     "ThinkAloudPrompts" : [
         {
-            "part1" : "How do you think you can solve this problem?",
-            "part2" : "Division is the opposite of multiplication, how do you think that works for this problem?"
+            "part1" : "How do you think you can solve this problem? Please tell me out loud.",
+            "part2" : "Division is the opposite of multiplication, can you tell me how you think that works for this problem?",
+            "wp" : false
         },
         {
             "part1" : "Can you tell me how you can form this question as a multiplication problem?",
-            "part2" : "Can you explain how many times <denom> goes into <num>?"
+            "part2" : "Can you explain how many times <denom> goes into <num>?",
+            "wp" : false
         },
         {
-            "part1" : "How do you divide <num> by <denom>?",
-            "part2" : "Can we think about this problem like a multiplication problem? How do we do that?"
+            "part1" : "How do you divide <num> by <denom>? Please think out loud.",
+            "part2" : "Can we think about this problem like a multiplication problem? How do we do that?",
+            "wp" : false
         },
         {
             "part1" : "Why do you think your last attempt was incorrect? Can you explain why you think so?",
-            "part2" : "How many times does <denom> go into <num>? How does this help us solve this problem?"
+            "part2" : "How many times does <denom> go into <num>? How does this help us solve this problem?",
+            "wp" : false
         },
         {
-            "part1" : "Why do you think that did not work?",
-            "part2" : "Can you explain how we can think of this problem like a multiplication problem?"
+            "part1" : "Why do you think that didn't work? Please tell me out loud.",
+            "part2" : "Can you explain how we can think of this problem like a multiplication problem?",
+            "wp" : false
         },
         {
             "part1" : "Can you explain the steps of how to solve this problem?",
-            "part2" : "What number can we multiply by <denom> in order to get <num>? Can you explain?"
+            "part2" : "What number can we multiply by <denom> in order to get <num>? Can you explain?",
+            "wp" : false
+        },
+        {
+            "part1" : "For this problem, do you think we are multiplying the numbers or dividing them? Can you explain?",
+            "part2" : "Can you tell me how you think you can use division with the numbers <denom> and <num> in this problem?",
+            "wp" : true
+        },
+        {
+            "part1" : "What do you think your first step is in solving this problem? Please explain.",
+            "part2" : "How do you think you can use <num> and <denom> to solve this problem? Please think out loud.",
+            "wp" : true
+        },
+        {
+            "part1" : "Can you explain the process of how to solve this problem? How are you thinking about it?",
+            "part2" : "What ways can you combine <num> and <denom> to solve this problem? Do you think you want to use multiplication or division? Can you tell me why?",
+            "wp" : true
         }
     ]
 }

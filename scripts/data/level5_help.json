@@ -216,27 +216,48 @@
     "ThinkAloudPrompts" : [
         {
             "part1" : "What do you think is the first step in solving this problem?",
-            "part2" : "How many times does <denom> go into the first digit of <num>? What do you do after that?"
+            "part2" : "How many times does <denom> go into the first digit of <num>? What do you do after that?",
+            "wp": false
         },
         {
             "part1" : "Can you explain how it works to divide, multiply, and subtract?",
-            "part2" : "How do you bring it on down and bring it on back? Can you tell me?"
+            "part2" : "How do you bring it on down and bring it on back? Can you tell me?",
+            "wp": false
         },
         {
             "part1" : "Can you explain your last answer? Do you know why it was incorrect?",
-            "part2" : "We begin by seeing how many times <denom> goes into the first digit of <num>, then what do we do after that?"
+            "part2" : "We begin by seeing how many times <denom> goes into the first digit of <num>, then what do we do after that?",
+            "wp": false
         },
         {
             "part1" : "Where do you think you went wrong last time?",
-            "part2" : "How do you think <denom> goes into <num>? Can you explain the steps?"
+            "part2" : "How do you think <denom> goes into <num>? Can you explain the steps?",
+            "wp": false
         },
         {
             "part1" : "What steps do you need to do in order to solve this division problem? Can you explain them to me?",
-            "part2" : "Can you tell me what it means to divide, multiply, and subtract, bring it on down and bring it on back?"
+            "part2" : "Can you tell me what it means to divide, multiply, and subtract, bring it on down and bring it on back?",
+            "wp": false
         },
         {
             "part1" : "Can you tell me how <denom> goes into <num>?",
-            "part2" : "After we see how many times <denom> goes into the first digit of <num>, then what do we do? Please explain."
+            "part2" : "After we see how many times <denom> goes into the first digit of <num>, then what do we do? Please explain.",
+            "wp": false
+        },
+        {
+            "part1" : "Can you explain to me how to use 'divide, multiply, and subtract, bring it on down and bring it on back' in this problem?",
+            "part2" : "When dividing <num> by <denom>, can you explain to me how you divide <denom> into each of the digits of <num>?",
+            "wp" : true
+        },
+        {
+            "part1" : "What do you think your first step is in solving this problem? Please explain.",
+            "part2" : "Please tell me out loud how to use 'divide, multiply, and subtract, bring it on down and bring it on back' in this problem.",
+            "wp" : true
+        },
+        {
+            "part1" : "Can you explain the process of how to solve this problem? How are you thinking about it?",
+            "part2" : "How many times does <denom> go into the first part of <num>? What happens after that? Please explain it to me.",
+            "wp" : true
         }
     ]
 }
