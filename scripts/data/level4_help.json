@@ -101,28 +101,49 @@
     ],
     "ThinkAloudPrompts" : [
         {
-            "part1" : "How you think you can solve this problem?",
-            "part2" : "How do we divide <num> by <denom> when there is a remainder? Can you tell me?"
+            "part1" : "How you think you can solve this problem? Please think out loud.",
+            "part2" : "How do we divide <num> by <denom> when there is a remainder? Can you tell me?",
+            "wp" : false
         },
         {
             "part1" : "Can you tell me how you're thinking about solving this problem?",
-            "part2" : "How many times does <denom> go into <num>?"
+            "part2" : "How many times does <denom> go into <num>? Please think out loud.",
+            "wp" : false
         },
         {
-            "part1" : "How do you divide <num> by <denom>?",
-            "part2" : "We have to try and see if <denom> goes into each digit of <num>. How do we do that?"
+            "part1" : "How do you divide <num> by <denom>? Please tell me how.",
+            "part2" : "We have to try and see if <denom> goes into each digit of <num>. How do we do that?",
+            "wp" : false
         },
         {
             "part1" : "Why do you think your last attempt was incorrect? Can you explain why you think so?",
-            "part2" : "Did you follow: divide, multiply, and subtract, bring it on down and bring it on back? Can you tell me how that works?"
+            "part2" : "Did you follow: divide, multiply, and subtract, bring it on down and bring it on back? Can you tell me how that works?",
+            "wp" : false
         },
         {
-            "part1" : "Why do you think that didn't work?",
-            "part2" : "Can you explain how we solve division problems with remainders?"
+            "part1" : "Why do you think that didn't work? Please explain out loud.",
+            "part2" : "Can you explain how we solve division problems with remainders?",
+            "wp" : false
         },
         {
             "part1" : "Can you explain the steps of how to solve this problem?",
-            "part2" : "We want to see how many times <denom> goes into each digit of <num>, can you tell me how that works?"
+            "part2" : "We want to see how many times <denom> goes into each digit of <num>, can you tell me how that works?",
+            "wp" : false
+        },
+        {
+            "part1" : "What steps do you need to complete in order to do this problem? Can you try to tell me how you're doing it?",
+            "part2" : "How are you dividing <num> by <denom> in this problem? Please think out loud.",
+            "wp" : true
+        },
+        {
+            "part1" : "How are you using division to solve this problem? Can you tell me?",
+            "part2" : "What steps do you need to take to divide <num> by <denom> in this problem? Please explain.",
+            "wp" : true
+        },
+        {
+            "part1" : "<denom> and <num> are the two numbers in this problem, can you tell me the steps of how to use these numbers to solve the problem?",
+            "part2" : "How do you divide <num> by <denom> to solve this problem? Please think out loud.",
+            "wp" : true
         }
     ]
 }
