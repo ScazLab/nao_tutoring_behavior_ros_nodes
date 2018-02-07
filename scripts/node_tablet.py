@@ -392,7 +392,13 @@ class TabletSession:
             self.example_step += 1
 
             # get the steps for this example from the example_generation code
-            self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+            if self.current_level == 5: #make sure help matches whether its a zeros question
+                isZeros = bool(self.questions[self.current_level][self.current_question]["Zeros"])
+                self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                while bool(self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]["zeros"]) != isZeros:
+                    self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+            else:
+                self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
             self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
             (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
             self.current_tutorial["SpokenText"] = robot_speech
@@ -402,7 +408,7 @@ class TabletSession:
             # send a message to the tablet to show the structure (for a tutorial) with the numerator and denominator and all the answers it should expect
             # this is how it will verify the student's work
             msg_to_tablet = "SHOWSTRUCTURE-TUTORIAL;" + str(self.current_tutorial["numerator"]) + "-" + str(self.current_tutorial["denominator"]) + ";" + self.current_tutorial["Answers"]
-            tablet_msg.robotSpeech = "Let's look at this example with the box structure. What is " + str(self.current_tutorial["numerator"]) + " divided by " + str(self.current_tutorial["denominator"]) + " Try to fill in the first step of boxes."
+            tablet_msg.robotSpeech = "Let's look at this example with the box structure. What is " + str(self.current_tutorial["numerator"]) + " divided by " + str(self.current_tutorial["denominator"]) + "? Try to fill in the first step of the problem using the boxes."
             self.conn.send(msg_to_tablet + "\n")
             print "sent" + msg_to_tablet
             self.tablet_inactivity_pub.publish(tablet_msg)
@@ -413,16 +419,22 @@ class TabletSession:
                 msg_to_tablet = "FILLSTRUCTURE;"                                                            # tablet a message to fill in the boxes for them
                 self.conn.send(msg_to_tablet + "\n")                                                        # Note: "FILLSTRUCTURE;" with no specified numbers will fill in
                 print "sent" + msg_to_tablet                                                                # all enabled boxes (i.e. the current step), but numbers can be
-                tablet_msg.robotSpeech = "Here is the answer to this step."                                 # be specified to indicate the boxes to fill in (see Readme)
+                phrases = ["Here is the answer to this step.", "Let me fill in the answers to this step for you.", "Let me help you with this step by filling it in for you."]                              # be specified to indicate the boxes to fill in (see Readme)
+                speech  = random.choice(phrases)
+                tablet_msg.robotSpeech = speech                                 
                 
                 self.tutorial_step_attempts = 0
                 self.tablet_inactivity_pub.publish(tablet_msg)
             
             else:
-                if (status.startswith("INCOMPLETE")) :                                                      # otherwise, encourage them to try again
-                    tablet_msg.robotSpeech = "Fill in all the boxes for this step."
+                if (status.startswith("INCOMPLETE")) :  # otherwise, encourage them to try again
+                    phrases = ["Make sure to fill in all the boxes for this step.", "Dont forget to fill in all the blue boxes!", "Fill in all the boxes and then check your answers again."]
+                    speech  = random.choice(phrases)
+                    tablet_msg.robotSpeech = speech
                 else:
-                    tablet_msg.robotSpeech = "Not quite. Try filling in the boxes again."
+                    phrases = ["Not quite. Try filling in the boxes in red again.", "Thats not quite right. Look at the boxes marked in red and try again.", "Try again by fixing the boxes marked in red.", "The boxes marked in red are incorrect. Give it another try."]
+                    speech  = random.choice(phrases)
+                    tablet_msg.robotSpeech = speech
                 self.tutorial_step_attempts += 1
                 self.tablet_inactivity_pub.publish(tablet_msg)
 
@@ -430,7 +442,9 @@ class TabletSession:
             self.tutorial_step_attempts = 0
             self.example_step += 1
             print self.example_step
-            tablet_msg.robotSpeech = "Very good."
+            phrases = ["Good job!", "Well done!", "Very good!", "Thats right!", "Thats correct!"]
+            speech  = random.choice(phrases)
+            tablet_msg.robotSpeech = speech
             self.tablet_inactivity_pub.publish(tablet_msg)
 
         else:
@@ -463,7 +477,13 @@ class TabletSession:
             tablet_msg.robotSpeech = self.current_example["SpokenText"][self.example_step]
   
         if (self.example_step == 0):                               # in the first step, get the steps for this example from the generation code 
-            self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+            if self.current_level == 5: #make sure help matches whether its a zeros question
+                isZeros = bool(self.questions[self.current_level][self.current_question]["Zeros"])
+                self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                while bool(self.lessons[self.current_level - 1]["Examples"][self.example_number]["zeros"]) != isZeros:
+                    self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+            else:
+                self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
             self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
             (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_example["numerator"], self.current_example["denominator"])
             self.current_example["SpokenText"] = robot_speech

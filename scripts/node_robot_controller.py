@@ -109,7 +109,7 @@ class RobotTutor:
             if ('DONE' in data.msgType):
                 self.in_activity = False
                 print "done with activity"
-                #self.robot_speech_pub.publish("DONE") #aditi
+                self.robot_speech_pub.publish("DONE") #aditi
 
             else:
                 print "setting true 3"
@@ -172,7 +172,12 @@ class RobotTutor:
                     print "Sent done"
  
         else:
-            if data.robotSpeech!="":
+            if data.msgType == "START":
+                self.sessionNum = data.questionType
+                self.robot_speech_pub.publish("INTRO-DONE")
+                print "Sent done after INTRO"
+
+            elif data.robotSpeech!="":
                 self.robot_speech_pub.publish(data.robotSpeech) 
                 print "Nao says in tablet callback: " + data.robotSpeech
                 self.robot_speech_pub.publish("DONE")

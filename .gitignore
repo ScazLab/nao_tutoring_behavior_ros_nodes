@@ -1,2 +1,3 @@
 scripts/*.pyc
 scripts/logfiles/
+scripts/nao_libs2/*.pyc

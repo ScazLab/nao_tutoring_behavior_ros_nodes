@@ -97,7 +97,7 @@ def rec_get_boxes(line, box, numerator, denominator, digits_left):
 	step_text = str(denominator) + " goes into " +  str(step_numerator) + ". " + str(step_quotient) + " times "
 	step_text_part2 = " so we can subtract " + str(step_product) + " from " + str(step_numerator) 
 	step_text += step_text_part2
-	step_text_part2 = ". We get " + str(step_remainder)
+	step_text_part2 = ". This gives us " + str(step_remainder) + ". "
 	step_text += step_text_part2
 
 	spoken_text.append(step_text)
@@ -128,7 +128,7 @@ def rec_get_boxes(line, box, numerator, denominator, digits_left):
 		if (next_step_numerator < 10):
 			next_box = box + 1
 		
-		step_text = "Now we can pull down " + str(pull_down) + " from the numerator. For the next step we have " + str(next_step_numerator)
+		step_text = "Now we can bring down the " + str(pull_down) + " from the dividend. Then, for the next step we have " + str(next_step_numerator) + "."
 		if (step_numerator > 10):
 			step_boxes =  str(line+1) + "-" + str(box+2) + "-" + str(pull_down) 
 		else:
@@ -146,12 +146,12 @@ def rec_get_boxes(line, box, numerator, denominator, digits_left):
 	else :
 		## END of Numerator
 		if (step_remainder != 0):
-			step_text = "The remainder is " + str(step_remainder)
+			step_text = "The remainder is " + str(step_remainder) + "."
 			step_boxes = "0-" + str(ans_box +1) + "-R:0-" + str(ans_box+2) + "-" + str(step_remainder) 
 			tablet_steps.append(step_boxes)
 
 		else:
-			step_text = "This is the end of the numerator."
+			step_text = "There are no more digits left to bring down."
 
 		print "digits left " + str(digits_left) + " this is the end"
 

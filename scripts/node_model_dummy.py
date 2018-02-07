@@ -38,7 +38,8 @@ class TutoringModel:
         self.tries = 0
 
         self.attempt_times = []
-        self.total_num_help_actions = 0
+        #self.total_num_help_actions = 0
+        self.fixed_help_index = 0
 
         self.inSession = False
 
@@ -153,7 +154,7 @@ class TutoringModel:
         control_message.nextStep = "TICTACTOE"
         control_message.questionNum = self.current_question
         control_message.questionLevel = self.level
-        control_message.robotSpeech = "Lets play a game of tic-tac-toe. You will be exes, and I will be ohs. You can go first. Click any square on the board."
+        control_message.robotSpeech = "Lets take a break and play a game of tic-tac-toe. You will be exes, and I will be ohs. You can go first. Click any square on the board."
         
         question_id = self.questions[self.level][self.current_question]['QuestionID']
         self.log_transaction("TICTACTOE-START", question_id, self.level)
@@ -310,7 +311,8 @@ class TutoringModel:
             #placeholder to potentially sleep here if we want model to wait a few seconds before giving help
 
 
-        if (data.msgType == 'CA'): # respond to correct answer                  
+        if (data.msgType == 'CA'): # respond to correct answer
+            self.fixed_help_index = 0                  
             self.log_transaction("CORRECT", question_id, data.otherInfo)
             self.next_question()                                                
         
@@ -331,17 +333,17 @@ class TutoringModel:
                 #self.give_think_aloud()
                 #self.give_hint()
                 if self.expGroup==0: #implement fixed policy
-                    if self.total_num_help_actions % 4 == 0:
+                    if self.fixed_help_index == 0:
                         self.give_think_aloud()
-                    elif self.total_num_help_actions % 4 == 1:
+                    elif self.fixed_help_index == 1:
                         self.give_hint()
-                    elif self.total_num_help_actions % 4 == 2:
+                    elif self.fixed_help_index == 2:
                         self.give_example()
-                    elif self.total_num_help_actions % 4 == 3:
+                    elif self.fixed_help_index >= 3:
                         self.give_tutorial()
                     else:
                         print "should not be happening"
-                    self.total_num_help_actions += 1
+                    self.fixed_help_index += 1
 
 
                 else: #placeholder action selection for actual model
