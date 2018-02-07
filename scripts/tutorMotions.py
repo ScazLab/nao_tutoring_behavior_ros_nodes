@@ -128,18 +128,18 @@ class Gesture:
         self.bring_to_sit()
 
     def move_on_to_next_speech(self):
-        phrases = ["Try the next one! Press the button on the screen!", "Use the button on the screen and lets go on to the next question!", "Press the next question button on the screen and let's move on!"]
+        phrases = ["Press the next question button!", "Lets go to the next question!", "Lets move on to the next question!", "Hit the next question button!"]
         speech  = random.choice(phrases)
         self.animated_speech_return_to_neutral(speech)
 
     def correct_answer_speech(self):           
-        phrases = ["Good job!", "Well done!", "Very good!", "Good answer!", "That's correct!"]
+        phrases = ["Good job!", "Well done!", "Very good!", "Good answer!", "That's correct!", "Nice!"]
         speech  = random.choice(phrases)
         self.animated_speech_return_to_neutral(speech)
 
 
     def incorrect_answer_speech(self):            
-        phrases = ["That's not quite right.", "Oh no. That's not right"]
+        phrases = ["That's not quite right.", "That's not correct.", "That is incorrect.", "That's not right.", "That's incorrect.", "That's not the answer."]
         speech  = random.choice(phrases)
         self.animated_speech_return_to_neutral(speech)
 

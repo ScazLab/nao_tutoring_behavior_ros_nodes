@@ -435,7 +435,7 @@ class TabletSession:
             # send a message to the tablet to show the structure (for a tutorial) with the numerator and denominator and all the answers it should expect
             # this is how it will verify the student's work
             msg_to_tablet = "SHOWSTRUCTURE-TUTORIAL;" + str(self.current_tutorial["numerator"]) + "-" + str(self.current_tutorial["denominator"]) + ";" + self.current_tutorial["Answers"]
-            tablet_msg.robotSpeech = "Let's look at this example with the box structure. What is " + str(self.current_tutorial["numerator"]) + " divided by " + str(self.current_tutorial["denominator"]) + "? Try to fill in the first step of the problem using the boxes."
+            tablet_msg.robotSpeech = "Let's look at this example with the box structure. What is " + str(self.current_tutorial["numerator"]) + " divided by " + str(self.current_tutorial["denominator"]) + "? Try to fill in the first step."
             self.conn.send(msg_to_tablet + "\n")
             print "sent" + msg_to_tablet
             self.tablet_inactivity_pub.publish(tablet_msg)
