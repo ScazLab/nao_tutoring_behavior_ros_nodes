@@ -138,6 +138,13 @@ class TabletSession:
                     self.example_step = 0                                           # in other levels, show an example of filling in the box structure
                     self.run_example()
 
+            elif (data.nextStep == "SETUP-SESSION"):
+                self.expGroup = int(data.otherInfo)
+                messageToTablet = "SETUP;" + str(self.expGroup)
+                self.conn.send(messageToTablet+"\n")
+                print "Sent message to tablet: " + messageToTablet
+
+
             elif ("QUESTION" in data.nextStep):                                 # send the next question number to the tablet -- it also has access to the JSON
                 if (self.current_level != data.questionLevel):                    # so only the level and question number need to be sent
                     self.tutorial_number = 0

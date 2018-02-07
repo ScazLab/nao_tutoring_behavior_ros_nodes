@@ -80,6 +80,15 @@ class TutoringModel:
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
         
+    def set_up_session(self):
+        control_message = ControlMsg()
+        control_message.nextStep = "SETUP-SESSION"
+        control_message.otherInfo = str(self.expGroup)
+
+        self.decisions_pub.publish(control_message)
+        print "sent: ", control_message
+
+
     def first_question(self):
         self.total_num_questions += 1
         self.tries = 0
@@ -91,7 +100,7 @@ class TutoringModel:
 
         print self.level, self.current_question, self.questions[self.level][self.current_question]
         
-        time.sleep(3) #wait a little before sending first question message so robot can finish intro
+        #time.sleep(3) #wait a little before sending first question message so robot can finish intro
         self.decisons_pub.publish(control_message)
         print "sent:" , control_message
 
@@ -437,6 +446,7 @@ class TutoringModel:
             #time.sleep(3) #wait a bit before sending first question - do we need this?
             #self.first_question()
             #self.next_question() #aditi - trying this instead since send_first_question does not exist
+            self.set_up_session()
         
         elif(data.msgType == 'END'):
             self.inSession = False

@@ -70,8 +70,8 @@ class RobotTutor:
 
         print "Nao says: " + data.robotSpeech
         if (self.goNao!= None):
-            id = self.goNao.animated_speech_if_non_empty(data.robotSpeech)
-
+            id = self.goNao.genSpeech(data.robotSpeech)
+            #id = self.goNao.animated_speech_if_non_empty(data.robotSpeech)
 
         else:
             print "simulating waiting time"
@@ -93,9 +93,9 @@ class RobotTutor:
 
         print "Nao says: " + data.robotSpeech
 
-        if (self.goNao != None):                            # right now, the robot is just saying it, but I'm going to make sure the actions are
-            self.goNao.look()                               # good here @TODO
-            id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech) 
+        if (self.goNao != None):                            # right now, the robot is just saying it, but I'm going to make sure the actions are good here
+            self.goNao.look()
+            id = self.goNao.genSpeech(data.robotSpeech) 
             #self.goNao.speechDevice.wait(id, 0)
         else:
             time.sleep(1)
