@@ -184,11 +184,13 @@ class Gesture:
 
         if sessionNum == 1:
             self.animatedSpeech.say("We will do some math problems together today.", self.configuration)
-            self.animatedSpeech.say("I will put the math problems on the tablet in front of you.", self.configuration)
+            self.animatedSpeech.say("I will put the problems on the tablet in front of you. You can use the tablet to enter your answer to each problem.", self.configuration)
+            self.animatedSpeech.say("If I ask you a question about how to solve a problem or what steps we use to solve a problem, you can answer me out loud.", self.configuration)
             id = self.animatedSpeech.say("Great! Let's get started!", self.configuration)
             self.bring_to_sit()
         elif sessionNum == 2:
-            id = self.animatedSpeech.say("Lets get started on some more problems!", self.configuration)
+            self.animatedSpeech.say("Lets get started on some more problems!", self.configuration)
+            id = self.animatedSpeech.say("Remember, you can enter your answers on the tablet, and when I ask you a question about how to solve the problem, you can talk to me out loud.", self.configuration)
             self.bring_to_sit()
         elif sessionNum == 3:
             id = self.animatedSpeech.say("Lets try doing some more problems today!", self.configuration)
