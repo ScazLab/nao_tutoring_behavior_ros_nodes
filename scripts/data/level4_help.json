@@ -101,7 +101,7 @@
     ],
     "ThinkAloudPrompts" : [
         {
-            "part1" : "How you think you can solve this problem? Please think out loud.",
+            "part1" : "How do you think you can solve this problem? Please think out loud.",
             "part2" : "How do we divide <num> by <denom> when there is a remainder? Can you tell me?",
             "wp" : false
         },

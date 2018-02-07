@@ -301,13 +301,13 @@
   }, 
   {
     "QuestionID": 330, 
-    "Spoken Question": "What is 26 divided by 2?", 
+    "Spoken Question": "What is 36 divided by 2?", 
     "WordProblem": false, 
     "Difficulty Level": 3, 
-    "Answer": "13", 
+    "Answer": "18", 
     "Denominator": "2", 
-    "Numerator": "26", 
-    "Spoken Answer": "The correct answer is 13."
+    "Numerator": "36", 
+    "Spoken Answer": "The correct answer is 18."
   }, 
   {
     "QuestionID": 331, 
@@ -341,12 +341,12 @@
   }, 
   {
     "QuestionID": 334, 
-    "Spoken Question": "What is 86 divided by 2?", 
+    "Spoken Question": "What is 94 divided by 2?", 
     "WordProblem": false, 
     "Difficulty Level": 3, 
-    "Answer": "43", 
+    "Answer": "47", 
     "Denominator": "2", 
-    "Numerator": "86", 
-    "Spoken Answer": "The correct answer is 43."
+    "Numerator": "94", 
+    "Spoken Answer": "The correct answer is 47."
   }
 ]
