@@ -25,6 +25,7 @@ doing_question_state = 1
 break_state = 2
 lesson_state = 3
 after_action_state = 4
+session_ended_state = 5
 
 class TabletSession:
     def __init__(self, host, port):
@@ -127,6 +128,8 @@ class TabletSession:
 
         if (self.state == lesson_state or self.state == break_state):         # this shouldn't happen, but if the model tells us to do something while we are already 
             print "ignoring message because we are doing something else now"    # doing another activity, ignore the message
+        elif self.state == session_ended_state:
+            print "not doing anything because the session ended"
         else:
             self.current_question = data.questionNum #aditi - we need to get this info from the model
             self.current_level = data.questionLevel #aditi - we need to get this info from the model
@@ -648,6 +651,7 @@ class TabletSession:
                         self.run_boxes_tutorial(msg.split(";")[1])
 
                 elif msgType == 'END':
+                    self.state = session_ended_state
                     self.tablet_pub.publish(tablet_msg)
 
             except KeyboardInterrupt:

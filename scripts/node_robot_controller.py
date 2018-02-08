@@ -39,6 +39,7 @@ class RobotTutor:
         self.current_question = None 
 
         self.in_activity = False
+        self.in_session = False
 
         rospy.init_node('robot_controller', anonymous = True)
         self.robot_speech_pub = rospy.Publisher('robot_speech_msg', String, queue_size=10)
@@ -132,6 +133,7 @@ class RobotTutor:
         if (self.goNao!= None): 
             if (data.msgType == "START"):
                 # check questionType for the session number
+                self.in_session = True
                 self.sessionNum = data.questionType
                 id = self.goNao.session_intro(int(self.sessionNum))            # at the start, give an intro speech
                 #id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
@@ -155,6 +157,7 @@ class RobotTutor:
                 print "Sent done"
             
             elif (data.msgType == "END"):
+                self.in_session = False
                 print "robot should say bye at the end of each session" #TODO: finish this block with appropriate nao behavior and speech
                 self.goNao.session_goodbye(int(self.sessionNum))
             
@@ -174,9 +177,14 @@ class RobotTutor:
  
         else:
             if data.msgType == "START":
+                self.in_session = True
                 self.sessionNum = data.questionType
                 self.robot_speech_pub.publish("INTRO-DONE")
                 print "Sent done after INTRO"
+
+            elif (data.msgType == "END"):
+                self.in_session = False
+                print "robot should say bye at the end of each session" #TODO: finish this block with appropriate nao behavior and speech
 
             elif data.robotSpeech!="":
                 self.robot_speech_pub.publish(data.robotSpeech) 
@@ -187,24 +195,29 @@ class RobotTutor:
     def model_msg_callback(self, data):                             # respond to messages from the model
         rospy.loginfo(rospy.get_caller_id() + " I heard %s ", data)
 
-        if ("QUESTION" in data.nextStep and data.nextStep != "QUESTION-REPEAT" and data.nextStep!="QUESTION-FIRST"):
-            self.current_question_text = data.robotSpeech;          # if we are going on to the next question, save the text of the question
-            print "Setting question text"                           # to read only when it is shown
-            if (self.goNao!= None):
-                if (not self.in_activity):
-                    print "enabling next question button, but do not need to say anything"
-                    self.goNao.move_on_to_next_speech()
+        if self.in_session: #only do this stuff if the session hasn't ended
 
-        else:                                                       # otherwise, just say what the model told us to say
-            if data.robotSpeech!="":
-                self.robot_speech_pub.publish(data.robotSpeech) 
-            if (self.goNao!= None):
-                if (not self.in_activity):
-                    id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
-                #self.goNao.speechDevice.wait(id, 0)
-            print "Nao says: " + data.robotSpeech
-            if data.robotSpeech!="":
-                self.robot_speech_pub.publish("DONE")
+            if ("QUESTION" in data.nextStep and data.nextStep != "QUESTION-REPEAT" and data.nextStep!="QUESTION-FIRST"):
+                self.current_question_text = data.robotSpeech;          # if we are going on to the next question, save the text of the question
+                print "Setting question text"                           # to read only when it is shown
+                if (self.goNao!= None):
+                    if (not self.in_activity):
+                        print "enabling next question button, but do not need to say anything"
+                        self.goNao.move_on_to_next_speech()
+
+            else:                                                       # otherwise, just say what the model told us to say
+                if data.robotSpeech!="":
+                    self.robot_speech_pub.publish(data.robotSpeech) 
+                if (self.goNao!= None):
+                    if (not self.in_activity):
+                        id = self.goNao.animated_speech_return_to_neutral(data.robotSpeech)
+                    #self.goNao.speechDevice.wait(id, 0)
+                print "Nao says: " + data.robotSpeech
+                if data.robotSpeech!="":
+                    self.robot_speech_pub.publish("DONE")
+
+        else:
+            print "not doing anything because session has ended"
 
 
     def read_question(self):                                        # read the current question -- called when the tablet sends a message indicating

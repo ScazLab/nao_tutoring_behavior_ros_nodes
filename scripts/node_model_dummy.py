@@ -341,7 +341,7 @@ class TutoringModel:
                 #self.give_tutorial()
                 #self.give_think_aloud()
                 #self.give_hint()
-		time.sleep(5) #lets wait a little before giving help
+                time.sleep(5) #lets wait a little before giving help
                 if self.expGroup==0: #implement fixed policy
                     if self.fixed_help_index == 0:
                         self.give_think_aloud()
