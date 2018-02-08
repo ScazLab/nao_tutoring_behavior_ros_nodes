@@ -336,7 +336,7 @@ class TutoringModel:
             #for experimental, log the model's action, then do it.
             
             if(self.tries >= 3):
-		time.sleep(2)
+                time.sleep(2)
                 self.next_question()
             
             else:
