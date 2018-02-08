@@ -986,6 +986,38 @@ class Gesture:
 
 
     def releaseNao(self):
+	# DISABLE DIAGNOSIS BEEPING
+        try:
+            self.diagnosis = ALProxy("ALDiagnosis", self.host, self.port)
+            self.diagnosis.setEnableNotification(True)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
+        # DISABLE BATTERY NOTIFICATIONS
+        try:
+            self.battery = ALProxy("ALBattery", self.host, self.port)
+            self.battery.enablePowerMonitoring(True)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
+        # DISABLE TEMPERATURE NOTIFICATIONS
+        try:
+            self.bodyTemperature = ALProxy("ALBodyTemperature", self.host, self.port)
+            self.bodyTemperature.setEnableNotifications(True)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
+        # MOTION DEVICE FOR MOVEMENTS
+        try:
+            self.motion = ALProxy("ALMotion", self.host, self.port)
+            self.motion.setEnableNotifications(True)
+        except Exception, e:
+            print "Error when creating motion device proxy:" + str(e)
+            exit(1)
+
         try:
             self.posture.goToPosture("Sit", 1.0)
             self.motion.stiffnessInterpolation("Body",0.0,self.stiffness)

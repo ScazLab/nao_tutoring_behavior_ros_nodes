@@ -85,8 +85,8 @@ class TutoringModel:
         control_message.nextStep = "SETUP-SESSION"
         control_message.otherInfo = str(self.expGroup)
 
-        self.decisions_pub.publish(control_message)
-        print "sent: ", control_message
+        #self.decisons_pub.publish(control_message)
+        #print "sent: ", control_message
 
 
     def first_question(self):
