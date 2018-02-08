@@ -323,6 +323,7 @@ class TutoringModel:
         if (data.msgType == 'CA'): # respond to correct answer
             self.fixed_help_index = 0                  
             self.log_transaction("CORRECT", question_id, data.otherInfo)
+	    time.sleep(2)
             self.next_question()                                                
         
         elif (data.msgType == 'IA'): # respond to incorrect answer
@@ -335,6 +336,7 @@ class TutoringModel:
             #for experimental, log the model's action, then do it.
             
             if(self.tries >= 3):
+		time.sleep(2)
                 self.next_question()
             
             else:
