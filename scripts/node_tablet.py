@@ -12,7 +12,7 @@ import collections
 import socket
 import pdb
 import json
-import example_generation
+import new_example_generation
 rospack = rospkg.RosPack()
 from std_msgs.msg import String
 from std_msgs.msg import Int32
@@ -166,7 +166,7 @@ class TabletSession:
                 messageToTablet = "SHOWSTRUCTURE;"                                # boxes corresponding to the current question
                 self.conn.send(messageToTablet+"\n") 
                 print "Sent message to tablet: " + messageToTablet
-                (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
+                (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
                 self.current_question_steps = tablet_steps
                 self.showing_hint = True
 
@@ -243,7 +243,7 @@ class TabletSession:
                 num = int(self.questions[self.current_level][self.current_question]["Numerator"])
                 den = int(self.questions[self.current_level][self.current_question]["Denominator"])
                 print num, den
-                (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(num, den)
+                (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(num, den)
                 self.current_question_steps = tablet_steps
 
                 self.showing_hint = True
@@ -427,7 +427,7 @@ class TabletSession:
             else:
                 self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
             self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
-            (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
+            (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
             self.current_tutorial["SpokenText"] = robot_speech
             self.current_tutorial["TabletSteps"] = tablet_steps
             self.current_tutorial["Answers"] = all_answers
@@ -512,7 +512,7 @@ class TabletSession:
             else:
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
             self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
-            (robot_speech, tablet_steps, all_answers) = example_generation.get_box_steps(self.current_example["numerator"], self.current_example["denominator"])
+            (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(self.current_example["numerator"], self.current_example["denominator"])
             self.current_example["SpokenText"] = robot_speech
             self.current_example["TabletSteps"] = tablet_steps
             #print "IN WORKED EXAMPLE, TABLET STEPS ARE: " + str(self.current_example["TabletSteps"])
