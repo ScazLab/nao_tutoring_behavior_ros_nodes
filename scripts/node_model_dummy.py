@@ -486,11 +486,14 @@ class TutoringModel:
         saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
         self.save_file = open(saveFileString, "w+")
         num_problems_completed = self.total_num_questions - 1
+        save_help_index = self.fixed_help_index
+        if self.fixed_help_index > 0:
+            save_help_index = self.fixed_help_index - 1
         save_params = {"expGroup": self.expGroup,
                        "difficultyGroup": self.difficultyGroup,
                        "numProblemsCompleted": num_problems_completed,
                        "attemptTimes": self.attempt_times,
-                       "fixedHelpIndex": self.fixed_help_index}
+                       "fixedHelpIndex": save_help_index}
         param_string = json.dumps(save_params, indent=4)
         self.save_file.write(param_string)
         self.save_file.flush()
