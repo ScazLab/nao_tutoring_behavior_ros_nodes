@@ -83,6 +83,10 @@ class RobotTutor:
 
     def tablet_inactivity_msg_callback(self, data):         # during an activity, the tablet tells the robot what to say through the inactivity message
         rospy.loginfo(rospy.get_caller_id() + "Tablet in activity: %s ", data.robotSpeech)    # to not clog up the model with irrelevant messages
+        if ('PROMPT' in data.msgType):
+            if self.in_activity:
+                data.robotSpeech = ""
+
         if data.robotSpeech != "":
             self.robot_inactivity_pub.publish(data.robotSpeech) 
 
@@ -98,9 +102,10 @@ class RobotTutor:
         print "Nao says: " + data.robotSpeech
 
         if (self.goNao != None):                            # right now, the robot is just saying it, but I'm going to make sure the actions are good here
-            self.goNao.look()
-            id = self.goNao.genSpeech(data.robotSpeech) 
-            self.goNao.speechDevice.wait(id, 0)
+            if data.robotSpeech != "":
+                self.goNao.look()
+                id = self.goNao.genSpeech(data.robotSpeech) 
+                self.goNao.speechDevice.wait(id, 0)
         else:
             time.sleep(1)
         
