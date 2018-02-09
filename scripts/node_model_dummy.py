@@ -424,7 +424,27 @@ class TutoringModel:
                 else:
                     print "easier difficulty group"
                     self.level = 1
-            else:
+                saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
+                if os.path.exists(saveFileString): #only if this file already exists are we loading a session that crashed
+                    with open(saveFileString) as param_file:
+                        params = json.load(param_file)
+
+                    self.expGroup = int(params["expGroup"])
+                    self.difficultyGroup = int(params["difficultyGroup"])
+                    num_problems = int(params["numProblemsCompleted"])
+                    self.total_num_questions = num_problems #this tracks total number of q's over all sessions
+                    self.attempt_times = params["attemptTimes"]
+                    self.fixed_help_index = params["fixedHelpIndex"]
+                    #self.current_question = params["currentQuestionIndex"]
+                    if self.difficultyGroup == 1:
+                        self.questions = self.harder_questions
+                        self.level = (num_problems % 3) + 3
+                    else:
+                        self.level = (num_problems % 3) + 1
+                    self.current_question = num_problems / 3
+
+            
+            else: #later sessions after session 1
                 self.attempt_times = []
                 saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
                 if os.path.exists(saveFileString):
@@ -436,6 +456,7 @@ class TutoringModel:
                     num_problems = int(params["numProblemsCompleted"])
                     self.total_num_questions = num_problems #this tracks total number of q's over all sessions
                     self.attempt_times = params["attemptTimes"]
+                    self.fixed_help_index = params["fixedHelpIndex"]
                     #self.current_question = params["currentQuestionIndex"]
                     if self.difficultyGroup == 1:
                         self.questions = self.harder_questions
@@ -468,7 +489,8 @@ class TutoringModel:
         save_params = {"expGroup": self.expGroup,
                        "difficultyGroup": self.difficultyGroup,
                        "numProblemsCompleted": num_problems_completed,
-                       "attemptTimes": self.attempt_times}
+                       "attemptTimes": self.attempt_times,
+                       "fixedHelpIndex": self.fixed_help_index}
         param_string = json.dumps(save_params, indent=4)
         self.save_file.write(param_string)
         self.save_file.flush()

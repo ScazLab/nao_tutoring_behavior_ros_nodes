@@ -83,12 +83,14 @@ class RobotTutor:
 
     def tablet_inactivity_msg_callback(self, data):         # during an activity, the tablet tells the robot what to say through the inactivity message
         rospy.loginfo(rospy.get_caller_id() + "Tablet in activity: %s ", data.robotSpeech)    # to not clog up the model with irrelevant messages
-        self.robot_inactivity_pub.publish(data.robotSpeech) 
+        if data.robotSpeech != "":
+            self.robot_inactivity_pub.publish(data.robotSpeech) 
 
         if ('TUTORIAL' in data.msgType or 'TICTACTOE' in data.msgType or 'EXAMPLE' in data.msgType) :
             if ('DONE' in data.msgType):
                 self.in_activity = False
                 print "done with activity"
+                self.robot_inactivity_pub.publish("DONE")
             else:
                 print "setting true 2"
                 self.in_activity = True
@@ -102,7 +104,8 @@ class RobotTutor:
         else:
             time.sleep(1)
         
-        self.robot_inactivity_pub.publish("DONE")
+        if data.robotSpeech != "":
+            self.robot_inactivity_pub.publish("DONE")
 
     def tablet_msg_callback(self, data):
         rospy.loginfo(rospy.get_caller_id() + " I heard %s ", data.robotSpeech)

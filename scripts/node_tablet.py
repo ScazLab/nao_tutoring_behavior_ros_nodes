@@ -114,13 +114,19 @@ class TabletSession:
             print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-END TO TABLET\n"
             returnMessage = "SPEAKING-END"
             #print "robot was done"
+            time.sleep(2) #wait a bit before sending message
+            self.conn.send(returnMessage+"\n") #send robot message back to tablet
 
-        else:
+        elif (data.data != ""):
             print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-START TO TABLET\n"
             returnMessage = "SPEAKING-START"
+            time.sleep(2)
+            self.conn.send(returnMessage+"\n")
 
-        time.sleep(2) #wait a bit before sending message
-        self.conn.send(returnMessage+"\n") #send robot message back to tablet
+        else:
+            print "NOT DOING ANYTHING BECAUSE THE MESSAGE WAS EMPTY"
+
+        
 
     # handle messages from the model and send the appropriate messages to the tablet and robot to complete the indicated tutoring behavior
     def model_msg_callback(self, data):
@@ -649,6 +655,11 @@ class TabletSession:
                     else:
                         print "tutorial : " + msg.split(";")[1]
                         self.run_boxes_tutorial(msg.split(";")[1])
+
+                elif msgType.startswith('PROMPT'):
+                    tablet_msg.robotSpeech = msg.split(";")[1]
+                    self.tablet_inactivity_pub.publish(tablet_msg)
+
 
                 elif msgType == 'END':
                     self.state = session_ended_state
