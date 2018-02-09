@@ -485,7 +485,7 @@ class TutoringModel:
     def save_params(self):
         saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
         self.save_file = open(saveFileString, "w+")
-        num_problems_completed = self.total_num_questions - 1
+        num_problems_completed = self.total_num_questions
         save_help_index = self.fixed_help_index
         if self.fixed_help_index > 0:
             save_help_index = self.fixed_help_index - 1
