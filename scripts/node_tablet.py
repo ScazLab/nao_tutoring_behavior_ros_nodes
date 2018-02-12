@@ -433,8 +433,16 @@ class TabletSession:
                 self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
                 while bool(self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]["zeros"]) != isZeros:
                     self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+            
+            elif self.current_level==2 or self.current_level==3:
+                numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
+                self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                while len(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["Numerator"]) != numerator_digits:
+                    self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+
             else:
                 self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+            
             self.current_tutorial = self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]
             (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
             self.current_tutorial["SpokenText"] = robot_speech
@@ -518,8 +526,15 @@ class TabletSession:
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
                 while bool(self.lessons[self.current_level - 1]["Examples"][self.example_number]["zeros"]) != isZeros:
                     self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+            
+            elif self.current_level==2 or self.current_level==3:
+                numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
+                self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                while len(self.lessons[self.current_level-1]["Examples"][self.example_number]["Numerator"]) != numerator_digits:
+                    self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
             else:
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+            
             self.current_example = self.lessons[self.current_level - 1]["Examples"][self.example_number]
             (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(self.current_example["numerator"], self.current_example["denominator"])
             self.current_example["SpokenText"] = robot_speech
