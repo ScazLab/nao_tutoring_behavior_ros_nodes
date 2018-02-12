@@ -610,6 +610,7 @@ class TabletSession:
                 tablet_msg.otherInfo = ""
 
                 if (msgType == 'START' or msgType == 'LOAD'):                  # this message is received at the beginning. 
+                    print "message is START or LOAD"
                     self.pid = int(msg.split(";")[1])
                     self.sessionNum = int(msg.split(";")[2])
                     self.expGroup = int(msg.split(";")[3])

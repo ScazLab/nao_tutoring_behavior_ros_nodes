@@ -470,7 +470,7 @@ class TutoringModel:
             #time.sleep(3) #wait a bit before sending first question - do we need this?
             #self.first_question()
             #self.next_question() #aditi - trying this instead since send_first_question does not exist
-            self.set_up_session()
+            #self.set_up_session()
         
         elif(data.msgType == 'END'):
             self.inSession = False
