@@ -396,7 +396,7 @@ class TutoringModel:
             self.log_transaction("QUESTION", question_id, self.level)
             #placeholder to get current action on first attempt (should be no-action)
 
-        elif(data.msgType == 'START'):
+        elif (data.msgType == 'START' or data.msgType == 'LOAD'):
             print "MODEL RECEIVED START MESSAGE FROM TABLET_MSG --------------> setting up session"
             self.inSession = True
             self.pid = int(data.questionNumOrPart)

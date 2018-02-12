@@ -110,7 +110,7 @@ class TabletSession:
     # will be disabled during this time
     def robot_msg_callback(self, data):
         rospy.loginfo("FROM ROBOT_MSG_CALLBACK IN NODE_TABLET: I heard %s ", data.data)
-        if (data.data == "DONE"):
+        if (data.data == "DONE" or data.data == "INTRO-DONE"):
             print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-END TO TABLET\n"
             returnMessage = "SPEAKING-END"
             #print "robot was done"
@@ -377,7 +377,7 @@ class TabletSession:
             tablet_msg.robotSpeech = "Look at this example. There are " + str(self.lessons[0]["Tutorials"][self.tutorial_number]["numerator"]) + " balls in " + str(self.lessons[0]["Tutorials"][self.tutorial_number]["denominator"]) + " boxes. How many are in each box? Fill in the steps."
 
         if (status.startswith("INCOMPLETE") or status.startswith("INCORRECT")):     # if the student has gotten the answer wrong enough times,  
-            if (self.tutorial_step_attempts > 2):                                     # we send them the answer to a step
+            if (self.tutorial_step_attempts >= 2):                                     # we send them the answer to a step
                 # move on to next step
                 self.tutorial_step_attempts = 0
                 phrases = ["Here is the answer to this step.", "Let me fill in the answers to this step for you.", "Let me help you with this step by filling it in for you."]                              # be specified to indicate the boxes to fill in (see Readme)
@@ -451,7 +451,7 @@ class TabletSession:
 
         #elif (self.example_step < len(self.current_tutorial)):                                          # after the first step respond to student attempts
         elif (status.startswith("INCOMPLETE") or status.startswith("INCORRECT")):
-            if (self.tutorial_step_attempts > 2):                                                         # if the student has been wrong enough times, send the
+            if (self.tutorial_step_attempts >= 2):                                                         # if the student has been wrong enough times, send the
                 msg_to_tablet = "FILLSTRUCTURE;"                                                            # tablet a message to fill in the boxes for them
                 self.conn.send(msg_to_tablet + "\n")                                                        # Note: "FILLSTRUCTURE;" with no specified numbers will fill in
                 print "sent" + msg_to_tablet                                                                # all enabled boxes (i.e. the current step), but numbers can be
@@ -594,7 +594,7 @@ class TabletSession:
                 tablet_msg.robotSpeech = ""
                 tablet_msg.otherInfo = ""
 
-                if msgType == 'START':                  # this message is received at the beginning. 
+                if (msgType == 'START' or msgType == 'LOAD'):                  # this message is received at the beginning. 
                     self.pid = int(msg.split(";")[1])
                     self.sessionNum = int(msg.split(";")[2])
                     self.expGroup = int(msg.split(";")[3])

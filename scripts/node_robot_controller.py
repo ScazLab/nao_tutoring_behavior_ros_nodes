@@ -150,6 +150,12 @@ class RobotTutor:
                 self.robot_speech_pub.publish("INTRO-DONE")
                 print "Sent done after INTRO"
 
+            elif (data.msgType == "LOAD"):
+                self.in_session = True
+                self.sessionNum = data.questionType
+                self.robot_speech_pub.publish("INTRO-DONE")
+                print "sent done after intro: not really doing intro when loading a session"
+
             elif (data.msgType == "IA"):   # respond to an incorrect answer
                 self.goNao.incorrect_answer_speech()
                 self.robot_speech_pub.publish("DONE")
@@ -184,11 +190,17 @@ class RobotTutor:
                     print "Sent done"
  
         else:
-            if data.msgType == "START":
+            if (data.msgType == "START"):
                 self.in_session = True
                 self.sessionNum = data.questionType
                 self.robot_speech_pub.publish("INTRO-DONE")
                 print "Sent done after INTRO"
+
+            elif (data.msgType == "LOAD"):
+                self.in_session = True
+                self.sessionNum = data.questionType
+                self.robot_speech_pub.publish("INTRO-DONE")
+                print "sent done after intro: not really doing intro when loading a session"
 
             elif (data.msgType == "END"):
                 self.in_session = False
@@ -240,19 +252,19 @@ class RobotTutor:
 
     def run(self):
         # init robot stuff
-            while not rospy.is_shutdown():
-                try: #self.behavior_test()
-                    pass
-                except KeyboardInterrupt:
-                    if (self.goNao != None):
-                        print "releaseNao"
-                        self.goNao.releaseNao()
-                    
-                    sys.exit(0)
-            print "Shutting Down"
-            if (self.goNao != None):
-                print "releaseNao"
-                self.goNao.releaseNao()
+        while not rospy.is_shutdown():
+            try: #self.behavior_test()
+                pass
+            except KeyboardInterrupt:
+                if (self.goNao != None):
+                    print "releaseNao"
+                    self.goNao.releaseNao()
+                
+                sys.exit(0)
+        print "Shutting Down"
+        if (self.goNao != None):
+            print "releaseNao"
+            self.goNao.releaseNao()
     
 def start_robot():                      # call robot_controller to start up Nao and then run the program to wait for messages
     goNao = robot_controller()
