@@ -437,7 +437,7 @@ class TabletSession:
             elif self.current_level==2 or self.current_level==3:
                 numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
                 self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
-                while len(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"]) != numerator_digits:
+                while len(str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"])) != numerator_digits:
                     self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
 
             else:
@@ -530,7 +530,7 @@ class TabletSession:
             elif self.current_level==2 or self.current_level==3:
                 numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
-                while len(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"]) != numerator_digits:
+                while len(str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"])) != numerator_digits:
                     self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
             else:
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
