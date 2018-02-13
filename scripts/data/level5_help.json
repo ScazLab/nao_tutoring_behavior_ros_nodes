@@ -16,18 +16,8 @@
             "zeros": false
         },
         {
-            "numerator" : 462,
-            "denominator" : 5,
-            "zeros": false
-        },
-        {
             "numerator" : 637,
             "denominator" : 6,
-            "zeros": false
-        },
-        {
-            "numerator" : 147,
-            "denominator" : 2,
             "zeros": false
         },
         {
@@ -51,11 +41,6 @@
             "zeros": false
         },
         {
-            "numerator" : 127,
-            "denominator" : 3,
-            "zeros": false
-        },
-        {
             "numerator" : 7657,
             "denominator" : 2,
             "zeros": false
@@ -72,6 +57,46 @@
         },
         {
             "numerator" : 9049,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 462,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 147,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 127,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 221,
+            "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 260,
+            "denominator" : 6,
+            "zeros": false
+        },
+        {
+            "numerator" : 1535,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 4525,
+            "denominator" : 6,
+            "zeros": false
+        },
+        {
+            "numerator" : 3402,
             "denominator" : 4,
             "zeros": false
         },
@@ -128,11 +153,6 @@
             "zeros": false
         },
         {
-            "numerator" : 351,
-            "denominator" : 6,
-            "zeros": false
-        },
-        {
             "numerator" : 465,
             "denominator" : 2,
             "zeros": false
@@ -145,11 +165,6 @@
         {
             "numerator" : 766,
             "denominator" : 4,
-            "zeros": false
-        },
-        {
-            "numerator" : 393,
-            "denominator" : 5,
             "zeros": false
         },
         {
@@ -180,6 +195,46 @@
         {
             "numerator" : 7311,
             "denominator" : 4,
+            "zeros": false
+        },
+        {
+            "numerator" : 351,
+            "denominator" : 6,
+            "zeros": false
+        },
+        {
+            "numerator" : 393,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 127,
+            "denominator" : 5,
+            "zeros": false
+        },
+        {
+            "numerator" : 420,
+            "denominator" : 8,
+            "zeros": false
+        },
+        {
+            "numerator" : 131,
+            "denominator" : 2,
+            "zeros": false
+        },
+        {
+            "numerator" : 2065,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 1688,
+            "denominator" : 3,
+            "zeros": false
+        },
+        {
+            "numerator" : 1861,
+            "denominator" : 2,
             "zeros": false
         },
         {

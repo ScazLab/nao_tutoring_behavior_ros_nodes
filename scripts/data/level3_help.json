@@ -47,6 +47,18 @@
         {
             "numerator" : 60,
             "denominator" : 4
+        },
+        {
+            "numerator" : 351,
+            "denominator" : 9
+        },
+        {
+            "numerator" : 168,
+            "denominator" : 6
+        },
+        {
+            "numerator" : 272,
+            "denominator" : 8
         }
     ],
     "Tutorials" : [
@@ -97,6 +109,18 @@
         {
             "numerator" : 64,
             "denominator" : 4
+        },
+        {
+            "numerator" : 366,
+            "denominator" : 6
+        },
+        {
+            "numerator" : 364,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 584,
+            "denominator" : 8
         }
     ],
     "ThinkAloudPrompts" : [

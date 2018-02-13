@@ -47,6 +47,30 @@
         {
             "numerator" : 76,
             "denominator" : 6
+        },
+        {
+            "numerator" : 460,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 510,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 391,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 172,
+            "denominator" : 5
+        },
+        {
+            "numerator" : 357,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 434,
+            "denominator" : 6
         }
     ],
     "Tutorials" : [
@@ -97,6 +121,30 @@
         {
             "numerator" : 85,
             "denominator" : 6
+        },
+        {
+            "numerator" : 436,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 893,
+            "denominator" : 2
+        },
+        {
+            "numerator" : 593,
+            "denominator" : 3
+        },
+        {
+            "numerator" : 154,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 102,
+            "denominator" : 4
+        },
+        {
+            "numerator" : 268,
+            "denominator" : 5
         }
     ],
     "ThinkAloudPrompts" : [
