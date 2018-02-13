@@ -430,15 +430,62 @@ class TabletSession:
             # get the steps for this example from the example_generation code
             if self.current_level == 5: #make sure help matches whether its a zeros question
                 isZeros = bool(self.questions[self.current_level][self.current_question]["Zeros"])
-                self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
-                while bool(self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]["zeros"]) != isZeros:
+
+                if isZeros:
                     self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                    while bool(self.lessons[self.current_level - 1]["Tutorials"][self.tutorial_number]["zeros"]) != isZeros:
+                        self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                
+                else:
+                    numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
+                    first_digit_goes_in = True
+                    denom = self.questions[self.current_level][self.current_question]["Denominator"]
+                    first_digit = self.questions[self.current_level][self.current_question]["Numerator"][0:1] #first digit of numerator
+                    if int(denom) > int(first_digit):
+                        first_digit_goes_in = False
+
+                    self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                    help_numerator_digits = len(str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"]))
+                    help_first_digit_goes_in = True
+                    help_denom = self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["denominator"]
+                    help_first_digit = str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"])[0:1]
+                    if int(help_denom) > int(help_first_digit):
+                        help_first_digit_goes_in = False
+                    
+                    while help_numerator_digits!=numerator_digits or first_digit_goes_in!=help_first_digit_goes_in:
+                        self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                        help_numerator_digits = len(str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"]))
+                        help_first_digit_goes_in = True
+                        help_denom = self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["denominator"]
+                        help_first_digit = str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"])[0:1]
+                        if int(help_denom) > int(help_first_digit):
+                            help_first_digit_goes_in = False
+
             
-            elif self.current_level==2 or self.current_level==3:
+            elif self.current_level==2 or self.current_level==3 or self.current_level==4:
                 numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
+                first_digit_goes_in = True
+                denom = self.questions[self.current_level][self.current_question]["Denominator"]
+                first_digit = self.questions[self.current_level][self.current_question]["Numerator"][0:1] #first digit of numerator
+                if int(denom) > int(first_digit):
+                    first_digit_goes_in = False
+
                 self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
-                while len(str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"])) != numerator_digits:
+                help_numerator_digits = len(str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"]))
+                help_first_digit_goes_in = True
+                help_denom = self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["denominator"]
+                help_first_digit = str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"])[0:1]
+                if int(help_denom) > int(help_first_digit):
+                    help_first_digit_goes_in = False
+                
+                while help_numerator_digits!=numerator_digits or first_digit_goes_in!=help_first_digit_goes_in:
                     self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
+                    help_numerator_digits = len(str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"]))
+                    help_first_digit_goes_in = True
+                    help_denom = self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["denominator"]
+                    help_first_digit = str(self.lessons[self.current_level-1]["Tutorials"][self.tutorial_number]["numerator"])[0:1]
+                    if int(help_denom) > int(help_first_digit):
+                        help_first_digit_goes_in = False
 
             else:
                 self.tutorial_number = random.randint(0, len(self.lessons[self.current_level-1]["Tutorials"])-1)
@@ -523,15 +570,63 @@ class TabletSession:
         if (self.example_step == 0):                               # in the first step, get the steps for this example from the generation code 
             if self.current_level == 5: #make sure help matches whether its a zeros question
                 isZeros = bool(self.questions[self.current_level][self.current_question]["Zeros"])
-                self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
-                while bool(self.lessons[self.current_level - 1]["Examples"][self.example_number]["zeros"]) != isZeros:
+                
+                if isZeros:
                     self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                    while bool(self.lessons[self.current_level - 1]["Examples"][self.example_number]["zeros"]) != isZeros:
+                        self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                
+                else:
+                    numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
+                    first_digit_goes_in = True
+                    denom = self.questions[self.current_level][self.current_question]["Denominator"]
+                    first_digit = self.questions[self.current_level][self.current_question]["Numerator"][0:1] #first digit of numerator
+                    if int(denom) > int(first_digit):
+                        first_digit_goes_in = False
+
+                    self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                    help_numerator_digits = len(str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"]))
+                    help_first_digit_goes_in = True
+                    help_denom = self.lessons[self.current_level-1]["Examples"][self.example_number]["denominator"]
+                    help_first_digit = str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"])[0:1]
+                    if int(help_denom) > int(help_first_digit):
+                        help_first_digit_goes_in = False
+                    
+                    while help_numerator_digits!=numerator_digits or first_digit_goes_in!=help_first_digit_goes_in:
+                        self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                        help_numerator_digits = len(str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"]))
+                        help_first_digit_goes_in = True
+                        help_denom = self.lessons[self.current_level-1]["Examples"][self.example_number]["denominator"]
+                        help_first_digit = str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"])[0:1]
+                        if int(help_denom) > int(help_first_digit):
+                            help_first_digit_goes_in = False
+
             
-            elif self.current_level==2 or self.current_level==3:
+            elif self.current_level==2 or self.current_level==3 or self.current_level==4:
                 numerator_digits = len(self.questions[self.current_level][self.current_question]["Numerator"])
+                first_digit_goes_in = True
+                denom = self.questions[self.current_level][self.current_question]["Denominator"]
+                first_digit = self.questions[self.current_level][self.current_question]["Numerator"][0:1] #first digit of numerator
+                if int(denom) > int(first_digit):
+                    first_digit_goes_in = False
+
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
-                while len(str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"])) != numerator_digits:
+                help_numerator_digits = len(str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"]))
+                help_first_digit_goes_in = True
+                help_denom = self.lessons[self.current_level-1]["Examples"][self.example_number]["denominator"]
+                help_first_digit = str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"])[0:1]
+                if int(help_denom) > int(help_first_digit):
+                    help_first_digit_goes_in = False
+                
+                while help_numerator_digits!=numerator_digits or first_digit_goes_in!=help_first_digit_goes_in:
                     self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
+                    help_numerator_digits = len(str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"]))
+                    help_first_digit_goes_in = True
+                    help_denom = self.lessons[self.current_level-1]["Examples"][self.example_number]["denominator"]
+                    help_first_digit = str(self.lessons[self.current_level-1]["Examples"][self.example_number]["numerator"])[0:1]
+                    if int(help_denom) > int(help_first_digit):
+                        help_first_digit_goes_in = False
+            
             else:
                 self.example_number = random.randint(0, len(self.lessons[self.current_level-1]["Examples"])-1)
             
