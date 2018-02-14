@@ -506,7 +506,7 @@ class TabletSession:
             if (self.tutorial_step_attempts >= 2):                                                         # if the student has been wrong enough times, send the
                 msg_to_tablet = "FILLSTRUCTURE;"                                                            # tablet a message to fill in the boxes for them
                 self.conn.send(msg_to_tablet + "\n")                                                        # Note: "FILLSTRUCTURE;" with no specified numbers will fill in
-                print "sent" + msg_to_tablet                                                                # all enabled boxes (i.e. the current step), but numbers can be
+                print "sent: " + msg_to_tablet                                                                # all enabled boxes (i.e. the current step), but numbers can be
                 phrases = ["Here is the answer to this step.", "Let me fill in the answers to this step for you.", "Let me help you with this step by filling it in for you."]                              # be specified to indicate the boxes to fill in (see Readme)
                 speech  = random.choice(phrases)
                 tablet_msg.robotSpeech = speech                                 
@@ -525,6 +525,18 @@ class TabletSession:
                     tablet_msg.robotSpeech = speech
                 self.tutorial_step_attempts += 1
                 self.tablet_inactivity_pub.publish(tablet_msg)
+
+        elif status.startswith("TIMEOUT"):
+            msg_to_tablet = "FILLSTRUCTURE;"
+            self.conn.send(msg_to_tablet + "\n")
+            print "sent: " + msg_to_tablet
+            phrases = ["Here is the answer to this step.", "Let me fill in the answers to this step for you.", "Let me help you with this step by filling it in for you."]                              # be specified to indicate the boxes to fill in (see Readme)
+            speech  = random.choice(phrases)
+            tablet_msg.robotSpeech = speech 
+
+            self.tutorial_step_attempts = 0
+            self.tablet_inactivity_pub.publish(tablet_msg)
+
 
         elif (status.startswith("CORRECT")):                                                              # or move on to the next step if correct
             self.tutorial_step_attempts = 0
