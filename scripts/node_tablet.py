@@ -737,10 +737,11 @@ class TabletSession:
                     # pass this information on by publishing a message -- the model will not give a tutoring behavior if it does not have this
                     attempt = msg.split(";")[1]
                     timing = msg.split(";")[2]
+                    take_break = msg.split(";")[3]
                     print "ATTEMPT IS: " + attempt
                     print "TIMING FOR ATTEMPT IS: " + timing
                     tablet_msg.robotSpeech = ""
-                    tablet_msg.otherInfo = attempt+"-"+timing
+                    tablet_msg.otherInfo = attempt+"-"+timing+"-"+take_break
                     self.state = after_action_state
                     self.tablet_pub.publish(tablet_msg)
 

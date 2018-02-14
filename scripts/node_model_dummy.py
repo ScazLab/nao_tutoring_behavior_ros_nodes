@@ -312,6 +312,7 @@ class TutoringModel:
             question_id = self.questions[self.level][self.current_question]['QuestionID']
             attempt = data.otherInfo.split("-")[0]
             timing = int(data.otherInfo.split("-")[1])
+            take_break = data.otherInfo.split("-")[2]
             observation = self.form_observation(data.msgType, timing)
             self.log_transaction("OBSERVATION", question_id, observation)
             print "observation is: " + str(observation)
@@ -321,13 +322,18 @@ class TutoringModel:
 
 
         if (data.msgType == 'CA'): # respond to correct answer
-            self.fixed_help_index = 0                  
-            self.log_transaction("CORRECT", question_id, data.otherInfo)
+            self.fixed_help_index = 0
+            attempt = data.otherInfo.split("-")[0]
+            timing = int(data.otherInfo.split("-")[1])                  
+            self.log_transaction("CORRECT", question_id, str(attempt)+"-"+str(timing))
             time.sleep(2)
             self.next_question()                                                
         
         elif (data.msgType == 'IA'): # respond to incorrect answer
-            self.log_transaction("INCORRECT", question_id, data.otherInfo)
+            attempt = data.otherInfo.split("-")[0]
+            timing = int(data.otherInfo.split("-")[1])
+            take_break = data.otherInfo.split("-")[2]
+            self.log_transaction("INCORRECT", question_id, str(attempt)+"-"+str(timing))
             self.tries +=1
 
             #placeholder to get action from model then execute that action
@@ -344,18 +350,23 @@ class TutoringModel:
                 #self.give_think_aloud()
                 #self.give_hint()
                 time.sleep(5) #lets wait a little before giving help
+                
                 if self.expGroup==0: #implement fixed policy
-                    if self.fixed_help_index == 0:
-                        self.give_think_aloud()
-                    elif self.fixed_help_index == 1:
-                        self.give_hint()
-                    elif self.fixed_help_index == 2:
-                        self.give_example()
-                    elif self.fixed_help_index >= 3:
-                        self.give_tutorial()
+                    if take_break=="takebreak":
+                        self.tic_tac_toe_break()
+
                     else:
-                        print "should not be happening"
-                    self.fixed_help_index += 1
+                        if self.fixed_help_index == 0:
+                            self.give_think_aloud()
+                        elif self.fixed_help_index == 1:
+                            self.give_hint()
+                        elif self.fixed_help_index == 2:
+                            self.give_example()
+                        elif self.fixed_help_index >= 3:
+                            self.give_tutorial()
+                        else:
+                            print "should not be happening"
+                        self.fixed_help_index += 1
 
 
                 else: #placeholder action selection for actual model
