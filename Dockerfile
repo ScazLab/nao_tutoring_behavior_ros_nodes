@@ -1,6 +1,6 @@
-# Dockerfile for running the Repairing Trust Experiment
-# Sarah Strohkorb
-# Last Updated: 10/19/17
+# Dockerfile for running the Computational Tutoring Project
+# Aditi Ramachandran
+# Last Updated: 2/16/18
 #
 # Usage: 
 #   docker build -t nao_tutoring_behavior:latest .
