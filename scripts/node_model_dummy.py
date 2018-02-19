@@ -20,6 +20,11 @@ from std_msgs.msg import Int32
 from nao_tutoring_behaviors.msg import TabletMsg
 from nao_tutoring_behaviors.msg import ControlMsg
 
+sys.path.append(rospack.get_path('nao_tutoring_behaviors')+"/scripts/tutoring_action_selection")
+from task_models.lib.pomdp import POMDP, GraphPolicyBeliefRunner
+from pomdp_setup_observation_matrices import *
+from pomdp_setup_reward_transition_matrices import *
+
 ## This is a dummy model. It suggests tutoring behavoirs determinisitically based on the number of the question
 ## The relevant parts here are just those that deal with construction of model messages
 
@@ -69,6 +74,111 @@ class TutoringModel:
         
         self.questions = [[], level_one_questions, level_two_questions, level_three_questions]
         self.harder_questions = [[], [], [], level_three_questions, level_four_questions, level_five_questions]
+
+        self.setup_pomdp()
+
+
+    def setup_pomdp(self):
+        param_file = rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/02_01_A.json" #the param file that "works" for the base model
+        with open(param_file) as data_file:
+            params = json.load(data_file)
+
+        # discount factor
+        discount = params["discount"]
+
+        # state variables
+        knowledge_states = params["knowledge_states"]
+        engagement_states = params["engagement_states"]
+        attempt_states = params["attempt_states"]
+        self.num_knowledge_levels = len(knowledge_states)
+        self.num_engagement_levels = len(engagement_states)
+        self.num_attempts = len(attempt_states)
+        self.all_states = combine_states_to_one_list(knowledge_states, engagement_states, attempt_states)
+        self.num_states = len(self.all_states)
+
+        # starting distribution 
+        start = np.zeros(self.num_states)
+        for i in range(self.num_knowledge_levels):
+            start[4 + i * 8] = 1.0 / float(self.num_knowledge_levels)
+
+        # probabilities associated with the transition matrix
+        prob_knowledge_gain = params["prob_knowledge_gain"]
+        prob_engagement_gain = params["prob_engagement_gain"]
+        prob_engagement_loss = params["prob_engagement_loss"]
+        self.prob_correct_answer = params["prob_correct_answer"]
+        self.prob_correct_answer_after_1_attempt = params["prob_correct_answer_after_1_attempt"]
+        prob_drop_for_low_engagement = params["prob_drop_for_low_engagement"]
+
+        # actions
+        actions = params["actions"]
+        self.num_actions = len(actions)
+
+        # action-related reward variables
+        action_rewards = params["action_rewards"]
+        engagement_reward = params["engagement_reward"]
+        knowledge_reward = params["knowledge_reward"]
+        end_state_remain_reward = params["end_state_remain_reward"]
+        reward_for_first_attempt_actions = params["reward_for_first_attempt_actions"]
+        action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
+        action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
+
+        # observations
+        correctness_obs = params["correctness_obs"]
+        speed_obs = params["speed_obs"]
+        all_obs = combine_obs_types_to_one_list(correctness_obs, speed_obs)
+        self.num_observations = len(all_obs)
+
+        # observation related variables
+        self.prob_speeds_for_low_engagement = params["prob_speeds_for_low_engagement"]
+        self.prob_speeds_for_high_engagement = params["prob_speeds_for_high_engagement"]
+        action_speed_multipliers = np.array(params["action_speed_multipliers"])
+
+
+        R = generate_reward_matrix(actions=actions,
+                                   action_rewards=action_rewards, 
+                                   engagement_reward=engagement_reward, 
+                                   knowledge_reward=knowledge_reward, 
+                                   end_state_remain_reward=end_state_remain_reward,
+                                   num_knowledge_levels=self.num_knowledge_levels, 
+                                   num_engagement_levels=self.num_engagement_levels,
+                                   num_attempts=self.num_attempts, 
+                                   num_observations=self.num_observations, 
+                                   reward_for_first_attempt_actions=reward_for_first_attempt_actions)
+
+        T = generate_transition_matrix(num_knowledge_levels=self.num_knowledge_levels, 
+                                       num_engagement_levels=self.num_engagement_levels,
+                                       num_attempts=self.num_attempts,
+                                       prob_knowledge_gain=prob_knowledge_gain,
+                                       prob_engagement_gain=prob_engagement_gain,
+                                       prob_engagement_loss=prob_engagement_loss,
+                                       action_prob_knowledge_gain_mult=action_prob_knowledge_gain_mult,
+                                       action_prob_engagement_gain_mult=action_prob_engagement_gain_mult,
+                                       prob_correct_answer=self.prob_correct_answer,
+                                       prob_correct_answer_after_1_attempt=self.prob_correct_answer_after_1_attempt, 
+                                       prob_drop_for_low_engagement=prob_drop_for_low_engagement)
+
+        O = generate_observation_matrix(knowledge_states=knowledge_states, 
+                                        engagement_states=engagement_states,
+                                        attempt_states=attempt_states,
+                                        correctness_obs=correctness_obs,
+                                        speed_obs=speed_obs,
+                                        num_actions=self.num_actions,
+                                        prob_speeds_for_low_engagement=self.prob_speeds_for_low_engagement,
+                                        prob_speeds_for_high_engagement=self.prob_speeds_for_high_engagement,
+                                        action_speed_multipliers=action_speed_multipliers)
+
+
+        #create POMDP model
+        simple_pomdp = POMDP(T, O, R, np.array(start), discount, states=self.all_states, actions=actions,
+                     observations=all_obs, values='reward')
+
+        self.simple_pomdp_graph_policy = simple_pomdp.solve(method='grid', verbose=False, n_iterations=500)
+
+        self.simple_pomdp_graph_policy_belief_runner = GraphPolicyBeliefRunner(self.simple_pomdp_graph_policy,
+                                                                      simple_pomdp)
+
+        #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action() #wait till question is shown to choose action
+
 
     def repeat_question(self):                                  # send this message to have the student try the same question again
         control_message = ControlMsg()                          # with no tutoring behavior
@@ -320,6 +430,9 @@ class TutoringModel:
             self.add_attempt_time(timing)
             #placeholder to potentially sleep here if we want model to wait a few seconds before giving help
 
+            if self.expGroup==1:
+                self.current_belief = simple_pomdp_graph_policy_belief_runner.step(observation, self.action)
+
 
         if (data.msgType == 'CA'): # respond to correct answer
             self.fixed_help_index = 0
@@ -340,59 +453,76 @@ class TutoringModel:
             #check what the action is. then check experimental condition.
             #for control, log the model's action and execute action from fixed policy
             #for experimental, log the model's action, then do it.
-            
-            if(self.tries >= 3):
-                time.sleep(2)
-                self.next_question()
-            
-            else:
-                #self.give_tutorial()
-                #self.give_think_aloud()
-                #self.give_hint()
-                time.sleep(5) #lets wait a little before giving help
+            if self.expGroup==1:
+                if(self.tries >= 3):
+                    time.sleep(2)
+                    self.next_question()
                 
-                if self.expGroup==0: #implement fixed policy
-                    if take_break=="takebreak":
-                        self.tic_tac_toe_break()
-
-                    else:
-                        if self.fixed_help_index == 0:
-                            self.give_think_aloud()
-                        elif self.fixed_help_index == 1:
-                            self.give_hint()
-                        elif self.fixed_help_index == 2:
-                            self.give_example()
-                        elif self.fixed_help_index >= 3:
-                            self.give_tutorial()
-                        else:
-                            print "should not be happening"
-                        self.fixed_help_index += 1
-
-
-                else: #placeholder action selection for actual model
-                    num = random.randint(0, 4)
-                    time.sleep(3) # let's wait a little before starting any help activity
-                    if num==0:
-                        self.tic_tac_toe_break()
-                    elif num==1:
+                else:
+                    self.action = simple_pomdp_graph_policy_belief_runner.get_action()
+                    print "model chose this action: " + str(self.action)
+                    if self.action=="no-action":
+                        pass
+                    elif self.action=="interactive-tutorial":
                         self.give_tutorial()
-                    elif num==2:
+                    elif self.action=="worked-example":
                         self.give_example()
-                    elif num==3:
+                    elif self.action=="hint":
                         self.give_hint()
-                    else:
+                    elif self.action=="think-aloud":
                         self.give_think_aloud()
+                    elif self.action=="break":
+                        self.tic_tac_toe_break()
+                    else:
+                        print "error: model choosing action not in list"
+
+            
+
+            else: #this is the block that executes for the fixed group.
+
+                if(self.tries >= 3):
+                    time.sleep(2)
+                    self.next_question()
+                
+                else:
+                    #self.give_tutorial()
+                    #self.give_think_aloud()
+                    #self.give_hint()
+                    time.sleep(5) #lets wait a little before giving help
+                    
+                    if self.expGroup==0: #implement fixed policy
+                        if take_break=="takebreak":
+                            self.tic_tac_toe_break()
+
+                        else:
+                            if self.fixed_help_index == 0:
+                                self.give_think_aloud()
+                            elif self.fixed_help_index == 1:
+                                self.give_hint()
+                            elif self.fixed_help_index == 2:
+                                self.give_example()
+                            elif self.fixed_help_index >= 3:
+                                self.give_tutorial()
+                            else:
+                                print "should not be happening"
+                            self.fixed_help_index += 1
+
+
+                    else: #placeholder action selection for actual model
+                        num = random.randint(0, 4)
+                        time.sleep(3) # let's wait a little before starting any help activity
+                        if num==0:
+                            self.tic_tac_toe_break()
+                        elif num==1:
+                            self.give_tutorial()
+                        elif num==2:
+                            self.give_example()
+                        elif num==3:
+                            self.give_hint()
+                        else:
+                            self.give_think_aloud()
 
                 
-                        
-            #elif (data.questionNumOrPart % 4 == 1):
-            #    self.give_tutorial()
-            #elif (data.questionNumOrPart % 4 == 2):
-            #    self.give_hint()
-            #elif (data.questionNumOrPart % 4 == 3):
-            #    self.give_example()
-            #else:
-            #    self.give_think_aloud()
 
         elif (data.msgType == "TICTACTOE-END"): # here I respond to the end of a game by going to the same question
         #elif (data.msgType == "TICTACTOE-WIN" or data.msgType == "TICTACTOE-LOSS"):
@@ -406,7 +536,10 @@ class TutoringModel:
             question_id = self.questions[self.level][self.current_question]['QuestionID']
             self.log_transaction("QUESTION", question_id, self.level)
             #placeholder to get current action on first attempt (should be no-action)
-
+            if self.expGroup==1:
+                self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                print "MODEL CHOSE ACTION: " + str(self.action)
+                
         elif (data.msgType == 'START' or data.msgType == 'LOAD'):
             print "MODEL RECEIVED START MESSAGE FROM TABLET_MSG --------------> setting up session"
             self.inSession = True
