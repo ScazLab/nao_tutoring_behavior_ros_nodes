@@ -75,8 +75,6 @@ class TutoringModel:
         self.questions = [[], level_one_questions, level_two_questions, level_three_questions]
         self.harder_questions = [[], [], [], level_three_questions, level_four_questions, level_five_questions]
 
-        self.setup_pomdp()
-
 
     def setup_pomdp(self):
         param_file = rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/02_01_A.json" #the param file that "works" for the base model
@@ -177,7 +175,7 @@ class TutoringModel:
         self.simple_pomdp_graph_policy_belief_runner = GraphPolicyBeliefRunner(self.simple_pomdp_graph_policy,
                                                                       simple_pomdp)
 
-        #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action() #wait till question is shown to choose action
+        self.action = self.simple_pomdp_graph_policy_belief_runner.get_action() #choose first action
 
 
     def repeat_question(self):                                  # send this message to have the student try the same question again
@@ -431,7 +429,9 @@ class TutoringModel:
             #placeholder to potentially sleep here if we want model to wait a few seconds before giving help
 
             if self.expGroup==1:
-                self.current_belief = simple_pomdp_graph_policy_belief_runner.step(observation, self.action)
+                self.current_belief = self.simple_pomdp_graph_policy_belief_runner.step(observation)
+                #after updating belief with our observation, now we can get the next action
+                self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
 
 
         if (data.msgType == 'CA'): # respond to correct answer
@@ -459,8 +459,9 @@ class TutoringModel:
                     self.next_question()
                 
                 else:
-                    self.action = simple_pomdp_graph_policy_belief_runner.get_action()
-                    print "model chose this action: " + str(self.action)
+                    
+                    print "DURING QUESTION, model will give this action: " + str(self.action)
+                    time.sleep(5) #lets wait a little before giving help
                     if self.action=="no-action":
                         pass
                     elif self.action=="interactive-tutorial":
@@ -537,8 +538,22 @@ class TutoringModel:
             self.log_transaction("QUESTION", question_id, self.level)
             #placeholder to get current action on first attempt (should be no-action)
             if self.expGroup==1:
-                self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
-                print "MODEL CHOSE ACTION: " + str(self.action)
+                #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                if self.tries==0:
+                    print "START OF NEW QUESTION, MODEL CHOSE ACTION: " + str(self.action)
+                    if self.action!="no-action":
+                        if self.action=="interactive-tutorial":
+                            self.give_tutorial()
+                        elif self.action=="worked-example":
+                            self.give_example()
+                        elif self.action=="hint":
+                            self.give_hint()
+                        elif self.action=="think-aloud":
+                            self.give_think_aloud()
+                        elif self.action=="break":
+                            self.tic_tac_toe_break()
+                else:
+                    print "MIDDLE OF A QUESTION, so not actually doing action here: " + str(self.action)
                 
         elif (data.msgType == 'START' or data.msgType == 'LOAD'):
             print "MODEL RECEIVED START MESSAGE FROM TABLET_MSG --------------> setting up session"
@@ -614,7 +629,7 @@ class TutoringModel:
             #time.sleep(3) #wait a bit before sending first question - do we need this?
             #self.first_question()
             #self.next_question() #aditi - trying this instead since send_first_question does not exist
-            #self.set_up_session()
+            self.setup_pomdp()
         
         elif(data.msgType == 'END'):
             self.inSession = False
