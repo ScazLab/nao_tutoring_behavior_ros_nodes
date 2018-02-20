@@ -430,6 +430,8 @@ class TutoringModel:
 
             if self.expGroup==1:
                 self.current_belief = self.simple_pomdp_graph_policy_belief_runner.step(observation)
+                print "current belief is: " 
+                print self.simple_pomdp_graph_policy_belief_runner.current_belief
                 #after updating belief with our observation, now we can get the next action
                 self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
 
