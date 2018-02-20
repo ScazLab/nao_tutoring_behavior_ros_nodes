@@ -96,8 +96,12 @@ class TutoringModel:
 
         # starting distribution 
         start = np.zeros(self.num_states)
-        for i in range(self.num_knowledge_levels):
-            start[4 + i * 8] = 1.0 / float(self.num_knowledge_levels)
+        if self.sessionNum ==1:
+            for i in range(self.num_knowledge_levels):
+                start[4 + i * 8] = 1.0 / float(self.num_knowledge_levels)
+
+        else:
+            start = self.current_belief
 
         # probabilities associated with the transition matrix
         prob_knowledge_gain = params["prob_knowledge_gain"]
@@ -175,6 +179,9 @@ class TutoringModel:
         self.simple_pomdp_graph_policy_belief_runner = GraphPolicyBeliefRunner(self.simple_pomdp_graph_policy,
                                                                       simple_pomdp)
 
+        self.current_belief = self.simple_pomdp_graph_policy_belief_runner.current_belief #should be the same as start?
+        print "current belief is: "
+        print self.current_belief
         self.action = self.simple_pomdp_graph_policy_belief_runner.get_action() #choose first action
 
 
@@ -430,8 +437,9 @@ class TutoringModel:
 
             if self.expGroup==1:
                 self.current_belief = self.simple_pomdp_graph_policy_belief_runner.step(observation)
+                self.current_belief = self.simple_pomdp_graph_policy_belief_runner.current_belief
                 print "current belief is: " 
-                print self.simple_pomdp_graph_policy_belief_runner.current_belief
+                print self.current_belief
                 #after updating belief with our observation, now we can get the next action
                 self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
 
@@ -585,6 +593,7 @@ class TutoringModel:
                 else:
                     print "easier difficulty group"
                     self.level = 1
+                
                 saveFileString = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/" + "P"+str(self.pid)+"_save.json"
                 if os.path.exists(saveFileString): #only if this file already exists are we loading a session that crashed
                     with open(saveFileString) as param_file:
@@ -625,13 +634,17 @@ class TutoringModel:
                     else:
                         self.level = (num_problems % 3) + 1
                     self.current_question = num_problems / 3
+
+                    if self.expGroup==1:
+                        self.current_belief = np.array(params["currentBelief"])
                 else:
                     print "error: tried to open param save file when it didnt exist"
             #self.send_first_question()
             #time.sleep(3) #wait a bit before sending first question - do we need this?
             #self.first_question()
             #self.next_question() #aditi - trying this instead since send_first_question does not exist
-            self.setup_pomdp()
+            if self.expGroup==1:
+                self.setup_pomdp()
         
         elif(data.msgType == 'END'):
             self.inSession = False
@@ -655,6 +668,9 @@ class TutoringModel:
                        "numProblemsCompleted": num_problems_completed,
                        "attemptTimes": self.attempt_times,
                        "fixedHelpIndex": save_help_index}
+        if self.expGroup==1:
+            print self.current_belief
+            save_params["currentBelief"] = self.current_belief.tolist()
         param_string = json.dumps(save_params, indent=4)
         self.save_file.write(param_string)
         self.save_file.flush()
