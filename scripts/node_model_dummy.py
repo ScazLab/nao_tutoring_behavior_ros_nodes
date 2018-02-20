@@ -366,7 +366,7 @@ class TutoringModel:
             print "should not be here"
             return ""
 
-        timing = float(timing) / 60.0
+        timing = float(timing) / 1000.0
         print "timing in seconds is: " + str(timing)
 
         if len(self.attempt_times) < 5:
@@ -389,7 +389,7 @@ class TutoringModel:
 
     def add_attempt_time(self, timing):
         print "use this method to add timing to list of times"
-        timing = float(timing) / 60.0 #convert time in milliseconds to seconds
+        timing = float(timing) / 1000.0 #convert time in milliseconds to seconds
         if len(self.attempt_times) < 5:
             self.attempt_times.append(timing)
             self.attempt_times = sorted(self.attempt_times)
