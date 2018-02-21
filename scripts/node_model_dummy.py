@@ -697,8 +697,10 @@ class TutoringModel:
                     if i%4==0:
                         if self.current_belief[i+2]!=0.0:
                             self.current_belief[i+1] = self.current_belief[i+2]
-                        else if self.current_belief[i+3]!=0:
+                            self.current_belief[i+2] = 0.0
+                        elif self.current_belief[i+3]!=0:
                             self.current_belief[i+1] = self.current_belief[i+3]
+                            self.current_belief[i+3] = 0.0
             print self.current_belief
             save_params["currentBelief"] = self.current_belief.tolist()
         param_string = json.dumps(save_params, indent=4)
