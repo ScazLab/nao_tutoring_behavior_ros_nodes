@@ -46,6 +46,8 @@ class TutoringModel:
         #self.total_num_help_actions = 0
         self.fixed_help_index = 0
 
+        self.initial_knowledge_state = ""
+
         self.inSession = False
 
         #placeholder to hold pomdp model variables: current action, belief runner, etc --> initialize during START msg
@@ -97,8 +99,15 @@ class TutoringModel:
         # starting distribution 
         start = np.zeros(self.num_states)
         if self.sessionNum ==1:
+            initial_state = int(self.initial_knowledge_state[1:])
+            majority_start = 0.7
+            minority_start = (1.0 - majority_start) / (self.num_knowledge_levels-1)
             for i in range(self.num_knowledge_levels):
-                start[4 + i * 8] = 1.0 / float(self.num_knowledge_levels)
+                #start[4 + i * 8] = 1.0 / float(self.num_knowledge_levels) #uniform start state
+                if i==initial_state:
+                    start[4 + i * 8] = majority_start
+                else:
+                    start[4 + i * 8] = minority_start
 
         else:
             start = self.current_belief
@@ -613,6 +622,18 @@ class TutoringModel:
                         self.level = (num_problems % 3) + 1
                     self.current_question = num_problems / 3
 
+                    if self.expGroup==1:
+                        self.current_belief = np.array(params["currentBelief"])
+
+                else: #the param_save file does not exist so it is a new session.
+                    if self.expGroup==1: #if expGroup 1, read the knowledge_start_state file to choose start dist for pomdp
+                        startStateFile = rospack.get_path('nao_tutoring_behaviors')+"/scripts/logfiles/initial_knowledge_states.json"
+                        if os.path.exists(startStateFile):
+                            with open(startStateFile) as start_state_file:
+                                start_states = json.load(start_state_file)
+
+                            self.initial_knowledge_state = start_states[str(self.pid)]
+
             
             else: #later sessions after session 1
                 self.attempt_times = []
@@ -669,6 +690,15 @@ class TutoringModel:
                        "attemptTimes": self.attempt_times,
                        "fixedHelpIndex": save_help_index}
         if self.expGroup==1:
+            print self.current_belief
+            if self.tries!=0:
+                #if we end on an attempt in the middle of a problem, we want to change the belief state to start back in A0 states
+                for i in range(len(self.current_belief)):
+                    if i%4==0:
+                        if self.current_belief[i+2]!=0.0:
+                            self.current_belief[i+1] = self.current_belief[i+2]
+                        else if self.current_belief[i+3]!=0:
+                            self.current_belief[i+1] = self.current_belief[i+3]
             print self.current_belief
             save_params["currentBelief"] = self.current_belief.tolist()
         param_string = json.dumps(save_params, indent=4)
