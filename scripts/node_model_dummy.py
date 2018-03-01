@@ -84,7 +84,7 @@ class TutoringModel:
             params = json.load(data_file)
 
         # discount factor
-        discount = params["discount"]
+        self.discount = params["discount"]
 
         # state variables
         knowledge_states = params["knowledge_states"]
@@ -109,20 +109,23 @@ class TutoringModel:
                 else:
                     start[4 + i * 8] = minority_start
 
+            self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]        
+
         else:
             start = self.current_belief
+            self.action_prob_knowledge_gain_mult = self.action_prob_knowledge_gain_mult #should be set earlier
 
         # probabilities associated with the transition matrix
-        prob_knowledge_gain = params["prob_knowledge_gain"]
-        prob_engagement_gain = params["prob_engagement_gain"]
-        prob_engagement_loss = params["prob_engagement_loss"]
+        self.prob_knowledge_gain = params["prob_knowledge_gain"]
+        self.prob_engagement_gain = params["prob_engagement_gain"]
+        self.prob_engagement_loss = params["prob_engagement_loss"]
         self.prob_correct_answer = params["prob_correct_answer"]
         self.prob_correct_answer_after_1_attempt = params["prob_correct_answer_after_1_attempt"]
-        prob_drop_for_low_engagement = params["prob_drop_for_low_engagement"]
+        self.prob_drop_for_low_engagement = params["prob_drop_for_low_engagement"]
 
         # actions
-        actions = params["actions"]
-        self.num_actions = len(actions)
+        self.actions = params["actions"]
+        self.num_actions = len(self.actions)
 
         # action-related reward variables
         action_rewards = params["action_rewards"]
@@ -130,14 +133,14 @@ class TutoringModel:
         knowledge_reward = params["knowledge_reward"]
         end_state_remain_reward = params["end_state_remain_reward"]
         reward_for_first_attempt_actions = params["reward_for_first_attempt_actions"]
-        action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
-        action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
+        #action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
+        self.action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
 
         # observations
         correctness_obs = params["correctness_obs"]
         speed_obs = params["speed_obs"]
-        all_obs = combine_obs_types_to_one_list(correctness_obs, speed_obs)
-        self.num_observations = len(all_obs)
+        self.all_obs = combine_obs_types_to_one_list(correctness_obs, speed_obs)
+        self.num_observations = len(self.all_obs)
 
         # observation related variables
         self.prob_speeds_for_low_engagement = params["prob_speeds_for_low_engagement"]
@@ -145,7 +148,7 @@ class TutoringModel:
         action_speed_multipliers = np.array(params["action_speed_multipliers"])
 
 
-        R = generate_reward_matrix(actions=actions,
+        self.R = generate_reward_matrix(actions=self.actions,
                                    action_rewards=action_rewards, 
                                    engagement_reward=engagement_reward, 
                                    knowledge_reward=knowledge_reward, 
@@ -156,19 +159,19 @@ class TutoringModel:
                                    num_observations=self.num_observations, 
                                    reward_for_first_attempt_actions=reward_for_first_attempt_actions)
 
-        T = generate_transition_matrix(num_knowledge_levels=self.num_knowledge_levels, 
+        self.T = generate_transition_matrix(num_knowledge_levels=self.num_knowledge_levels, 
                                        num_engagement_levels=self.num_engagement_levels,
                                        num_attempts=self.num_attempts,
-                                       prob_knowledge_gain=prob_knowledge_gain,
-                                       prob_engagement_gain=prob_engagement_gain,
-                                       prob_engagement_loss=prob_engagement_loss,
-                                       action_prob_knowledge_gain_mult=action_prob_knowledge_gain_mult,
-                                       action_prob_engagement_gain_mult=action_prob_engagement_gain_mult,
+                                       prob_knowledge_gain=self.prob_knowledge_gain,
+                                       prob_engagement_gain=self.prob_engagement_gain,
+                                       prob_engagement_loss=self.prob_engagement_loss,
+                                       action_prob_knowledge_gain_mult=self.action_prob_knowledge_gain_mult,
+                                       action_prob_engagement_gain_mult=self.action_prob_engagement_gain_mult,
                                        prob_correct_answer=self.prob_correct_answer,
                                        prob_correct_answer_after_1_attempt=self.prob_correct_answer_after_1_attempt, 
-                                       prob_drop_for_low_engagement=prob_drop_for_low_engagement)
+                                       prob_drop_for_low_engagement=self.prob_drop_for_low_engagement)
 
-        O = generate_observation_matrix(knowledge_states=knowledge_states, 
+        self.O = generate_observation_matrix(knowledge_states=knowledge_states, 
                                         engagement_states=engagement_states,
                                         attempt_states=attempt_states,
                                         correctness_obs=correctness_obs,
@@ -180,8 +183,8 @@ class TutoringModel:
 
 
         #create POMDP model
-        simple_pomdp = POMDP(T, O, R, np.array(start), discount, states=self.all_states, actions=actions,
-                     observations=all_obs, values='reward')
+        simple_pomdp = POMDP(self.T, self.O, self.R, np.array(start), self.discount, states=self.all_states, actions=self.actions,
+                     observations=self.all_obs, values='reward')
 
         self.simple_pomdp_graph_policy = simple_pomdp.solve(method='grid', verbose=False, n_iterations=500)
 
@@ -192,6 +195,43 @@ class TutoringModel:
         print "current belief is: "
         print self.current_belief
         self.action = self.simple_pomdp_graph_policy_belief_runner.get_action() #choose first action
+
+
+    def resolve_pomdp(self):
+        start = self.current_belief
+
+        action_prob_knowledge_gain_mult = self.action_prob_knowledge_gain_mult
+
+
+        self.T = generate_transition_matrix(num_knowledge_levels=self.num_knowledge_levels, 
+                                       num_engagement_levels=self.num_engagement_levels,
+                                       num_attempts=self.num_attempts,
+                                       prob_knowledge_gain=self.prob_knowledge_gain,
+                                       prob_engagement_gain=self.prob_engagement_gain,
+                                       prob_engagement_loss=self.prob_engagement_loss,
+                                       action_prob_knowledge_gain_mult=self.action_prob_knowledge_gain_mult,
+                                       action_prob_engagement_gain_mult=self.action_prob_engagement_gain_mult,
+                                       prob_correct_answer=self.prob_correct_answer,
+                                       prob_correct_answer_after_1_attempt=self.prob_correct_answer_after_1_attempt, 
+                                       prob_drop_for_low_engagement=self.prob_drop_for_low_engagement)
+
+        simple_pomdp = POMDP(self.T, self.O, self.R, np.array(start), self.discount, states=self.all_states, actions=self.actions,
+                     observations=self.all_obs, values='reward')
+
+        self.simple_pomdp_graph_policy = simple_pomdp.solve(method='grid', verbose=False, n_iterations=500)
+
+        self.simple_pomdp_graph_policy_belief_runner = GraphPolicyBeliefRunner(self.simple_pomdp_graph_policy,
+                                                                      simple_pomdp)
+
+        self.current_belief = self.simple_pomdp_graph_policy_belief_runner.current_belief #should be the same as start?
+        print "current belief is: "
+        print self.current_belief
+        self.action = self.simple_pomdp_graph_policy_belief_runner.get_action() #choose first action
+    
+    
+    def get_new_multipliers(self, obs, action):
+        print "returning existing multipliers that are not changing for now"
+        return self.action_prob_knowledge_gain_mult
 
 
     def repeat_question(self):                                  # send this message to have the student try the same question again
@@ -449,6 +489,10 @@ class TutoringModel:
                 self.current_belief = self.simple_pomdp_graph_policy_belief_runner.current_belief
                 print "current belief is: " 
                 print self.current_belief
+                #before we get the next action, lets change our action multipliers and re-solve the pomdp
+                self.action_prob_knowledge_gain_mult = self.get_new_multipliers(observation, self.action)
+                self.resolve_pomdp()
+
                 #after updating belief with our observation, now we can get the next action
                 self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
 
@@ -624,6 +668,7 @@ class TutoringModel:
 
                     if self.expGroup==1:
                         self.current_belief = np.array(params["currentBelief"])
+                        self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
 
                 else: #the param_save file does not exist so it is a new session.
                     if self.expGroup==1: #if expGroup 1, read the knowledge_start_state file to choose start dist for pomdp
@@ -658,6 +703,7 @@ class TutoringModel:
 
                     if self.expGroup==1:
                         self.current_belief = np.array(params["currentBelief"])
+                        self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
                 else:
                     print "error: tried to open param save file when it didnt exist"
             #self.send_first_question()
@@ -703,6 +749,7 @@ class TutoringModel:
                             self.current_belief[i+3] = 0.0
             print self.current_belief
             save_params["currentBelief"] = self.current_belief.tolist()
+            save_params["action_prob_knowledge_gain_mult"] = self.action_prob_knowledge_gain_mult
         param_string = json.dumps(save_params, indent=4)
         self.save_file.write(param_string)
         self.save_file.flush()
