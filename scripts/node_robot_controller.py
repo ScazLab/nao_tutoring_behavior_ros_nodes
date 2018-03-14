@@ -159,7 +159,7 @@ class RobotTutor:
 
             elif (data.msgType == "IA"):   # respond to an incorrect answer
                 self.goNao.incorrect_answer_speech()
-                self.robot_speech_pub.publish("DONE")
+                self.robot_speech_pub.publish("INCORRECT-DONE")
                 print "Sent done"
             
             elif (data.msgType == "CA"):                # respond to a correct answer
@@ -168,7 +168,7 @@ class RobotTutor:
                 #action() #aditi - what is this?
                 self.in_activity = False
                 self.goNao.correct_answer_speech()
-                self.robot_speech_pub.publish("DONE")
+                self.robot_speech_pub.publish("CORRECT-DONE")
                 print "Sent done"
             
             elif (data.msgType == "END"):

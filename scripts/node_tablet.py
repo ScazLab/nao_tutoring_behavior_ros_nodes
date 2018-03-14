@@ -117,6 +117,18 @@ class TabletSession:
             time.sleep(2) #wait a bit before sending message
             self.conn.send(returnMessage+"\n") #send robot message back to tablet
 
+        elif data.data=="CORRECT-DONE":
+            print "ROBOT JUST GAVE CORRECT FEEDBACK, SO NOT SENDING SPEAKING-END MESSAGE TO TABLET"
+
+        elif data.data=="INCORRECT-DONE":
+            print "ROBOT JUST GAVE INCORRECT FEEDBACK"
+            if self.expGroup==1:
+                print "MODEL GROUP: not sending speaking-end message"
+            else:
+                returnMessage = "SPEAKING-END"
+                time.sleep(2)
+                self.conn.send(returnMessage+"\n")
+
         elif (data.data != ""):
             print "FROM ROBOT_MSG_CALLBACK IN NODE_TABLET, SENDING SPEAKING-START TO TABLET\n"
             returnMessage = "SPEAKING-START"
@@ -178,6 +190,11 @@ class TabletSession:
                 (robot_speech, tablet_steps, all_answers) = new_example_generation.get_box_steps(self.current_tutorial["numerator"], self.current_tutorial["denominator"])
                 self.current_question_steps = tablet_steps
                 self.showing_hint = True
+
+            elif ("NOACTION" in data.nextStep):
+                messageToTablet = "SPEAKING-END" #make sure submit button gets enabled if model picks no action
+                self.conn.send(messageToTablet+"\n") #send robot message back to tablet
+                print "Sent message to tablet: " + messageToTablet
 
             elif ("THINKALOUD" in data.nextStep):                               # the tablet does nothing during thinkaloud so do not send message to tablet
                 self.prompt_think_aloud() 

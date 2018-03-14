@@ -395,6 +395,18 @@ class TutoringModel:
         print "sent:" , control_message     
 
 
+    def no_action(self):
+        control_message = ControlMsg()
+        control_message.nextStep = "NOACTION"
+        control_message.questionNum = self.current_question
+        control_message.questionLevel = self.level
+        control_message.robotSpeech = ""
+
+        question_id = self.questions[self.level][self.current_question]['QuestionID']
+        self.log_transaction("NO-ACTION", question_id, self.level)
+        self.decisions_pub.publish(control_message)
+        print "sent: ", control_message
+    
     def get_mean_and_std_time(self):
         num_attempts_in_list = len(self.attempt_times)
         if num_attempts_in_list > 10:
@@ -529,9 +541,9 @@ class TutoringModel:
                 else:
                     
                     print "DURING QUESTION, model will give this action: " + str(self.action)
-                    time.sleep(5) #lets wait a little before giving help
+                    #time.sleep(5) #lets try not sleeping here for MODEL GROUP since we have the pomdp resolve time lag
                     if self.action=="no-action":
-                        pass
+                        self.no_action()
                     elif self.action=="interactive-tutorial":
                         self.give_tutorial()
                     elif self.action=="worked-example":
