@@ -79,7 +79,7 @@ class TutoringModel:
 
 
     def setup_pomdp(self):
-        param_file = rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/02_01_A.json" #the param file that "works" for the base model
+        param_file = rospack.get_path('nao_tutoring_behaviors')+"/scripts/data/03_13_B.json" #the param file that "works" for the base model
         with open(param_file) as data_file:
             params = json.load(data_file)
 
