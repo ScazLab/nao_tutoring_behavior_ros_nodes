@@ -109,11 +109,13 @@ class TutoringModel:
                 else:
                     start[4 + i * 8] = minority_start
 
-            self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]        
+            self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
+            self.action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]        
 
         else:
             start = self.current_belief
             self.action_prob_knowledge_gain_mult = self.action_prob_knowledge_gain_mult #should be set earlier
+            self.action_prob_engagement_gain_mult = self.action_prob_engagement_gain_mult
 
         # probabilities associated with the transition matrix
         self.prob_knowledge_gain = params["prob_knowledge_gain"]
@@ -134,7 +136,7 @@ class TutoringModel:
         end_state_remain_reward = params["end_state_remain_reward"]
         reward_for_first_attempt_actions = params["reward_for_first_attempt_actions"]
         #action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
-        self.action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
+        #self.action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
 
         # observations
         correctness_obs = params["correctness_obs"]
@@ -231,7 +233,7 @@ class TutoringModel:
     
     def get_new_multipliers(self, obs, action):
         print "returning existing multipliers that are not changing for now"
-        return self.action_prob_knowledge_gain_mult
+        return self.action_prob_knowledge_gain_mult, self.action_prob_engagement_gain_mult
 
 
     def repeat_question(self):                                  # send this message to have the student try the same question again
@@ -474,6 +476,15 @@ class TutoringModel:
         transaction += str(otherInfo)  # put the level here for msgType==QUESTION
         self.logFile.write(transaction+"\n")
         self.logFile.flush()
+
+    def log_multipliers(self, msgType, questionID, multipliers):
+        transaction = str(self.pid) + "," + str(self.expGroup) + "," + str(self.sessionNum) + ","
+        transaction += str(int(round(time.time() * 1000))) + ","
+        transaction += str(questionID) + ","
+        transaction += msgType + ","
+        transaction += str(multipliers)
+        self.logFile.write(transaction+"\n")
+        self.logFile.flush()
     
     def tablet_msg_callback(self, data):                                            # respond to tablet messages by triggering the next behavior
         rospy.loginfo(rospy.get_caller_id() + " From Tablet, I heard %s ", data)    # the code here is just based off the question number, but
@@ -502,7 +513,9 @@ class TutoringModel:
                 print "current belief is: " 
                 print self.current_belief
                 #before we get the next action, lets change our action multipliers and re-solve the pomdp
-                self.action_prob_knowledge_gain_mult = self.get_new_multipliers(observation, self.action)                
+                self.action_prob_knowledge_gain_mult, self.action_prob_engagement_gain_mult = self.get_new_multipliers(observation, self.action)
+                self.log_multipliers("KNOWLEDGE-MULT", question_id, self.action_prob_knowledge_gain_mult)
+                self.log_multipliers("ENGAGEMENT-MULT", question_id, self.action_prob_engagement_gain_mult)                
 
 
         if (data.msgType == 'CA'): # respond to correct answer
@@ -683,6 +696,7 @@ class TutoringModel:
                     if self.expGroup==1:
                         self.current_belief = np.array(params["currentBelief"])
                         self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
+                        self.action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
 
                 else: #the param_save file does not exist so it is a new session.
                     if self.expGroup==1: #if expGroup 1, read the knowledge_start_state file to choose start dist for pomdp
@@ -718,6 +732,7 @@ class TutoringModel:
                     if self.expGroup==1:
                         self.current_belief = np.array(params["currentBelief"])
                         self.action_prob_knowledge_gain_mult = params["action_prob_knowledge_gain_mult"]
+                        self.action_prob_engagement_gain_mult = params["action_prob_engagement_gain_mult"]
                 else:
                     print "error: tried to open param save file when it didnt exist"
             #self.send_first_question()
@@ -744,6 +759,7 @@ class TutoringModel:
         save_help_index = self.fixed_help_index
         if self.fixed_help_index > 0:
             save_help_index = self.fixed_help_index - 1
+        
         save_params = {"expGroup": self.expGroup,
                        "difficultyGroup": self.difficultyGroup,
                        "numProblemsCompleted": num_problems_completed,
@@ -764,6 +780,7 @@ class TutoringModel:
             print self.current_belief
             save_params["currentBelief"] = self.current_belief.tolist()
             save_params["action_prob_knowledge_gain_mult"] = self.action_prob_knowledge_gain_mult
+            save_params["action_prob_engagement_gain_mult"] = self.action_prob_engagement_gain_mult
         param_string = json.dumps(save_params, indent=4)
         self.save_file.write(param_string)
         self.save_file.flush()
