@@ -491,10 +491,11 @@ class TutoringModel:
                 print self.current_belief
                 #before we get the next action, lets change our action multipliers and re-solve the pomdp
                 self.action_prob_knowledge_gain_mult = self.get_new_multipliers(observation, self.action)
-                self.resolve_pomdp()
-
-                #after updating belief with our observation, now we can get the next action
-                self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                
+                if data.msgType=='IA' and self.tries<3:
+                    self.resolve_pomdp()
+                    #after updating belief with our observation, now we can get the next action
+                    self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
 
 
         if (data.msgType == 'CA'): # respond to correct answer
@@ -503,7 +504,9 @@ class TutoringModel:
             timing = int(data.otherInfo.split("-")[1])                  
             self.log_transaction("CORRECT", question_id, str(attempt)+"-"+str(timing))
             time.sleep(2)
-            self.next_question()                                                
+            self.next_question()
+            self.resolve_pomdp()
+            self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()                                                
         
         elif (data.msgType == 'IA'): # respond to incorrect answer
             attempt = data.otherInfo.split("-")[0]
@@ -520,6 +523,8 @@ class TutoringModel:
                 if(self.tries >= 3):
                     time.sleep(2)
                     self.next_question()
+                    self.resolve_pomdp()
+                    self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
                 
                 else:
                     
