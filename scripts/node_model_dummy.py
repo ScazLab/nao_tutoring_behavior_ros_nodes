@@ -502,12 +502,7 @@ class TutoringModel:
                 print "current belief is: " 
                 print self.current_belief
                 #before we get the next action, lets change our action multipliers and re-solve the pomdp
-                self.action_prob_knowledge_gain_mult = self.get_new_multipliers(observation, self.action)
-                
-                if data.msgType=='IA' and self.tries<3:
-                    self.resolve_pomdp()
-                    #after updating belief with our observation, now we can get the next action
-                    self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                self.action_prob_knowledge_gain_mult = self.get_new_multipliers(observation, self.action)                
 
 
         if (data.msgType == 'CA'): # respond to correct answer
@@ -540,6 +535,8 @@ class TutoringModel:
                 
                 else:
                     
+                    self.resolve_pomdp()
+                    self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
                     print "DURING QUESTION, model will give this action: " + str(self.action)
                     #time.sleep(5) #lets try not sleeping here for MODEL GROUP since we have the pomdp resolve time lag
                     if self.action=="no-action":
