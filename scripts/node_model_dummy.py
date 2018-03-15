@@ -439,7 +439,7 @@ class TutoringModel:
         timing = float(timing) / 1000.0
         print "timing in seconds is: " + str(timing)
 
-        if len(self.attempt_times) < 5:
+        if len(self.attempt_times) < 10: #changed to 10 so that we get 10 data points before calculating fast or slow
             obs += "med"
 
         else:
@@ -513,9 +513,10 @@ class TutoringModel:
                 print "current belief is: " 
                 print self.current_belief
                 #before we get the next action, lets change our action multipliers and re-solve the pomdp
-                self.action_prob_knowledge_gain_mult, self.action_prob_engagement_gain_mult = self.get_new_multipliers(observation, self.action)
-                self.log_multipliers("KNOWLEDGE-MULT", question_id, self.action_prob_knowledge_gain_mult)
-                self.log_multipliers("ENGAGEMENT-MULT", question_id, self.action_prob_engagement_gain_mult)                
+                self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                #self.action_prob_knowledge_gain_mult, self.action_prob_engagement_gain_mult = self.get_new_multipliers(observation, self.action)
+                #self.log_multipliers("KNOWLEDGE-MULT", question_id, self.action_prob_knowledge_gain_mult)
+                #self.log_multipliers("ENGAGEMENT-MULT", question_id, self.action_prob_engagement_gain_mult)                
 
 
         if (data.msgType == 'CA'): # respond to correct answer
@@ -525,8 +526,8 @@ class TutoringModel:
             self.log_transaction("CORRECT", question_id, str(attempt)+"-"+str(timing))
             time.sleep(2)
             self.next_question()
-            self.resolve_pomdp()
-            self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()                                                
+            #self.resolve_pomdp()
+            #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()                                                
         
         elif (data.msgType == 'IA'): # respond to incorrect answer
             attempt = data.otherInfo.split("-")[0]
@@ -543,13 +544,13 @@ class TutoringModel:
                 if(self.tries >= 3):
                     time.sleep(2)
                     self.next_question()
-                    self.resolve_pomdp()
-                    self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                    #self.resolve_pomdp()
+                    #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
                 
                 else:
                     
-                    self.resolve_pomdp()
-                    self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
+                    #self.resolve_pomdp()
+                    #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
                     print "DURING QUESTION, model will give this action: " + str(self.action)
                     #time.sleep(5) #lets try not sleeping here for MODEL GROUP since we have the pomdp resolve time lag
                     if self.action=="no-action":
