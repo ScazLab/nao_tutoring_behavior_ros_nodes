@@ -552,7 +552,8 @@ class TutoringModel:
                     #self.resolve_pomdp()
                     #self.action = self.simple_pomdp_graph_policy_belief_runner.get_action()
                     print "DURING QUESTION, model will give this action: " + str(self.action)
-                    #time.sleep(5) #lets try not sleeping here for MODEL GROUP since we have the pomdp resolve time lag
+                    #below, trying a time.sleep(2) because there is no lag when we dont resolve the pomdp.
+                    time.sleep(2) #lets try not sleeping here for MODEL GROUP since we have the pomdp resolve time lag
                     if self.action=="no-action":
                         self.no_action()
                     elif self.action=="interactive-tutorial":
