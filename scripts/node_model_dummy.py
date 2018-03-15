@@ -406,7 +406,7 @@ class TutoringModel:
 
         question_id = self.questions[self.level][self.current_question]['QuestionID']
         self.log_transaction("NO-ACTION", question_id, self.level)
-        self.decisions_pub.publish(control_message)
+        self.decisons_pub.publish(control_message)
         print "sent: ", control_message
     
     def get_mean_and_std_time(self):
