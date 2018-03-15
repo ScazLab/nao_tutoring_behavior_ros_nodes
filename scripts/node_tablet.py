@@ -317,7 +317,7 @@ class TabletSession:
         quotient = numerator / denominator                                                    
 
         text = str(denominator) + " x " + str(quotient) + " = " + str(numerator)
-        msg_to_tablet = "SHOWTEXTHINT;" + text + ";"
+        msg_to_tablet = "STARTTEXTEXAMPLE;" + text + ";"
         self.conn.send(msg_to_tablet + "\n")
         print "sent: ", msg_to_tablet
 
