@@ -48,7 +48,6 @@ class TutoringModel:
 
         self.initial_knowledge_state = ""
 
-        self.loadSession = 0
         self.inSession = False
 
         #placeholder to hold pomdp model variables: current action, belief runner, etc --> initialize during START msg
@@ -99,7 +98,7 @@ class TutoringModel:
 
         # starting distribution 
         start = np.zeros(self.num_states)
-        if self.sessionNum==1 and self.loadSession==0:
+        if self.sessionNum ==1:
             initial_state = int(self.initial_knowledge_state[1:])
             majority_start = 0.7
             minority_start = (1.0 - majority_start) / (self.num_knowledge_levels-1)
@@ -662,7 +661,6 @@ class TutoringModel:
             print fileString
             if os.path.exists(fileString):
                 self.logFile = open(fileString, "a")
-                self.loadSession = 1
             else:
                 self.logFile = open(fileString, "w+")
             self.logFile.write("PARTICIPANT_ID,EXP_GROUP,SESSION_NUM,TIMESTAMP,QUESTION_NUM,TYPE,OTHER_INFO\n");
