@@ -200,6 +200,7 @@ class RobotTutor:
             elif (data.msgType == "LOAD"):
                 self.in_session = True
                 self.sessionNum = data.questionType
+                time.sleep(3)
                 self.robot_speech_pub.publish("INTRO-DONE")
                 print "sent done after intro: not really doing intro when loading a session"
 
