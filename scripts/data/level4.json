@@ -348,5 +348,55 @@
     "Denominator": "2", 
     "Numerator": "99", 
     "Spoken Answer": "The correct answer is 49 remainder 1."
+  },
+  {
+    "QuestionID": 435, 
+    "Spoken Question": "What is 33 divided by 2?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "16 R 1", 
+    "Denominator": "2", 
+    "Numerator": "33", 
+    "Spoken Answer": "The correct answer is 16 remainder 1."
+  }, 
+  {
+    "QuestionID": 436, 
+    "Spoken Question": "What is 527 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "131 R 3", 
+    "Denominator": "4", 
+    "Numerator": "527", 
+    "Spoken Answer": "The correct answer is 131 remainder 3."
+  }, 
+  {
+    "QuestionID": 437, 
+    "Spoken Question": "What is 651 divided by 8?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "81 R 3", 
+    "Denominator": "8", 
+    "Numerator": "651", 
+    "Spoken Answer": "The correct answer is 81 remainder 3."
+  }, 
+  {
+    "QuestionID": 438, 
+    "Spoken Question": "What is 94 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "23 R 2", 
+    "Denominator": "4", 
+    "Numerator": "94", 
+    "Spoken Answer": "The correct answer is 23 remainder 2."
+  }, 
+  {
+    "QuestionID": 439, 
+    "Spoken Question": "What is 368 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 4, 
+    "Answer": "52 R 4", 
+    "Denominator": "7", 
+    "Numerator": "368", 
+    "Spoken Answer": "The correct answer is 52 remainder 4."
   }
 ]

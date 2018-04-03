@@ -348,5 +348,55 @@
     "Denominator": "2", 
     "Numerator": "94", 
     "Spoken Answer": "The correct answer is 47."
+  },
+  {
+    "QuestionID": 335, 
+    "Spoken Question": "What is 78 divided by 6?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "13", 
+    "Denominator": "6", 
+    "Numerator": "78", 
+    "Spoken Answer": "The correct answer is 13."
+  }, 
+  {
+    "QuestionID": 336, 
+    "Spoken Question": "What is 672 divided by 7?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "96", 
+    "Denominator": "7", 
+    "Numerator": "672", 
+    "Spoken Answer": "The correct answer is 96."
+  }, 
+  {
+    "QuestionID": 337, 
+    "Spoken Question": "What is 45 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "15", 
+    "Denominator": "3", 
+    "Numerator": "45", 
+    "Spoken Answer": "The correct answer is 15."
+  }, 
+  {
+    "QuestionID": 338, 
+    "Spoken Question": "What is 141 divided by 3?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "47", 
+    "Denominator": "3", 
+    "Numerator": "141", 
+    "Spoken Answer": "The correct answer is 47."
+  },
+  {
+    "QuestionID": 339, 
+    "Spoken Question": "What is 692 divided by 4?", 
+    "WordProblem": false, 
+    "Difficulty Level": 3, 
+    "Answer": "173", 
+    "Denominator": "4", 
+    "Numerator": "692", 
+    "Spoken Answer": "The correct answer is 173."
   }
 ]
