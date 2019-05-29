@@ -5,6 +5,33 @@ It is set up to run in Docker so that it may be run on any operating system, tho
 
 To see the final report and other deliverables associated with this senior project code, see [here](http://zoo.cs.yale.edu/classes/cs490/17-18a/zakrzewska.aleksandrakonstancja.akz4/) (Yale Only).
 
+# Running the Demo from a Set Up Linux Laptop
+
+1. Get the Nao robot and place it in a sitting position. Turn on the Nao by pressing the button in the center of its chest (it will take a few minutes for it to be fully turned on).
+
+2. Plug in the router and connect the ethernet chord from the router to the back of the Nao's head. 
+
+3. Turn on the tablet and make sure that it's connected to the router's network (DFS2). Take out the tablet stand and put the tablet on the stand.
+
+4. Turn on the Linux laptop, log into the 'aditi' account with the 'keepondancing' password. 
+
+5. Once the Nao has fully turned on (you'll know it's fully turned on once it has said "Ognak gnouk"), press the button in the chest once and Nao should tell you its IP address. Make sure that the IP address that Nao gave you is the same that's in the `~/catkin_ws/src/nao_tutoring_behavior_ros_nodes/scripts/ip.txt` file. 
+
+6. You'll need to run each of these commands in a separate terminal window on the computer (also make sure that the computer is connected to the router's network (DFS2):
+   - `roscore`
+   - `rosrun nao_tutoring_behaviors node_model_dummy.py`
+   - `rosrun nao_tutoring_behaviors node_tablet.py`
+   - `rosrun nao_tutoring_behaviors node_robot_controller.py -robot`
+
+7. Take the tablet and open the app on the main screen labeled "Tutoring Adaptive." Press the "Connect" button (the text "Not Connected..." under the "Connect" button should now indicate that the tablet has connected to the computer). And enter the following information for the next entry items: 
+   - Enter PID: an integer that's somewhere in the range of 100 - 999
+   - Enter Session Num: 1
+   - Harder Questions
+   - Control Group
+
+8. Finally on the tablet (assuming no errors have occured in the terminals on the computer and the tablet was able to connect), press the "Start Math" button to start the robot's tutoring session.
+
+
 # Running in Docker
 
 To run the docker container, run the command:
