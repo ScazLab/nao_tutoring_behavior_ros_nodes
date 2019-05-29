@@ -7,7 +7,7 @@ To see the final report and other deliverables associated with this senior proje
 
 # Running the Demo from a Set Up Linux Laptop
 
-1. Get the Nao robot and place it in a sitting position. Turn on the Nao by pressing the button in the center of its chest (it will take a few minutes for it to be fully turned on).
+1. Get the Nao robot and its charger and place the Nao a sitting position and plug in its charger. Turn on the Nao by pressing the button in the center of its chest (it will take a few minutes for it to be fully turned on).
 
 2. Plug in the router and connect the ethernet chord from the router to the back of the Nao's head. 
 
