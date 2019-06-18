@@ -32,6 +32,19 @@ To see the final report and other deliverables associated with this senior proje
 8. Finally on the tablet (assuming no errors have occured in the terminals on the computer and the tablet was able to connect), press the "Start Math" button to start the robot's tutoring session.
 
 
+# What is this study all about? Explaining the project for demo purposes. 
+
+- The research question we're tying to address in this project is: how can a robot tutor provide *personalized* help to students in a tutoring scenario? 
+- To answer this question we constructed a partially observable Markov decision process (POMDP) where the robot interatively:  
+    - observed the answers of the students (accuracy and the speed at which they answered the questions)
+    - updated its belief of the student's knowledge and engagement
+    - chose a help action (e.g. worked example, hint)
+    - received a reward based on how effective that help action was 
+- We evaluated this with *28 4th grade students* in a New Haven public elementary school with *long division curriculum*. Each student had 5 15 minute one-on-one sessions with the robot. We compared our POMDP model against a fixed policy, which gave the student progressively more help every time they answered an attempt incorrectly. 
+- Students who received help from ur POMDP model showed greater learning gains and strategy use from a pre-test to a post-test than students who received help from the fixed policy. 
+- Note: The demo is on the fixed policy, so every time you get it wrong, it will show a progressively larger form of help.
+
+
 # Running in Docker
 
 To run the docker container, run the command:
